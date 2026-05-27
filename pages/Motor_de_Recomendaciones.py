@@ -1,39 +1,43 @@
 import streamlit as st
 import joblib
-import numpy as np
 import os
+import numpy as np
 
-st.title("🌱 Motor de Recomendaciones y Evaluación de Burnout")
+st.title("🧠 Detector de Niveles de Estrés Analítico")
 st.markdown("---")
 
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ruta_modelo = os.path.join(base_dir, "modelos", "modelo_burnout_rf.pkl")
+ruta_modelo = os.path.join(base_dir, "modelos", "modelo_stress_rf.pkl")
 
 if os.path.exists(ruta_modelo):
-    model = joblib.load(ruta_modelo)
-    
-    st.markdown("### Responda las preguntas (6 parámetros):")
-    
-    col1, col2 = st.columns(2)
-    
-    # He dejado solo 6 sliders para coincidir con las 6 variables del modelo
-    with col1:
-        val1 = st.slider("Sueño (sleep)", 1, 10, 7)
-        val2 = st.slider("Físico (physical)", 1, 10, 5)
-        val3 = st.slider("Social (social)", 1, 10, 5)
-    with col2:
-        val4 = st.slider("Académico (academic)", 1, 10, 5)
-        val5 = st.slider("Ansiedad (anxiety)", 1, 10, 5)
-        val6 = st.slider("Depresión (depres)", 1, 10, 5)
-    
-    if st.button("Generar Evaluación"):
-        # Enviamos exactamente 6 variables
-        caracteristicas = np.array([[val1, val2, val3, val4, val5, val6]])
+    try:
+        modelo = joblib.load(ruta_modelo)
         
-        try:
-            pred = model.predict(caracteristicas)
-            st.success(f"Índice de Burnout Predicho: {pred[0]:.2f}")
-        except Exception as e:
-            st.error(f"Aún hay un desajuste: {e}")
+        st.markdown("### Ingrese los 10 parámetros de evaluación:")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            anxiety = st.slider("1. Nivel de Ansiedad (1-10):", 1, 10, 5)
+            self_esteem = st.slider("2. Autoestima (1-10):", 1, 10, 5)
+            depression = st.slider("3. Nivel de Depresión (1-10):", 1, 10, 5)
+            sleep_q = st.slider("4. Calidad de Sueño (1-10):", 1, 10, 5)
+            academic = st.slider("5. Rendimiento Académico (1-10):", 1, 10, 5)
+        with col2:
+            study_load = st.slider("6. Carga de Estudio (1-10):", 1, 10, 5)
+            social = st.slider("7. Apoyo Social (1-10):", 1, 10, 5)
+            peer = st.slider("8. Presión de Pares (1-10):", 1, 10, 5)
+            extra = st.slider("9. Actividades Extras (1-10):", 1, 10, 5)
+            bullying = st.slider("10. Experiencia de Bullying (1-10):", 1, 10, 5)
+        
+        if st.button("Calcular Diagnóstico"):
+            # Array de 10 elementos exactos
+            data = np.array([[anxiety, self_esteem, depression, sleep_q, academic, 
+                             study_load, social, peer, extra, bullying]])
+            
+            prediccion = modelo.predict(data)
+            st.metric(label="Nivel de Estrés Predicho", value=f"Nivel {prediccion[0]}")
+            
+    except Exception as e:
+        st.error(f"Error al ejecutar el modelo: {e}")
 else:
-    st.error("Modelo no encontrado.")
+    st.error("No se encuentra 'modelo_stress_rf.pkl'. Asegúrate de que esté en la carpeta /modelos.")
