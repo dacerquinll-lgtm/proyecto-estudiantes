@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 
+st.set_page_config(page_title="Bienestar Estudiantil", layout="wide")
+
 def limpiar_columnas(df):
     df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_')
     return df
@@ -14,7 +16,6 @@ if 'datasets' not in st.session_state:
             'burnout': limpiar_columnas(df2)
         }
     except Exception as e:
-        st.error(f"Error cargando CSV: {e}")
+        st.error(f"Error crítico: {e}")
 
-st.title("Sistema de Bienestar Estudiantil")
-st.write("Sistemas inicializados.")
+st.title("🎓 Sistema de Bienestar Estudiantil")
