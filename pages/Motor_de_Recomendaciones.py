@@ -3,41 +3,37 @@ import joblib
 import numpy as np
 import os
 
-st.title("🌱 Motor de Recomendaciones")
+st.title("🌱 Motor de Recomendaciones y Evaluación de Burnout")
+st.markdown("---")
 
-# Ruta al modelo
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ruta_modelo = os.path.join(base_dir, "modelos", "modelo_burnout_rf.pkl")
 
 if os.path.exists(ruta_modelo):
     model = joblib.load(ruta_modelo)
     
-    # --- AQUÍ ESTÁ EL DIAGNÓSTICO ---
-    # Mostramos cuántas columnas espera el modelo
-    n_features_esperadas = model.n_features_in_
-    st.info(f"El modelo espera exactamente {n_features_esperadas} variables.")
+    st.markdown("### Responda las preguntas (6 parámetros):")
     
-    st.markdown("### Ingresa los datos:")
-    # Creamos un formulario dinámico que suma 7 variables, 
-    # si el modelo espera un número diferente, ajusta este array abajo
-    val1 = st.slider("Sleep", 1, 10, 5)
-    val2 = st.slider("Physical", 1, 10, 5)
-    val3 = st.slider("Social", 1, 10, 5)
-    val4 = st.slider("Academic", 1, 10, 5)
-    val5 = st.slider("Anxiety", 1, 10, 5)
-    val6 = st.slider("Depres", 1, 10, 5)
-    val7 = st.slider("Lifestyle", 1, 10, 5)
-
+    col1, col2 = st.columns(2)
+    
+    # He dejado solo 6 sliders para coincidir con las 6 variables del modelo
+    with col1:
+        val1 = st.slider("Sueño (sleep)", 1, 10, 7)
+        val2 = st.slider("Físico (physical)", 1, 10, 5)
+        val3 = st.slider("Social (social)", 1, 10, 5)
+    with col2:
+        val4 = st.slider("Académico (academic)", 1, 10, 5)
+        val5 = st.slider("Ansiedad (anxiety)", 1, 10, 5)
+        val6 = st.slider("Depresión (depres)", 1, 10, 5)
+    
     if st.button("Generar Evaluación"):
-        # Ajusta este array para que tenga exactamente 'n_features_esperadas' elementos
-        caracteristicas = np.array([[val1, val2, val3, val4, val5, val6, val7]])
+        # Enviamos exactamente 6 variables
+        caracteristicas = np.array([[val1, val2, val3, val4, val5, val6]])
         
         try:
             pred = model.predict(caracteristicas)
-            st.success(f"Resultado: {pred[0]}")
+            st.success(f"Índice de Burnout Predicho: {pred[0]:.2f}")
         except Exception as e:
-            st.error(f"Error técnico: {e}")
-            st.write("Ajusta la cantidad de sliders para que coincidan con el número que muestra el recuadro azul arriba.")
-
+            st.error(f"Aún hay un desajuste: {e}")
 else:
-    st.error("Archivo de modelo no encontrado.")
+    st.error("Modelo no encontrado.")
