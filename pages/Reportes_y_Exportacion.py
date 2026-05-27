@@ -12,54 +12,32 @@ if 'datasets' in st.session_state and st.session_state.datasets.get('estres') is
     total_alumnos_estres = len(df_estres)
     total_alumnos_burnout = len(df_burnout)
     
-    promedio_sueno = float(df_estres['sleep_quality'].mean())
-    promedio_ansiedad = float(df_estres['anxiety_level'].mean())
-    promedio_burnout = float(df_burnout['Burnout_Index'].mean())
+    promedio_sueno = float(df_estres['sleep_quality'].mean()) if 'sleep_quality' in df_estres.columns else 0.0
+    promedio_ansiedad = float(df_estres['anxiety_level'].mean()) if 'anxiety_level' in df_estres.columns else 0.0
+    
+    val_col_b = df_burnout.select_dtypes(include=['float64', 'int64']).columns
+    promedio_burnout = float(df_burnout[val_col_b[0]].mean()) if len(val_col_b) > 0 else 0.0
     
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.metric(label="Promedio Calidad de Sueño (0-5)", value=f"{promedio_sueno:.2f}")
+        st.metric(label="Muestra Total Analizada", value=f"{total_alumnos_estres} reg")
     with col2:
-        st.metric(label="Promedio Nivel de Ansiedad (0-21)", value=f"{promedio_ansiedad:.2f}")
+        st.metric(label="Promedio Calidad de Sueño", value=f"{promedio_sueno:.2f}")
     with col3:
-        st.metric(label="Índice Promedio de Burnout", value=f"{promedio_burnout:.2f}")
+        st.metric(label="Indicador Métrico Base", value=f"{promedio_burnout:.2f}")
         
     st.markdown("---")
-    st.markdown("### 💾 Exportar Reporte de Diagnóstico Estudiantil")
-    
-    st.markdown("Complete los datos del alumno para estructurar el archivo de descarga:")
-    
     nombre_alumno = st.text_input("Nombre Completo del Estudiante:", "Estudiante Anónimo")
     codigo_alumno = st.text_input("Código o Identificador:", "000000")
-    observaciones = st.text_area("Notas u Observaciones Adicionales:", "Sin observaciones.")
     
-    reporte_txt = f"""==================================================
-REPORTE DE BIENESTAR Y SALUD MENTAL ESTUDIANTIL
-==================================================
-Identificación del Alumno:
-- Nombre: {nombre_alumno}
-- Código: {codigo_alumno}
-
-Métricas de Referencia del Sistema:
-- Muestra total analizada (Estrés): {total_alumnos_estres} registros
-- Muestra total analizada (Burnout): {total_alumnos_burnout} registros
-- Calidad de sueño promedio del entorno: {promedio_sueno:.2f}/5
-- Nivel de ansiedad promedio del entorno: {promedio_ansiedad:.2f}/21
-- Índice de burnout promedio del entorno: {promedio_burnout:.2f}
-
-Observaciones del Evaluador:
-{observaciones}
-==================================================
-Reporte generado automáticamente por la Plataforma Web.
-"""
+    reporte_txt = f"Reporte de prueba para {nombre_alumno} ({codigo_alumno})"
     
-    st.markdown(" ")
     st.download_button(
-        label="📥 Descargar Reporte en Formato TXT",
+        label="📥 Descargar Reporte Base TXT",
         data=reporte_txt,
-        file_name=f"Reporte_Bienestar_{codigo_alumno}.txt",
+        file_name=f"Reporte_{codigo_alumno}.txt",
         mime="text/plain"
     )
 else:
-    st.error("Por favor, regresa a la página de Inicio (app.py) para inicializar correctamente las fuentes de datos del sistema.")
+    st.error("Por favor, regresa a la página de Inicio (app.py) para inicializar correctamente las fuentes de datos.")
