@@ -12,50 +12,41 @@ if 'datasets' in st.session_state and st.session_state.datasets.get('estres') is
     
     with col1:
         st.subheader("Distribución de Niveles de Estrés")
-        fig_estres = px.histogram(
+        fig1 = px.histogram(
             df_estres, 
             x="stress_level", 
-            nbins=3, 
             color="stress_level",
             labels={"stress_level": "Nivel de Estrés"},
             color_discrete_sequence=px.colors.qualitative.Safe
         )
-        st.plotly_chart(fig_estres, use_container_width=True)
+        st.plotly_chart(fig1, use_container_width=True)
         
     with col2:
-        st.subheader("Relación: Horas de Sueño vs Carga Académica")
-        fig_scatter = px.scatter(
+        st.subheader("Relación: Calidad de Sueño vs Horas de Estudio")
+        fig2 = px.scatter(
             df_estres, 
             x="sleep_quality", 
-            y="academic_performance", 
+            y="study_hours", 
             color="stress_level",
-            labels={"sleep_quality": "Calidad de Sueño", "academic_performance": "Rendimiento Académico"}
+            labels={"sleep_quality": "Calidad de Sueño", "study_hours": "Horas de Estudio"},
+            render_mode="svg"
         )
-        st.plotly_chart(fig_scatter, use_container_width=True)
+        st.plotly_chart(fig2, use_container_width=True)
         
     st.markdown("---")
-    st.subheader("Análisis de Salud Mental y Burnout (Muestra Recortada)")
+    st.subheader("Análisis de Burnout Estudiantil")
     
-    if df_burnout is not None:
-        col3, col4 = st.columns(2)
+    if 'burnout_score' in df_burnout.columns:
+        col_b = 'burnout_score'
+    else:
+        col_b = df_burnout.columns[1]
         
-        with col3:
-            fig_box = px.box(
-                df_burnout, 
-                x="Gender", 
-                y="Workload", 
-                color="Damaging_Mental_Health_History",
-                labels={"Workload": "Carga de Trabajo/Estudio", "Gender": "Género"}
-            )
-            st.plotly_chart(fig_box, use_container_width=True)
-            
-        with col4:
-            fig_pie = px.pie(
-                df_burnout, 
-                names="Anxiety_Mental_Health_History", 
-                hole=0.4,
-                title="Historial de Ansiedad Registrado"
-            )
-            st.plotly_chart(fig_pie, use_container_width=True)
+    fig3 = px.box(
+        df_burnout, 
+        y=col_b,
+        labels={col_b: "Índice de Burnout"},
+        color_discrete_sequence=["#FF6692"]
+    )
+    st.plotly_chart(fig3, use_container_width=True)
 else:
-    st.error("Por favor, regresa a la página de Inicio (app.py) para inicializar correctamente las fuentes de datos del sistema.")
+    st.error("Por favor, regresa a la página de Inicio (app.py) para inicializar correctamente las fuentes de datos.")
