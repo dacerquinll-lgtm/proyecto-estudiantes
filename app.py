@@ -14,23 +14,24 @@ st.markdown("---")
 
 if 'datasets' not in st.session_state:
     try:
-        # Encontrar la ruta absoluta del proyecto de forma dinámica
+        # Obtener el directorio raíz donde está app.py en el servidor
         base_dir = os.path.dirname(os.path.abspath(__file__))
         
-        # Construcción de rutas compatibles tanto para Windows local como para Linux Cloud
+        # Intentar la ruta estándar
         ruta_estres = os.path.join(base_dir, "datasets", "Estudiantes_Estres.csv")
         ruta_burnout = os.path.join(base_dir, "datasets", "Estudiantes_Burnout.csv")
         
-        # Si no los encuentra ahí, busca archivos alternativos en la raíz por si se subieron plano
+        # Si no existen por problemas de carpetas, buscarlos directamente en la raíz
         if not os.path.exists(ruta_estres):
             ruta_estres = os.path.join(base_dir, "Estudiantes_Estres.csv")
         if not os.path.exists(ruta_burnout):
             ruta_burnout = os.path.join(base_dir, "Estudiantes_Burnout.csv")
 
+        # Leer los archivos con la ruta validada
         df_estres = pd.read_csv(ruta_estres)
         df_burnout = pd.read_csv(ruta_burnout)
         
-        # Limpieza de nombres de columnas
+        # Estandarizar columnas a minúsculas para evitar errores en las páginas hijas
         df_estres.columns = df_estres.columns.str.strip().str.lower()
         df_burnout.columns = df_burnout.columns.str.strip().str.lower()
         
