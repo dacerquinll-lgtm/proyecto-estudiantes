@@ -12,37 +12,42 @@ ruta_modelo = os.path.join(base_dir, "modelos", "modelo_stress_rf.pkl")
 if os.path.exists(ruta_modelo):
     try:
         modelo = joblib.load(ruta_modelo)
-        st.success("Modelo Predictivo Random Forest acoplado correctamente.")
         
         st.markdown("### Ingrese los 10 parámetros de evaluación:")
         
-        # Creamos columnas para organizar mejor la entrada
-        c1, c2 = st.columns(2)
-        with c1:
-            anxiety = st.slider("Nivel de Ansiedad (1-10):", 1, 10, 5)
-            self_esteem = st.slider("Autoestima (1-10):", 1, 10, 5)
-            depression = st.slider("Nivel de Depresión (1-10):", 1, 10, 5)
-            sleep_quality = st.slider("Calidad de Sueño (1-10):", 1, 10, 5)
-            academic_perf = st.slider("Rendimiento Académico (1-10):", 1, 10, 5)
-        with c2:
-            study_load = st.slider("Carga de Estudio (1-10):", 1, 10, 5)
-            social_supp = st.slider("Apoyo Social (1-10):", 1, 10, 5)
-            peer_pressure = st.slider("Presión de Pares (1-10):", 1, 10, 5)
-            extra_act = st.slider("Actividades Extracurriculares (1-10):", 1, 10, 5)
-            bullying = st.slider("Experiencia de Bullying (1-10):", 1, 10, 5)
+        col1, col2 = st.columns(2)
+        with col1:
+            anxiety = st.slider("1. Nivel de Ansiedad (1-10):", 1, 10, 5)
+            self_esteem = st.slider("2. Autoestima (1-10):", 1, 10, 5)
+            depression = st.slider("3. Nivel de Depresión (1-10):", 1, 10, 5)
+            sleep_q = st.slider("4. Calidad de Sueño (1-10):", 1, 10, 5)
+            academic = st.slider("5. Rendimiento Académico (1-10):", 1, 10, 5)
+        with col2:
+            study_load = st.slider("6. Carga de Estudio (1-10):", 1, 10, 5)
+            social = st.slider("7. Apoyo Social (1-10):", 1, 10, 5)
+            peer = st.slider("8. Presión de Pares (1-10):", 1, 10, 5)
+            extra = st.slider("9. Actividades Extras (1-10):", 1, 10, 5)
+            bullying = st.slider("10. Experiencia de Bullying (1-10):", 1, 10, 5)
         
         if st.button("Calcular Diagnóstico"):
-            # Creamos el array con los 10 valores en el orden exacto del entrenamiento
-            features = np.array([[
-                anxiety, self_esteem, depression, sleep_quality, 
-                academic_perf, study_load, social_supp, 
-                peer_pressure, extra_act, bullying
-            ]])
+            data = np.array([[anxiety, self_esteem, depression, sleep_q, academic, 
+                             study_load, social, peer, extra, bullying]])
             
-            prediccion = modelo.predict(features)
-            st.metric(label="Nivel de Estrés Predicho", value=f"Nivel {prediccion[0]}")
+            prediccion = modelo.predict(data)[0]
+            
+            st.subheader("📋 Resultados del Análisis")
+            
+            if prediccion == 0:
+                st.success("Nivel de Estrés: BAJO")
+                st.write("**Descripción:** Tus indicadores muestran un estado de calma y equilibrio. Tu capacidad actual para gestionar las demandas académicas es óptima. ¡Continúa así!")
+            elif prediccion == 1:
+                st.warning("Nivel de Estrés: MODERADO")
+                st.write("**Descripción:** Estás experimentando niveles de estrés que requieren atención. Es recomendable revisar tu organización y asegurar tiempos de descanso para evitar la fatiga acumulada.")
+            else:
+                st.error("Nivel de Estrés: ALTO")
+                st.write("**Descripción (Advertencia):** Se han detectado indicadores significativos de estrés elevado. Es fundamental que reduzcas la carga de tareas no esenciales y busques apoyo institucional o profesional lo antes posible para proteger tu bienestar.")
             
     except Exception as e:
         st.error(f"Error al ejecutar el modelo: {e}")
 else:
-    st.warning(f"Archivo de modelo no detectado en: {ruta_modelo}")
+    st.error("No se encuentra el modelo de estrés. Asegúrate de que esté en la carpeta /modelos.")
