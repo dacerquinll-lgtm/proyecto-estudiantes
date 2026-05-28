@@ -1,3 +1,7 @@
+
+import streamlit as st
+import pandas as pd
+import os
 st.markdown("""
     <style>
     .stApp {
@@ -12,9 +16,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-import streamlit as st
-import pandas as pd
-import os
+
+
 
 st.set_page_config(
     page_title="Plataforma de Bienestar Estudiantil",
