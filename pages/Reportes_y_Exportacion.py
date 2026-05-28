@@ -1,43 +1,60 @@
 import streamlit as st
+import pandas as pd
 
-st.title("📄 Generador de Reportes y Exportación de Datos")
+st.title("📄 Generador de Reportes y Exportación")
 st.markdown("---")
 
-if 'datasets' in st.session_state and st.session_state.datasets.get('estres') is not None:
-    df_estres = st.session_state.datasets['estres']
-    df_burnout = st.session_state.datasets['burnout']
+# 1. Verificamos si existe un diagnóstico reciente del usuario
+if 'ultimo_diagnostico' in st.session_state:
+    diag = st.session_state['ultimo_diagnostico']
+    datos = diag['datos']
+    resultado = diag['resultado']
     
-    st.markdown("### 📋 Resumen del Perfil Académico Global")
+    st.success("✅ Diagnóstico detectado. Procediendo a generar reporte personalizado.")
     
-    total_alumnos_estres = len(df_estres)
-    total_alumnos_burnout = len(df_burnout)
+    # Mapeo de resultados
+    mapa_resultado = {0: "BAJO", 1: "MODERADO", 2: "ALTO"}
+    nivel_txt = mapa_resultado.get(resultado, "Desconocido")
     
-    promedio_sueno = float(df_estres['sleep_quality'].mean()) if 'sleep_quality' in df_estres.columns else 0.0
-    promedio_ansiedad = float(df_estres['anxiety_level'].mean()) if 'anxiety_level' in df_estres.columns else 0.0
+    # 2. Captura de datos del usuario para el reporte
+    nombre = st.text_input("Nombre Completo:", "Estudiante")
     
-    val_col_b = df_burnout.select_dtypes(include=['float64', 'int64']).columns
-    promedio_burnout = float(df_burnout[val_col_b[0]].mean()) if len(val_col_b) > 0 else 0.0
+    # 3. Construcción del contenido del reporte
+    contenido_reporte = f"""
+    --- REPORTE DE SALUD MENTAL Y ESTRÉS ---
+    Estudiante: {nombre}
+    Nivel de Estrés Detectado: {nivel_txt}
     
-    col1, col2, col3 = st.columns(3)
+    Métricas ingresadas:
+    - Ansiedad: {datos[0]}
+    - Autoestima: {datos[1]}
+    - Depresión: {datos[2]}
+    - Calidad de Sueño: {datos[3]}
+    - Rendimiento Académico: {datos[4]}
+    - Carga de Estudio: {datos[5]}
+    - Apoyo Social: {datos[6]}
+    - Presión de Pares: {datos[7]}
+    - Actividades Extras: {datos[8]}
+    - Bullying: {datos[9]}
+    ----------------------------------------
+    """
     
-    with col1:
-        st.metric(label="Muestra Total Analizada", value=f"{total_alumnos_estres} reg")
-    with col2:
-        st.metric(label="Promedio Calidad de Sueño", value=f"{promedio_sueno:.2f}")
-    with col3:
-        st.metric(label="Indicador Métrico Base", value=f"{promedio_burnout:.2f}")
-        
-    st.markdown("---")
-    nombre_alumno = st.text_input("Nombre Completo del Estudiante:", "Estudiante Anónimo")
-    codigo_alumno = st.text_input("Código o Identificador:", "000000")
+    st.text_area("Vista previa del reporte:", contenido_reporte, height=300)
     
-    reporte_txt = f"Reporte de prueba para {nombre_alumno} ({codigo_alumno})"
-    
+    # 4. Botón de descarga
     st.download_button(
-        label="📥 Descargar Reporte Base TXT",
-        data=reporte_txt,
-        file_name=f"Reporte_{codigo_alumno}.txt",
+        label="📥 Descargar Reporte Personalizado (TXT)",
+        data=contenido_reporte,
+        file_name=f"Reporte_Estres_{nombre}.txt",
         mime="text/plain"
     )
+
 else:
-    st.error("Por favor, regresa a la página de Inicio (app.py) para inicializar correctamente las fuentes de datos.")
+    st.warning("⚠️ No se ha realizado un diagnóstico previo.")
+    st.info("Por favor, dirígete a la página **Detector de Estrés** para completar tu evaluación antes de generar un reporte.")
+    
+    # Opcional: Mostrar indicadores generales si quieres mantener algo de info global
+    if 'datasets' in st.session_state and st.session_state.datasets.get('estres') is not None:
+        st.markdown("---")
+        st.write("Estadísticas globales disponibles (sin diagnóstico personal):")
+        st.write(st.session_state.datasets['estres'].describe())
