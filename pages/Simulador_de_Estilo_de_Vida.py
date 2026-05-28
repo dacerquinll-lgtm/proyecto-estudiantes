@@ -3,61 +3,55 @@ import joblib
 import numpy as np
 import os
 
-st.title("🔄 Simulador de Escenarios de Estilo de Vida")
+st.title("🔄 Simulador de Escenarios: Impacto en el Estrés")
+st.markdown("""
+Esta herramienta permite proyectar cómo cambios en tus hábitos académicos pueden alterar tu nivel de estrés.
+Ajusta las variables y observa cómo responde el sistema.
+""")
 st.markdown("---")
 
-# Rutas a los modelos
-base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ruta_stress = os.path.join(base_dir, "modelos", "modelo_stress_rf.pkl")
-ruta_burnout = os.path.join(base_dir, "modelos", "modelo_burnout_rf.pkl")
+ruta_stress = "modelos/modelo_stress_rf.pkl"
 
-if os.path.exists(ruta_stress) and os.path.exists(ruta_burnout):
+if os.path.exists(ruta_stress):
     mod_stress = joblib.load(ruta_stress)
-    mod_burnout = joblib.load(ruta_burnout)
-    
-    st.markdown("### Ajuste las métricas para proyectar su bienestar:")
     
     col1, col2 = st.columns(2)
     with col1:
-        h_sueno = st.slider("Horas de Sueño", 4, 10, 7)
-        calidad_s = st.slider("Calidad de Sueño (0-5)", 0, 5, 3)
-        act_extra = st.slider("Actividades Extracurriculares", 0, 20, 5)
+        anx = st.slider("Nivel de Ansiedad (1-10)", 1, 10, 5)
+        self_e = st.slider("Autoestima (1-10)", 1, 10, 5)
+        dep = st.slider("Depresión (1-10)", 1, 10, 5)
+        sleep = st.slider("Calidad de Sueño (1-10)", 1, 10, 5)
+        acad = st.slider("Rendimiento Académico (1-10)", 1, 10, 5)
     with col2:
-        carga = st.slider("Carga de Trabajo Semanal", 10, 60, 30)
-        ansiedad = st.slider("Nivel de Ansiedad (0-21)", 0, 21, 10)
-        rendimiento = st.slider("Rendimiento Académico (0-5)", 0, 5, 3)
+        load = st.slider("Carga de Estudio (1-10)", 1, 10, 5)
+        soc = st.slider("Apoyo Social (1-10)", 1, 10, 5)
+        peer = st.slider("Presión de Pares (1-10)", 1, 10, 5)
+        extra = st.slider("Actividades Extras (1-10)", 1, 10, 5)
+        bull = st.slider("Experiencia de Bullying (1-10)", 1, 10, 5)
 
-    if st.button("Ejecutar Simulación de Impacto"):
-        try:
-            # Preparación de datos según la estructura de entrenamiento de tus modelos
-            datos_stress = np.array([[ansiedad, 5, 5, calidad_s, rendimiento, (carga/6), 5, 5, act_extra, 5]])
-            datos_burnout = np.array([[h_sueno, 5, 5, rendimiento, ansiedad, 5]])
-            
-            # Predicciones
-            pred_stress = mod_stress.predict(datos_stress)[0]
-            pred_burnout = mod_burnout.predict(datos_burnout)[0]
-            
-            st.subheader("📊 Resultados de la Proyección")
-            
-            # Visualización Estrés
-            st.write("#### 🧠 Nivel de Estrés Estimado:")
-            if pred_stress == 0:
-                st.success("BAJO: Tu nivel de tensión es saludable y manejable.")
-            elif pred_stress == 1:
-                st.warning("MODERADO: Presentas signos de estrés que requieren mayor organización.")
-            else:
-                st.error("ALTO: Tus niveles de estrés son preocupantes. Evalúa reducir tu carga.")
-            
-            # Visualización Burnout
-            st.write("#### 📉 Índice de Burnout Proyectado:")
-            if pred_burnout < 3.5:
-                st.success(f"BAJO ({pred_burnout:.2f}): Estado de bienestar óptimo.")
-            elif pred_burnout <= 6.5:
-                st.warning(f"MODERADO ({pred_burnout:.2f}): Existe riesgo de fatiga mental acumulada.")
-            else:
-                st.error(f"ALTO ({pred_burnout:.2f}): Riesgo crítico de agotamiento. Busca soporte.")
-                
-        except Exception as e:
-            st.error(f"Error técnico durante la simulación: {e}")
+    if st.button("Ejecutar Simulación de Escenario"):
+        datos_actuales = np.array([[anx, self_e, dep, sleep, acad, load, soc, peer, extra, bull]])
+        pred_actual = mod_stress.predict(datos_actuales)[0]
+        
+        st.subheader("📊 Resultados de la Simulación")
+        
+        # Mostrar estado actual
+        res_map = {0: "BAJO", 1: "MODERADO", 2: "ALTO"}
+        st.info(f"**Resultado con configuración actual:** Nivel {res_map[pred_actual]}")
+        
+        # Simulación de Escenario Optimista (Mejorar sueño y reducir ansiedad)
+        datos_opt = datos_actuales.copy()
+        datos_opt[0, 3] = min(10, datos_opt[0, 3] + 2) # Mejora sueño
+        datos_opt[0, 0] = max(1, datos_opt[0, 0] - 2)  # Reduce ansiedad
+        
+        pred_opt = mod_stress.predict(datos_opt)[0]
+        
+        st.write("---")
+        st.subheader("🔮 Proyección de Escenario Alternativo")
+        if pred_opt < pred_actual:
+            st.success(f"Si optimizas tus hábitos (más sueño, menos ansiedad), tu nivel de estrés bajaría a: {res_map[pred_opt]}.")
+        else:
+            st.warning("Manteniendo los hábitos actuales o ante cambios leves, el nivel de estrés tiende a estabilizarse en: " + res_map[pred_opt])
+
 else:
-    st.error("Archivos de modelos no encontrados en la carpeta /modelos. Verifica la ruta.")
+    st.error("Error: El modelo 'modelo_stress_rf.pkl' no fue encontrado en la carpeta /modelos.")
