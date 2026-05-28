@@ -2,18 +2,18 @@ import streamlit as st
 import pandas as pd
 import os
 
-# 1. Configuración de página (siempre al inicio)
+# 1. Configuración de página
 st.set_page_config(page_title="MindCare Analytics", page_icon="🧠", layout="wide")
 
-# 2. Inicialización del Dataset (Global)
+# 2. Inicialización del Dataset (Global y Corregida)
 if 'datasets' not in st.session_state:
-    ruta = "datasets/data_estres.csv"
+    ruta = os.path.join("datasets", "StressLevelDataset_limpio.csv")
     if os.path.exists(ruta):
         st.session_state['datasets'] = {'estres': pd.read_csv(ruta)}
     else:
-        st.session_state['datasets'] = None # Indicador de error si no existe
+        st.session_state['datasets'] = None
 
-# 3. CSS Avanzado (Estilo Dark Profesional)
+# 3. CSS para Estilo Dark Profesional (Se aplica a toda la App)
 st.markdown("""
     <style>
     .stApp { background-color: #0f1116; }
@@ -58,18 +58,11 @@ with col_a:
 with col_b:
     if st.session_state['datasets'] is not None:
         st.info("✅ **Conexión con el Modelo:** RF-Optimizado v2.4")
-        st.info("✅ **Estado de Datos:** Dataset Cargado Exitosamente")
+        st.info("✅ **Estado de Datos:** Dataset cargado correctamente.")
     else:
-        st.error("⚠️ Error: No se encontró el dataset en la carpeta /datasets/")
+        st.error("⚠️ Error crítico: No se encontró 'datasets/StressLevelDataset_limpio.csv'")
 
 # 5. Acceso Rápido
 st.markdown("---")
 st.write("### 🚀 Acceso Rápido")
-quick_links = st.columns(4)
-
-# Nota: Los botones en Streamlit de multipágina no redirigen automáticamente sin lógica extra
-# Se recomienda usar la barra lateral oficial para la navegación principal.
-quick_links[0].button("📊 Dashboard")
-quick_links[1].button("🧠 Detector")
-quick_links[2].button("🔄 Simulador")
-quick_links[3].button("📄 Reportes")
+st.warning("Nota: Usa el menú lateral para una navegación fluida.")
