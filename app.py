@@ -1,15 +1,22 @@
 import streamlit as st
+import pandas as pd
+import os
 
-# Configuración inicial de página
+# 1. Configuración de página (siempre al inicio)
 st.set_page_config(page_title="MindCare Analytics", page_icon="🧠", layout="wide")
 
-# CSS Avanzado para romper el look estándar de Streamlit
+# 2. Inicialización del Dataset (Global)
+if 'datasets' not in st.session_state:
+    ruta = "datasets/data_estres.csv"
+    if os.path.exists(ruta):
+        st.session_state['datasets'] = {'estres': pd.read_csv(ruta)}
+    else:
+        st.session_state['datasets'] = None # Indicador de error si no existe
+
+# 3. CSS Avanzado (Estilo Dark Profesional)
 st.markdown("""
     <style>
-    /* Fondo estilo Dashboard */
     .stApp { background-color: #0f1116; }
-    
-    /* Tarjetas con efecto glassmorphism */
     .metric-card {
         background: linear-gradient(135deg, #1e1e26 0%, #252530 100%);
         padding: 25px;
@@ -19,12 +26,8 @@ st.markdown("""
         margin-bottom: 20px;
         color: white;
     }
-    
-    /* Títulos personalizados */
-    h1 { color: #ffffff !important; font-weight: 800 !important; }
-    h3 { color: #00d4ff !important; }
-    
-    /* Botones estilo Neumorfismo */
+    h1, h2, h3 { color: #ffffff !important; font-weight: 800 !important; }
+    .stInfo { background-color: #1e1e26; border-left: 5px solid #00d4ff; }
     div.stButton > button {
         background: linear-gradient(90deg, #00d4ff, #0055ff);
         border: none;
@@ -38,11 +41,10 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Título con estilo
+# 4. Interfaz Principal
 st.title("🧠 MindCare Analytics")
 st.subheader("Sistema Inteligente de Bienestar Estudiantil")
 
-# Layout de bienvenida (Bento Box Design)
 col_a, col_b = st.columns([1, 1])
 
 with col_a:
@@ -54,15 +56,20 @@ with col_a:
     """, unsafe_allow_html=True)
 
 with col_b:
-    st.info("✅ **Conexión con el Modelo:** RF-Optimizado v2.4")
-    st.info("✅ **Estado de Datos:** Dataset Cargado")
+    if st.session_state['datasets'] is not None:
+        st.info("✅ **Conexión con el Modelo:** RF-Optimizado v2.4")
+        st.info("✅ **Estado de Datos:** Dataset Cargado Exitosamente")
+    else:
+        st.error("⚠️ Error: No se encontró el dataset en la carpeta /datasets/")
 
-# Dashboard breve de acceso rápido
+# 5. Acceso Rápido
 st.markdown("---")
-st.write("### Acceso Rápido")
+st.write("### 🚀 Acceso Rápido")
 quick_links = st.columns(4)
 
-if quick_links[0].button("📊 Dashboard"): st.rerun()
-if quick_links[1].button("🧠 Detector"): st.rerun()
-if quick_links[2].button("🔄 Simulador"): st.rerun()
-if quick_links[3].button("📄 Reportes"): st.rerun()
+# Nota: Los botones en Streamlit de multipágina no redirigen automáticamente sin lógica extra
+# Se recomienda usar la barra lateral oficial para la navegación principal.
+quick_links[0].button("📊 Dashboard")
+quick_links[1].button("🧠 Detector")
+quick_links[2].button("🔄 Simulador")
+quick_links[3].button("📄 Reportes")
