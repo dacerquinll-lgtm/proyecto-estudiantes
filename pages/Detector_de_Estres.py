@@ -25,7 +25,7 @@ if os.path.exists(ruta_modelo):
         with col2:
             study_load = st.slider("6. Carga de Estudio (1-10):", 1, 10, 5)
             social = st.slider("7. Apoyo Social (1-10):", 1, 10, 5)
-            peer = st.slider("8. Presión de Pares (1-10):", 1, 10, 5)
+            peer = st.slider("8. Presión social (1-10):", 1, 10, 5)
             extra = st.slider("9. Actividades Extras (1-10):", 1, 10, 5)
             bullying = st.slider("10. Experiencia de Bullying (1-10):", 1, 10, 5)
         
