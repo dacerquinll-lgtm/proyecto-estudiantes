@@ -1,60 +1,59 @@
 import streamlit as st
-import pandas as pd
 
 st.title("📄 Generador de Reportes y Exportación")
 st.markdown("---")
 
-# 1. Verificamos si existe un diagnóstico reciente del usuario
+# Verificamos si existe un diagnóstico previo en la sesión
 if 'ultimo_diagnostico' in st.session_state:
     diag = st.session_state['ultimo_diagnostico']
-    datos = diag['datos']
+    datos = diag['datos']  # Lista con los 10 valores
     resultado = diag['resultado']
-    
-    st.success("✅ Diagnóstico detectado. Procediendo a generar reporte personalizado.")
     
     # Mapeo de resultados
     mapa_resultado = {0: "BAJO", 1: "MODERADO", 2: "ALTO"}
     nivel_txt = mapa_resultado.get(resultado, "Desconocido")
     
-    # 2. Captura de datos del usuario para el reporte
-    nombre = st.text_input("Nombre Completo:", "Estudiante")
+    st.success("✅ Diagnóstico previo detectado. Generando reporte dinámico.")
     
-    # 3. Construcción del contenido del reporte
-    contenido_reporte = f"""
-    --- REPORTE DE SALUD MENTAL Y ESTRÉS ---
-    Estudiante: {nombre}
-    Nivel de Estrés Detectado: {nivel_txt}
+    # Entrada para personalización
+    nombre = st.text_input("Nombre Completo del Estudiante:", "Estudiante")
     
-    Métricas ingresadas:
-    - Ansiedad: {datos[0]}
-    - Autoestima: {datos[1]}
-    - Depresión: {datos[2]}
-    - Calidad de Sueño: {datos[3]}
-    - Rendimiento Académico: {datos[4]}
-    - Carga de Estudio: {datos[5]}
-    - Apoyo Social: {datos[6]}
-    - Presión de Pares: {datos[7]}
-    - Actividades Extras: {datos[8]}
-    - Bullying: {datos[9]}
-    ----------------------------------------
-    """
+    # Construcción del reporte con los datos dinámicos (índices de la lista 'datos')
+    contenido_reporte = f"""--- REPORTE DE SALUD MENTAL Y ESTRÉS ---
+Estudiante: {nombre}
+Nivel de Estrés Detectado: {nivel_txt}
+
+Métricas registradas:
+- Ansiedad: {datos[0]}
+- Autoestima: {datos[1]}
+- Depresión: {datos[2]}
+- Calidad de Sueño: {datos[3]}
+- Rendimiento Académico: {datos[4]}
+- Carga de Estudio: {datos[5]}
+- Apoyo Social: {datos[6]}
+- Presión de Pares: {datos[7]}
+- Actividades Extras: {datos[8]}
+- Bullying: {datos[9]}
+----------------------------------------
+"""
     
-    st.text_area("Vista previa del reporte:", contenido_reporte, height=300)
+    st.markdown("### 📋 Vista Previa del Reporte")
+    st.text_area("Contenido:", value=contenido_reporte, height=350)
     
-    # 4. Botón de descarga
+    # Botón de descarga
     st.download_button(
         label="📥 Descargar Reporte Personalizado (TXT)",
         data=contenido_reporte,
-        file_name=f"Reporte_Estres_{nombre}.txt",
+        file_name=f"Reporte_{nombre.replace(' ', '_')}.txt",
         mime="text/plain"
     )
 
 else:
-    st.warning("⚠️ No se ha realizado un diagnóstico previo.")
-    st.info("Por favor, dirígete a la página **Detector de Estrés** para completar tu evaluación antes de generar un reporte.")
+    st.warning("⚠️ No se ha detectado un diagnóstico activo.")
+    st.info("Por favor, ve a la página 'Detector de Estrés', ingresa tus datos y presiona 'Obtener Diagnóstico' para poder generar tu reporte.")
     
-    # Opcional: Mostrar indicadores generales si quieres mantener algo de info global
+    # Opcional: Mostrar resumen estadístico si el dataset está cargado
     if 'datasets' in st.session_state and st.session_state.datasets.get('estres') is not None:
         st.markdown("---")
-        st.write("Estadísticas globales disponibles (sin diagnóstico personal):")
-        st.write(st.session_state.datasets['estres'].describe())
+        st.write("Estadísticas globales del sistema:")
+        st.dataframe(st.session_state.datasets['estres'].describe())
