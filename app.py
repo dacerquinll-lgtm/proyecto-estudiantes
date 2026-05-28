@@ -1,3 +1,17 @@
+st.markdown("""
+    <style>
+    .stApp {
+        background-color: #f8f9fa;
+    }
+    .stButton>button {
+        border-radius: 20px;
+        background-color: #4CAF50;
+        color: white;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+
 import streamlit as st
 import pandas as pd
 import os
