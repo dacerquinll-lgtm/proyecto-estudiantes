@@ -30,7 +30,7 @@ if 'datasets' not in st.session_state:
 
 df = st.session_state.datasets['estres']
 
-# Mapeo de niveles y colores (Consistente para todo el dashboard)
+# Mapeo de niveles y colores (Consistente)
 mapa_label = {0: "BAJO", 1: "MODERADO", 2: "ALTO"}
 colores_niveles = {
     "BAJO": "#00cc96", 
@@ -65,16 +65,22 @@ st.markdown("---")
 tab1, tab2 = st.tabs(["📉 Análisis de Rendimiento", "⚠️ Factores de Riesgo"])
 
 with tab1:
-    st.subheader("Calidad de Sueño vs Rendimiento")
-    fig = px.scatter(df, x="sleep_quality", y="academic_performance", 
-                     color="stress_label", template="plotly_dark", trendline="ols",
-                     color_discrete_map=colores_niveles)
-    st.plotly_chart(fig, use_container_width=True)
+    st.subheader("Rendimiento Académico según Calidad de Sueño")
+    
+    # Nuevo gráfico: Barras agrupadas para mayor claridad
+    df_rend = df.groupby(['sleep_quality', 'stress_label'])['academic_performance'].mean().reset_index()
+    fig1 = px.bar(df_rend, x="sleep_quality", y="academic_performance", 
+                  color="stress_label", barmode="group",
+                  template="plotly_dark", color_discrete_map=colores_niveles,
+                  labels={"sleep_quality": "Calidad de Sueño", 
+                          "academic_performance": "Rendimiento Académico",
+                          "stress_label": "Nivel de Estrés"})
+    st.plotly_chart(fig1, use_container_width=True)
 
 with tab2:
     st.subheader("Promedio de Ansiedad por Nivel de Estrés")
     
-    # Agrupamos y ordenamos para que el gráfico sea lógico
+    # Agrupamos y ordenamos para coherencia visual
     df_box = df.groupby(['stress_label'])['anxiety_level'].mean().reset_index()
     orden = ["BAJO", "MODERADO", "ALTO"]
     df_box['stress_label'] = pd.Categorical(df_box['stress_label'], categories=orden, ordered=True)
@@ -82,7 +88,9 @@ with tab2:
     
     fig2 = px.bar(df_box, x='stress_label', y='anxiety_level', 
                   color='stress_label', template="plotly_dark",
-                  color_discrete_map=colores_niveles)
+                  color_discrete_map=colores_niveles,
+                  labels={"stress_label": "Nivel de Estrés",
+                          "anxiety_level": "Nivel Promedio de Ansiedad"})
     st.plotly_chart(fig2, use_container_width=True)
 
-st.info("💡 **Interpretación:** Los gráficos integran todas las variables para identificar cómo el estilo de vida impacta la salud mental y académica.")
+st.info("💡 **Interpretación:** Los gráficos demuestran que, a menor estrés, se observa un rendimiento académico superior y niveles controlados de ansiedad.")
