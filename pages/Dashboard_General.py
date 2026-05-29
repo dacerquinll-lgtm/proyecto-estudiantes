@@ -30,9 +30,13 @@ if 'datasets' not in st.session_state:
 
 df = st.session_state.datasets['estres']
 
-# Mapeo de niveles para consistencia visual
+# Mapeo de niveles y colores (Consistente para todo el dashboard)
 mapa_label = {0: "BAJO", 1: "MODERADO", 2: "ALTO"}
-colores_niveles = {0: "#00cc96", 1: "#ffa15a", 2: "#ef553b"}
+colores_niveles = {
+    "BAJO": "#00cc96", 
+    "MODERADO": "#ffa15a", 
+    "ALTO": "#ef553b"
+}
 df['stress_label'] = df['stress_level'].map(mapa_label)
 
 # 4. Interfaz
@@ -69,7 +73,13 @@ with tab1:
 
 with tab2:
     st.subheader("Promedio de Ansiedad por Nivel de Estrés")
-    df_box = df.groupby(['stress_level', 'stress_label'])['anxiety_level'].mean().reset_index()
+    
+    # Agrupamos y ordenamos para que el gráfico sea lógico
+    df_box = df.groupby(['stress_label'])['anxiety_level'].mean().reset_index()
+    orden = ["BAJO", "MODERADO", "ALTO"]
+    df_box['stress_label'] = pd.Categorical(df_box['stress_label'], categories=orden, ordered=True)
+    df_box = df_box.sort_values('stress_label')
+    
     fig2 = px.bar(df_box, x='stress_label', y='anxiety_level', 
                   color='stress_label', template="plotly_dark",
                   color_discrete_map=colores_niveles)
