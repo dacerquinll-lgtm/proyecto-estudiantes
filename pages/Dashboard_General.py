@@ -67,23 +67,23 @@ tab1, tab2 = st.tabs(["📉 Análisis de Rendimiento", "⚠️ Factores de Riesg
 with tab1:
     st.subheader("Relación entre Calidad de Sueño y Rendimiento Académico")
     
-    # Gráfico facetado: separa los datos por nivel de estrés para evitar confusión
-    df_line = df.groupby(['sleep_quality', 'stress_label'])['academic_performance'].mean().reset_index()
+    # Gráfico simplificado: tendencia directa
+    df_simple = df.groupby('sleep_quality')['academic_performance'].mean().reset_index()
     
-    fig1 = px.line(df_line, x="sleep_quality", y="academic_performance", 
-                   color="stress_label", 
-                   facet_col="stress_label", 
+    fig1 = px.line(df_simple, x="sleep_quality", y="academic_performance", 
                    markers=True,
-                   template="plotly_dark", 
-                   color_discrete_map=colores_niveles,
-                   labels={"sleep_quality": "Calidad de Sueño", 
-                           "academic_performance": "Rendimiento"})
+                   template="plotly_dark",
+                   line_shape="spline",
+                   labels={"sleep_quality": "Calidad de Sueño (0-5)", 
+                           "academic_performance": "Promedio de Rendimiento"})
     
-    fig1.update_layout(showlegend=False)
+    fig1.update_yaxes(range=[0, 5])
     st.plotly_chart(fig1, use_container_width=True)
 
 with tab2:
     st.subheader("Promedio de Ansiedad por Nivel de Estrés")
+    
+    # Gráfico de barras coherente
     df_box = df.groupby(['stress_label'])['anxiety_level'].mean().reset_index()
     orden = ["BAJO", "MODERADO", "ALTO"]
     df_box['stress_label'] = pd.Categorical(df_box['stress_label'], categories=orden, ordered=True)
@@ -91,7 +91,9 @@ with tab2:
     
     fig2 = px.bar(df_box, x='stress_label', y='anxiety_level', 
                   color='stress_label', template="plotly_dark",
-                  color_discrete_map=colores_niveles)
+                  color_discrete_map=colores_niveles,
+                  labels={"stress_label": "Nivel de Estrés",
+                          "anxiety_level": "Ansiedad"})
     st.plotly_chart(fig2, use_container_width=True)
 
-st.info("💡 **Interpretación:** Los gráficos separados permiten observar cómo, en cada nivel de estrés, la calidad del sueño impacta de forma distinta al rendimiento.")
+st.info("💡 **Interpretación:** Los datos muestran una correlación directa entre el descanso de calidad y el éxito académico, mientras que el estrés eleva los niveles de ansiedad.")
