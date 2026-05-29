@@ -32,7 +32,6 @@ df = st.session_state.datasets['estres']
 
 # Mapeo de niveles
 mapa_label = {0: "BAJO", 1: "MODERADO", 2: "ALTO"}
-colores_niveles = {"BAJO": "#00cc96", "MODERADO": "#ffa15a", "ALTO": "#ef553b"}
 df['stress_label'] = df['stress_level'].map(mapa_label)
 
 st.title("📊 Centro de Analítica Estudiantil")
@@ -50,10 +49,8 @@ tab1, tab2 = st.tabs(["📉 Tendencia de Rendimiento", "⚠️ Factores de Riesg
 with tab1:
     st.subheader("Evolución del Rendimiento según el Nivel de Estrés")
     
-    # Agrupamos rendimiento por nivel de estrés para el gráfico lineal
+    # Agrupamos y ordenamos para que la línea fluya correctamente
     df_line = df.groupby(['stress_level', 'stress_label'])['academic_performance'].mean().reset_index()
-    
-    # Ordenamos para asegurar que la línea fluya de BAJO a ALTO estrés
     df_line = df_line.sort_values('stress_level')
     
     fig1 = px.line(df_line, x="stress_label", y="academic_performance", 
@@ -61,19 +58,20 @@ with tab1:
                    template="plotly_dark",
                    line_shape="spline",
                    labels={"stress_label": "Nivel de Estrés", 
-                           "academic_performance": "Promedio de Rendimiento"})
+                           "academic_performance": "Rendimiento Académico"})
     
-    # Marcamos la línea para que sea evidente la caída
-    fig1.update_traces(line_color="#ffffff", line_width=4)
+    # Estilo de la línea
+    fig1.update_traces(line_color="#ffffff", line_width=4, marker=dict(size=12))
     fig1.update_yaxes(range=[0, 5])
     st.plotly_chart(fig1, use_container_width=True)
 
 with tab2:
     st.subheader("Promedio de Ansiedad por Nivel de Estrés")
     df_bar = df.groupby(['stress_label'])['anxiety_level'].mean().reset_index()
+    # Mantenemos orden para consistencia
     fig2 = px.bar(df_bar, x='stress_label', y='anxiety_level', 
                   color='stress_label', template="plotly_dark",
-                  color_discrete_map=colores_niveles)
+                  color_discrete_map={"BAJO": "#00cc96", "MODERADO": "#ffa15a", "ALTO": "#ef553b"})
     st.plotly_chart(fig2, use_container_width=True)
 
-st.info("💡 **Interpretación:** La línea muestra claramente la relación inversa: a mayor nivel de estrés, el rendimiento académico tiende a disminuir.")
+st.info("💡 **Interpretación:** La línea descendente confirma que, al aumentar el nivel de estrés, el rendimiento académico tiende a disminuir de forma consistente.")
