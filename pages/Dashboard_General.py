@@ -30,7 +30,7 @@ if 'datasets' not in st.session_state:
 
 df = st.session_state.datasets['estres']
 
-# Mapeo de niveles y colores (Consistente para todo el dashboard)
+# Mapeo de niveles y colores
 mapa_label = {0: "BAJO", 1: "MODERADO", 2: "ALTO"}
 colores_niveles = {
     "BAJO": "#00cc96", 
@@ -42,7 +42,7 @@ df['stress_label'] = df['stress_level'].map(mapa_label)
 # 4. Interfaz
 st.title("📊 Centro de Analítica Estudiantil")
 
-# Leyenda explicativa visible
+# Leyenda explicativa
 st.markdown("""
 <div class="guia-box">
     <strong>Guía de Clasificación de Estrés:</strong> 
@@ -53,10 +53,9 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # KPIs
-promedio_estres_num = int(round(df['stress_level'].mean()))
 col1, col2, col3 = st.columns(3)
 col1.metric("Total Estudiantes", len(df))
-col2.metric("Nivel de Estrés Promedio", mapa_label.get(promedio_estres_num, "N/A"))
+col2.metric("Nivel de Estrés Promedio", mapa_label.get(int(round(df['stress_level'].mean())), "N/A"))
 col3.metric("Ansiedad Promedio", round(df['anxiety_level'].mean(), 2))
 
 st.markdown("---")
@@ -65,29 +64,24 @@ st.markdown("---")
 tab1, tab2 = st.tabs(["📉 Análisis de Rendimiento", "⚠️ Factores de Riesgo"])
 
 with tab1:
-    st.subheader("Distribución del Rendimiento vs Estrés")
-    # Gráfico de Violín: muestra densidad y distribución de los datos
-    fig = px.violin(df, x="stress_label", y="academic_performance", 
-                    color="stress_label", box=True, points="all",
-                    template="plotly_dark", color_discrete_map=colores_niveles,
-                    labels={"stress_label": "Nivel de Estrés", 
-                            "academic_performance": "Rendimiento Académico"})
-    st.plotly_chart(fig, use_container_width=True)
+    st.subheader("Rendimiento Académico por Nivel de Estrés")
+    # El Box Plot es facilísimo: la línea del medio es el promedio, 
+    # la caja es donde está el 50% de los estudiantes.
+    fig1 = px.box(df, x="stress_label", y="academic_performance", 
+                  color="stress_label", template="plotly_dark",
+                  color_discrete_map=colores_niveles,
+                  labels={"stress_label": "Nivel de Estrés", 
+                          "academic_performance": "Rendimiento"})
+    st.plotly_chart(fig1, use_container_width=True)
 
 with tab2:
     st.subheader("Promedio de Ansiedad por Nivel de Estrés")
-    
-    # Agrupamos y ordenamos para que el gráfico sea lógico
     df_box = df.groupby(['stress_label'])['anxiety_level'].mean().reset_index()
-    orden = ["BAJO", "MODERADO", "ALTO"]
-    df_box['stress_label'] = pd.Categorical(df_box['stress_label'], categories=orden, ordered=True)
-    df_box = df_box.sort_values('stress_label')
-    
     fig2 = px.bar(df_box, x='stress_label', y='anxiety_level', 
                   color='stress_label', template="plotly_dark",
                   color_discrete_map=colores_niveles,
                   labels={"stress_label": "Nivel de Estrés",
-                          "anxiety_level": "Nivel Promedio de Ansiedad"})
+                          "anxiety_level": "Ansiedad"})
     st.plotly_chart(fig2, use_container_width=True)
 
-st.info("💡 **Interpretación:** El gráfico de violín revela cómo se concentra el rendimiento académico según el estrés, validando el impacto negativo del estrés alto.")
+st.info("💡 **Interpretación:** Este gráfico muestra que los estudiantes con menor estrés tienen un rendimiento académico superior y más consistente.")
