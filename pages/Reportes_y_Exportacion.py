@@ -6,43 +6,41 @@ st.markdown("---")
 # Verificamos si existe un diagnóstico previo en la sesión
 if 'ultimo_diagnostico' in st.session_state:
     diag = st.session_state['ultimo_diagnostico']
-    datos = diag['datos']  # Lista con los 10 valores
-    resultado = diag['resultado']
+    datos = diag['datos']  # Lista con las 8 respuestas
+    estres = diag['estres'] # Resultado del modelo (0, 1, 2)
+    rendimiento = diag['rendimiento'] # Resultado de la lógica (0, 1, 2)
     
-    # Mapeo de resultados
-    mapa_resultado = {0: "BAJO", 1: "MODERADO", 2: "ALTO"}
-    nivel_txt = mapa_resultado.get(resultado, "Desconocido")
+    # Mapeos
+    mapa_estres = {0: "BAJO", 1: "MODERADO", 2: "ALTO"}
+    mapa_rend = {0: "MALO", 1: "IRREGULAR", 2: "ALTO"}
     
-    st.success("✅ Diagnóstico previo detectado. Generando reporte dinámico.")
+    st.success("✅ Diagnóstico previo detectado. Generando reporte.")
     
-    # Entrada para personalización
     nombre = st.text_input("Nombre Completo del Estudiante:", "Estudiante")
     
-    # Construcción del reporte con los datos dinámicos (índices de la lista 'datos')
-    contenido_reporte = f"""--- REPORTE DE SALUD MENTAL Y ESTRÉS ---
+    # Construcción del reporte ajustado a las 8 métricas reales
+    contenido_reporte = f"""--- REPORTE INTEGRAL ACADÉMICO ---
 Estudiante: {nombre}
-Nivel de Estrés Detectado: {nivel_txt}
+Nivel de Estrés Detectado: {mapa_estres.get(estres)}
+Proyección de Rendimiento: {mapa_rend.get(rendimiento)}
 
 Métricas registradas:
 - Ansiedad: {datos[0]}
 - Autoestima: {datos[1]}
 - Depresión: {datos[2]}
 - Calidad de Sueño: {datos[3]}
-- Rendimiento Académico: {datos[4]}
-- Carga de Estudio: {datos[5]}
+- Carga de Estudio: {datos[4]}
+- Actividades Extras: {datos[5]}
 - Apoyo Social: {datos[6]}
-- Presión de Pares: {datos[7]}
-- Actividades Extras: {datos[8]}
-- Bullying: {datos[9]}
+- Rendimiento Previo/Interés: {datos[7]}
 ----------------------------------------
 """
     
     st.markdown("### 📋 Vista Previa del Reporte")
-    st.text_area("Contenido:", value=contenido_reporte, height=350)
+    st.text_area("Contenido:", value=contenido_reporte, height=300)
     
-    # Botón de descarga
     st.download_button(
-        label="📥 Descargar Reporte Personalizado (TXT)",
+        label="📥 Descargar Reporte (TXT)",
         data=contenido_reporte,
         file_name=f"Reporte_{nombre.replace(' ', '_')}.txt",
         mime="text/plain"
@@ -50,10 +48,4 @@ Métricas registradas:
 
 else:
     st.warning("⚠️ No se ha detectado un diagnóstico activo.")
-    st.info("Por favor, ve a la página 'Detector de Estrés', ingresa tus datos y presiona 'Obtener Diagnóstico' para poder generar tu reporte.")
-    
-    # Opcional: Mostrar resumen estadístico si el dataset está cargado
-    if 'datasets' in st.session_state and st.session_state.datasets.get('estres') is not None:
-        st.markdown("---")
-        st.write("Estadísticas globales del sistema:")
-        st.dataframe(st.session_state.datasets['estres'].describe())
+    st.info("Por favor, completa el diagnóstico en el detector para generar el reporte.")
