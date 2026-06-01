@@ -18,7 +18,7 @@ preguntas = [
     ("¿Qué capacidad tienes para manejar tu carga de estudio? (1=Desbordado/a, 10=Control total)", 5),
     ("¿Qué tanto tiempo dedicas a actividades recreativas? (1=Nada, 10=Lo suficiente)", 5),
     ("¿Cuánto apoyo social sientes que recibes? (1=Nada, 10=Muchísimo)", 5),
-    ("¿Cómo es tu rendimiento académico reciente? (1=Muy bajo, 10=Excelente)", 5)
+    ("¿Como es tu interés académico? (1=Muy bajo, 10=Excelente)", 5)
 ]
 # 2. Flujo de cuestionario
 if st.session_state.paso < len(preguntas):
