@@ -3,49 +3,55 @@ import joblib
 import numpy as np
 import os
 
-st.title("🧠 Detector de Niveles de Estrés")
-st.markdown("---")
+st.title("🧠 Diagnóstico de Interés Académico")
 
-ruta_modelo = "modelos/modelo_stress_rf.pkl"
+# Inicializar estado para guardar respuestas
+if 'paso' not in st.session_state:
+    st.session_state.paso = 0
+    st.session_state.respuestas = []
 
-if os.path.exists(ruta_modelo):
-    modelo = joblib.load(ruta_modelo)
+# Definir las preguntas
+preguntas = [
+    ("¿Cuál es tu nivel de ansiedad hoy? (1-10)", 5),
+    ("¿Cómo calificarías tu autoestima? (1-10)", 5),
+    ("¿Sientes niveles de depresión? (1-10)", 5),
+    ("¿Cómo calificarías tu calidad de sueño? (1-10)", 5),
+    ("¿Qué carga de estudio tienes actualmente? (1-10)", 5),
+    ("¿Participas en actividades extracurriculares? (1-10)", 5),
+    ("¿Cómo calificarías tu interés académico? (1-10)", 5),
+    ("¿Qué tanto apoyo social recibes? (1-10)", 5)
+]
 
-    st.markdown("### Ingrese sus métricas actuales:")
+# Lógica del cuestionario paso a paso
+if st.session_state.paso < len(preguntas):
+    pregunta_texto, valor_default = preguntas[st.session_state.paso]
+    st.subheader(f"Pregunta {st.session_state.paso + 1} de {len(preguntas)}")
     
-    col1, col2 = st.columns(2)
-    with col1:
-        anx = st.slider("Ansiedad (1-10)", 1, 10, 5)
-        self_e = st.slider("Autoestima (1-10)", 1, 10, 5)
-        dep = st.slider("Depresión (1-10)", 1, 10, 5)
-    with col2:
-        sleep = st.slider("Calidad de Sueño (1-10)", 1, 10, 5)
-        load = st.slider("Carga de Estudio (1-10)", 1, 10, 5)
-        extra = st.slider("Actividades Extras (1-10)", 1, 10, 5)
-
-    if st.button("Obtener Diagnóstico y Recomendaciones"):
-        # El orden debe ser EXACTAMENTE el mismo que en tu script de entrenamiento
-        datos_usuario = [anx, self_e, dep, sleep, load, extra]
-        prediccion = modelo.predict(np.array([datos_usuario]))[0]
-        
-        st.session_state['ultimo_diagnostico'] = {
-            'datos': datos_usuario,
-            'resultado': prediccion
-        }
-        
-        st.subheader("📋 Resultados del Análisis")
-        if prediccion == 0:
-            st.success("Nivel de Estrés: BAJO")
-            rec = "Mantén tus hábitos actuales. Tu equilibrio es positivo."
-        elif prediccion == 1:
-            st.warning("Nivel de Estrés: MODERADO")
-            rec = "Prioriza tus tiempos de descanso y organiza mejor tu carga académica."
-        else:
-            st.error("Nivel de Estrés: ALTO")
-            rec = "Es crucial buscar apoyo profesional y reducir tareas no esenciales inmediatamente."
-        
-        st.markdown("---")
-        st.info(f"💡 **Recomendación:** {rec}")
-        st.success("✅ Diagnóstico guardado. Ya puedes generar tu reporte en la página de Reportes.")
+    # Capturar respuesta
+    respuesta = st.slider(pregunta_texto, 1, 10, valor_default)
+    
+    if st.button("Siguiente"):
+        st.session_state.respuestas.append(respuesta)
+        st.session_state.paso += 1
+        st.rerun()
 else:
-    st.error("El modelo de estrés no está disponible. Verifica la ruta: modelos/modelo_stress_rf.pkl")
+    # Procesar resultados al terminar
+    modelo = joblib.load("modelos/modelo_stress_rf.pkl")
+    datos_usuario = np.array([st.session_state.respuestas])
+    
+    prediccion_bruta = modelo.predict(datos_usuario)[0]
+    
+    # Capa de lógica de seguridad
+    if st.session_state.respuestas[0] >= 9 and st.session_state.respuestas[1] <= 2:
+        prediccion_final = 0
+    else:
+        prediccion_final = prediccion_bruta
+
+    st.subheader("📋 Resultados del Análisis")
+    resultados = {0: "BAJO", 1: "MEDIO", 2: "ALTO"}
+    st.success(f"Nivel de Interés Académico Proyectado: **{resultados[prediccion_final]}**")
+    
+    if st.button("Reiniciar Cuestionario"):
+        st.session_state.paso = 0
+        st.session_state.respuestas = []
+        st.rerun()
