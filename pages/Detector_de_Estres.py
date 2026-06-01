@@ -11,16 +11,15 @@ if 'paso' not in st.session_state:
 
 # Definición de preguntas
 preguntas = [
-    ("¿Cuál es tu nivel de ansiedad? (1-10)", 5),
-    ("¿Cómo calificarías tu autoestima? (1-10)", 5),
-    ("¿Qué nivel de depresión sientes? (1-10)", 5),
-    ("¿Cómo es tu calidad de sueño? (1-10)", 5),
-    ("¿Qué carga de estudio tienes? (1-10)", 5),
-    ("¿Nivel de actividades extras? (1-10)", 5),
-    ("¿Cuánto apoyo social recibes? (1-10)", 5),
-    ("¿Cuál es tu rendimiento académico previo? (1-10)", 5)
+    ("¿Cuál es tu nivel de ansiedad actual? (1=Extrema, 10=Ninguna)", 5),
+    ("¿Qué nivel de confianza tienes en ti mismo/a? (1=Muy baja, 10=Muy alta)", 5),
+    ("¿Cómo calificarías tu estado de ánimo general? (1=Muy decaído, 10=Muy optimista)", 5),
+    ("¿Cómo es la calidad de tu sueño? (1=Muy mala, 10=Excelente)", 5),
+    ("¿Qué capacidad tienes para manejar tu carga de estudio? (1=Desbordado/a, 10=Control total)", 5),
+    ("¿Qué tanto tiempo dedicas a actividades recreativas? (1=Nada, 10=Lo suficiente)", 5),
+    ("¿Cuánto apoyo social sientes que recibes? (1=Nada, 10=Muchísimo)", 5),
+    ("¿Cómo es tu rendimiento académico reciente? (1=Muy bajo, 10=Excelente)", 5)
 ]
-
 # 2. Flujo de cuestionario
 if st.session_state.paso < len(preguntas):
     st.subheader(f"Pregunta {st.session_state.paso + 1} de {len(preguntas)}")
