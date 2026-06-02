@@ -49,7 +49,7 @@ elif st.session_state.paso < 8:
         st.session_state.paso += 1
         st.rerun()
 
-# --- PANTALLA DE RESULTADOS ---
+# --- PANTALLA DE RESULTADOS PROFESIONAL ---
 else:
     ruta_modelo = "modelos/modelo_stress_rf.pkl"
     if not os.path.exists(ruta_modelo):
@@ -57,20 +57,38 @@ else:
         st.stop()
         
     modelo = joblib.load(ruta_modelo)
-    datos = np.array([st.session_state.respuestas])
-    estres = modelo.predict(datos)[0] # 0: BAJO, 1: MODERADO, 2: ALTO
-    rendimiento = 2 - estres # 0: MALO, 1: IRREGULAR, 2: ALTO
+    estres = modelo.predict(np.array([st.session_state.respuestas]))[0] # 0: BAJO, 1: MODERADO, 2: ALTO
+    rendimiento = 2 - estres 
     
-    st.subheader("📋 Resultados Finales")
+    st.subheader("📋 Informe de Resultados")
     
-    # Visualización profesional con métricas
+    # Métricas visuales
     col1, col2 = st.columns(2)
-    col1.metric("Estrés Detectado", ["BAJO", "MODERADO", "ALTO"][estres])
-    col2.metric("Rendimiento", ["MALO", "IRREGULAR", "ALTO"][rendimiento])
+    col1.metric("Nivel de Estrés", ["BAJO", "MODERADO", "ALTO"][estres])
+    col2.metric("Proyección", ["MALO", "IRREGULAR", "ALTO"][rendimiento])
     
     st.markdown("---")
-    st.info(f"💡 **Recomendación:** {['Mantén hábitos saludables.', 'Prioriza el descanso.', 'Busca apoyo profesional.'][estres]}")
-    st.info(f"💡 **Análisis Académico:** {['Necesitas tutorías extra.', 'Organiza mejor tus tiempos.', '¡Excelente ritmo, continúa así!'][rendimiento]}")
+    
+    # 1. Recomendación general según nivel
+    recs = [
+        "Mantén hábitos saludables y organiza tus tareas pendientes.",
+        "Prioriza el descanso y aplica técnicas de gestión del tiempo.",
+        "Es momento de tomar acción inmediata para proteger tu bienestar emocional."
+    ]
+    st.write(f"**Sugerencia Estratégica:** {recs[estres]}")
+    
+    # 2. Bloque EXTRA si el estrés es ALTO
+    if estres == 2:
+        st.warning("⚠️ **Nota de Atención Profesional:**")
+        st.markdown("""
+        Debido a que los indicadores sugieren un nivel de estrés elevado, te recomendamos:
+        - **Buscar apoyo profesional:** Considera agendar una cita con el psicólogo del área de Bienestar Universitario.
+        - **Desconexión:** Reduce actividades académicas no esenciales por 48 horas.
+        - **Comunicación:** Habla con un tutor o docente de confianza sobre tu situación actual.
+        *Tu salud es prioridad sobre cualquier calificación.*
+        """)
+    else:
+        st.success("¡Excelente! Continúa monitoreando tu bienestar para mantener este equilibrio.")
 
     if st.button("🔄 Reiniciar Evaluación"):
         st.session_state.paso = 0
