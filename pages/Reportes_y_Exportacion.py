@@ -1,51 +1,53 @@
 import streamlit as st
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+import io
 
 st.title("📄 Generador de Reportes y Exportación")
 st.markdown("---")
 
-# Verificamos si existe un diagnóstico previo en la sesión
 if 'ultimo_diagnostico' in st.session_state:
     diag = st.session_state['ultimo_diagnostico']
-    datos = diag['datos']  # Lista con las 8 respuestas
-    estres = diag['estres'] # Resultado del modelo (0, 1, 2)
-    rendimiento = diag['rendimiento'] # Resultado de la lógica (0, 1, 2)
+    datos = diag['datos']
+    estres = diag['estres']
+    rendimiento = diag['rendimiento']
     
-    # Mapeos
     mapa_estres = {0: "BAJO", 1: "MODERADO", 2: "ALTO"}
     mapa_rend = {0: "MALO", 1: "IRREGULAR", 2: "ALTO"}
     
-    st.success("✅ Diagnóstico previo detectado. Generando reporte.")
-    
+    st.success("✅ Diagnóstico detectado. Generando PDF.")
     nombre = st.text_input("Nombre Completo del Estudiante:", "Estudiante")
-    
-    # Construcción del reporte ajustado a las 8 métricas reales
-    contenido_reporte = f"""--- REPORTE INTEGRAL ACADÉMICO ---
-Estudiante: {nombre}
-Nivel de Estrés Detectado: {mapa_estres.get(estres)}
-Proyección de Rendimiento: {mapa_rend.get(rendimiento)}
 
-Métricas registradas:
-- Ansiedad: {datos[0]}
-- Autoestima: {datos[1]}
-- Depresión: {datos[2]}
-- Calidad de Sueño: {datos[3]}
-- Carga de Estudio: {datos[4]}
-- Actividades Extras: {datos[5]}
-- Apoyo Social: {datos[6]}
-- Rendimiento Previo/Interés: {datos[7]}
-----------------------------------------
-"""
-    
-    st.markdown("### 📋 Vista Previa del Reporte")
-    st.text_area("Contenido:", value=contenido_reporte, height=300)
+    # Función para generar el PDF en memoria
+    def generar_pdf(nombre, estres_txt, rend_txt, datos):
+        buffer = io.BytesIO()
+        c = canvas.Canvas(buffer, pagesize=letter)
+        c.setFont("Helvetica-Bold", 16)
+        c.drawString(50, 750, "REPORTE INTEGRAL ACADÉMICO")
+        c.setFont("Helvetica", 12)
+        c.drawString(50, 720, f"Estudiante: {nombre}")
+        c.drawString(50, 700, f"Nivel de Estrés: {estres_txt}")
+        c.drawString(50, 680, f"Proyección de Rendimiento: {rend_txt}")
+        
+        c.drawString(50, 650, "Métricas registradas:")
+        y = 630
+        labels = ["Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", 
+                  "Carga de Estudio", "Actividades Extras", "Apoyo Social", "Interés Académico"]
+        for i, label in enumerate(labels):
+            c.drawString(70, y, f"- {label}: {datos[i]}")
+            y -= 20
+        c.save()
+        buffer.seek(0)
+        return buffer
+
+    pdf_buffer = generar_pdf(nombre, mapa_estres.get(estres), mapa_rend.get(rendimiento), datos)
     
     st.download_button(
-        label="📥 Descargar Reporte (TXT)",
-        data=contenido_reporte,
-        file_name=f"Reporte_{nombre.replace(' ', '_')}.txt",
-        mime="text/plain"
+        label="📥 Descargar Reporte (PDF)",
+        data=pdf_buffer,
+        file_name=f"Reporte_{nombre.replace(' ', '_')}.pdf",
+        mime="application/pdf"
     )
 
 else:
     st.warning("⚠️ No se ha detectado un diagnóstico activo.")
-    st.info("Por favor, completa el diagnóstico en el detector para generar el reporte.")
