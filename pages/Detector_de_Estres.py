@@ -3,79 +3,78 @@ import joblib
 import numpy as np
 import os
 
+# Configuración de página
 st.set_page_config(page_title="Detector Integral", layout="centered")
 
-# CSS para tarjetas y estilo moderno
+# Estilos CSS mejorados
 st.markdown("""
     <style>
-    .card { background-color: #262730; padding: 20px; border-radius: 15px; border-left: 5px solid #4f46e5; }
-    .stButton>button { width: 100%; border-radius: 5px; height: 3em; background-color: #4f46e5; color: white; }
+    .main-container { padding: 2rem; border-radius: 15px; background-color: #1e1e26; border: 1px solid #333; }
+    .stButton>button { width: 100%; border-radius: 5px; height: 3em; background-color: #4f46e5; color: white; border: none; font-weight: bold; }
+    .stButton>button:hover { background-color: #4338ca; }
+    h1 { color: #ffffff !important; text-align: center; }
     </style>
 """, unsafe_allow_html=True)
 
-# Inicializar sesión
-if 'paso' not in st.session_state:
-    st.session_state.update({'paso': -1, 'respuestas': []})
-
-# --- PANTALLA DE BIENVENIDA ---
-if st.session_state.paso == -1:
+# Contenedor principal para evitar saltos visuales
+with st.container():
+    st.markdown('<div class="main-container">', unsafe_allow_html=True)
+    
     st.title("🧠 Detector Integral Académico")
-    st.markdown("""
-    <div class="card">
-        <h3>Bienvenido al sistema de evaluación</h3>
-        <p>Este sistema utiliza inteligencia artificial para analizar tu bienestar académico. 
-        Por favor, responde con honestidad las 8 preguntas para obtener una proyección precisa.</p>
-    </div>
-    """, unsafe_allow_html=True)
-    if st.button("🚀 Comenzar Test"):
-        st.session_state.paso = 0
-        st.rerun()
 
-# --- FLUJO DE CUESTIONARIO ---
-elif st.session_state.paso < 8:
-    preguntas = [
-        "Nivel de ansiedad actual (1=Extrema, 10=Ninguna)",
-        "Nivel de confianza personal (1=Muy baja, 10=Muy alta)",
-        "Estado de ánimo general (1=Muy decaído, 10=Muy optimista)",
-        "Calidad de sueño (1=Muy mala, 10=Excelente)",
-        "Capacidad de manejo de carga de estudio (1=Desbordado, 10=Control total)",
-        "Tiempo dedicado a actividades recreativas (1=Nada, 10=Lo suficiente)",
-        "Apoyo social percibido (1=Nada, 10=Muchísimo)",
-        "Interés académico (1=Muy bajo, 10=Excelente)"
-    ]
-    
-    st.progress((st.session_state.paso) / 8)
-    val = st.slider(preguntas[st.session_state.paso], 1, 10, 5)
-    
-    if st.button("Siguiente →"):
-        st.session_state.respuestas.append(val)
-        st.session_state.paso += 1
-        st.rerun()
-
-# --- PANTALLA DE RESULTADOS PROFESIONAL ---
-else:
-    modelo = joblib.load("modelos/modelo_stress_rf.pkl")
-    estres = modelo.predict(np.array([st.session_state.respuestas]))[0]
-    
-    # Mapeo de colores y etiquetas
-    niveles = {0: ("BAJO", "#00cc96"), 1: ("MODERADO", "#ffa15a"), 2: ("ALTO", "#ef553b")}
-    n_texto, n_color = niveles[estres]
-    
-    st.title("📊 Informe de Resultados")
-    
-    # Tarjeta de Diagnóstico
-    st.markdown(f"""
-        <div class="card">
-            <h2 style="color: {n_color};">Nivel de Estrés: {n_texto}</h2>
-            <p>El algoritmo ha procesado tus variables y determinado una alerta de nivel <b>{n_texto}</b>.</p>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    st.write("### 📝 Análisis Detallado")
-    with st.expander("Ver desglose técnico", expanded=True):
-        st.write(f"- **Estado Académico:** El sistema identifica un patrón de rendimiento {'Alto' if estres == 0 else 'Irregular' if estres == 1 else 'Crítico'}.")
-        st.write("- **Sugerencia estratégica:** " + ["Mantén tus hábitos de descanso.", "Considera reducir tu carga horaria.", "Es recomendable agendar una cita con bienestar universitario."][estres])
-
-    if st.button("🔄 Reiniciar Evaluación"):
+    # 1. Inicialización
+    if 'paso' not in st.session_state:
         st.session_state.update({'paso': -1, 'respuestas': []})
-        st.rerun()
+
+    # 2. Pantalla de Bienvenida
+    if st.session_state.paso == -1:
+        st.info("Bienvenido. Este sistema analiza tus hábitos académicos mediante IA para estimar tus niveles de estrés.")
+        if st.button("🚀 Iniciar Evaluación"):
+            st.session_state.paso = 0
+            st.rerun()
+
+    # 3. Flujo del Test
+    elif st.session_state.paso < 8:
+        preguntas = [
+            "¿Cuál es tu nivel de ansiedad actual? (1=Extrema, 10=Ninguna)",
+            "¿Qué nivel de confianza tienes en ti mismo/a? (1=Muy baja, 10=Muy alta)",
+            "¿Cómo calificarías tu estado de ánimo general? (1=Muy decaído, 10=Muy optimista)",
+            "¿Cómo es la calidad de tu sueño? (1=Muy mala, 10=Excelente)",
+            "¿Qué capacidad tienes para manejar tu carga de estudio? (1=Desbordado/a, 10=Control total)",
+            "¿Qué tanto tiempo dedicas a actividades recreativas? (1=Nada, 10=Lo suficiente)",
+            "¿Cuánto apoyo social sientes que recibes? (1=Nada, 10=Muchísimo)",
+            "¿Cómo es tu interés académico? (1=Muy bajo, 10=Excelente)"
+        ]
+        
+        st.write(f"Pregunta {st.session_state.paso + 1} de 8")
+        st.progress((st.session_state.paso) / 8)
+        
+        val = st.slider(preguntas[st.session_state.paso], 1, 10, 5)
+        
+        if st.button("Siguiente →"):
+            st.session_state.respuestas.append(val)
+            st.session_state.paso += 1
+            st.rerun()
+
+    # 4. Pantalla de Resultados
+    else:
+        modelo = joblib.load("modelos/modelo_stress_rf.pkl")
+        estres = modelo.predict(np.array([st.session_state.respuestas]))[0]
+        rendimiento = 2 - estres
+        
+        colores = {0: "#00cc96", 1: "#ffa15a", 2: "#ef553b"}
+        etiquetas_estres = ["BAJO", "MODERADO", "ALTO"]
+        etiquetas_rend = ["MALO", "IRREGULAR", "ALTO"]
+
+        st.subheader("📋 Resultados de tu Evaluación")
+        st.metric("Nivel de Estrés Detectado", etiquetas_estres[estres])
+        st.metric("Proyección de Rendimiento", etiquetas_rend[rendimiento])
+        
+        st.markdown("---")
+        st.write(f"**Recomendación:** {['Mantén hábitos saludables.', 'Prioriza el descanso.', 'Busca apoyo profesional.'][estres]}")
+        
+        if st.button("🔄 Reiniciar Evaluación"):
+            st.session_state.update({'paso': -1, 'respuestas': []})
+            st.rerun()
+
+    st.markdown('</div>', unsafe_allow_html=True)
