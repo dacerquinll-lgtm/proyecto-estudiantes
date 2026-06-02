@@ -6,10 +6,23 @@ import os
 # Configuración de página centrada
 st.set_page_config(page_title="Detector Integral", layout="centered")
 
-# Estilo para asegurar que no haya líneas divisoras intrusivas
+# CSS para eliminar TODAS las líneas y bordes divisores posibles
 st.markdown("""
     <style>
-    hr { display: none; }
+    /* Eliminar divisores horizontales */
+    hr { display: none !important; }
+    
+    /* Eliminar bordes inferiores de encabezados */
+    h1, h2, h3, h4, h5, h6 { 
+        border-bottom: none !important; 
+        padding-bottom: 0px !important; 
+        margin-bottom: 0px !important;
+    }
+    
+    /* Eliminar el contenedor de separación extra */
+    .st-emotion-cache-1jicn4p, .st-emotion-cache-1r6slb {
+        border-bottom: none !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -41,8 +54,8 @@ elif st.session_state.paso < 8:
         ("¿Cómo es tu interés académico? (1=Muy bajo, 10=Excelente)", 5)
     ]
     
-    # Uso de markdown en lugar de subheader para evitar la línea divisoria
-    st.markdown(f"### Pregunta {st.session_state.paso + 1} de 8")
+    # Usamos text simple o markdown sin ser encabezado tipo h3 para evitar la línea
+    st.write(f"**Pregunta {st.session_state.paso + 1} de 8**")
     st.progress((st.session_state.paso) / 8)
     
     val = st.slider(preguntas[st.session_state.paso][0], 1, 10, preguntas[st.session_state.paso][1])
@@ -54,6 +67,7 @@ elif st.session_state.paso < 8:
 
 # --- PANTALLA DE RESULTADOS ---
 else:
+    # (Resto de tu código igual...)
     ruta_modelo = "modelos/modelo_stress_rf.pkl"
     if not os.path.exists(ruta_modelo):
         st.error(f"Error: No se encuentra el archivo en {ruta_modelo}")
@@ -70,11 +84,11 @@ else:
     col1.metric("Estrés Detectado", ["BAJO", "MODERADO", "ALTO"][estres])
     col2.metric("Rendimiento", ["MALO", "IRREGULAR", "ALTO"][rendimiento])
     
-    st.write("") # Espaciado
+    st.write("") 
     st.info(f"💡 **Recomendación:** {['Mantén hábitos saludables.', 'Prioriza el descanso.', 'Busca apoyo profesional.'][estres]}")
     
     if estres == 2:
-        st.warning("⚠️ **Nota de Atención Profesional:** Se recomienda considerar una consulta con el área de Bienestar Universitario para gestionar mejor estos niveles de estrés.")
+        st.warning("⚠️ **Nota de Atención Profesional:** Se recomienda considerar una consulta con el área de Bienestar Universitario.")
     else:
         st.success("¡Excelente ritmo, continúa así!")
 
