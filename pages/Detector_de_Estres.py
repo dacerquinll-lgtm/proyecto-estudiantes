@@ -3,7 +3,7 @@ import joblib
 import numpy as np
 import os
 
-# Configuración de página
+# Configuración de página centrada
 st.set_page_config(page_title="Detector Integral", layout="centered")
 
 # CSS para eliminar líneas divisorias intrusivas
@@ -16,14 +16,14 @@ st.markdown("""
 
 st.title("🧠 Detector Integral Académico")
 
-# --- INICIALIZACIÓN ---
+# --- INICIALIZACIÓN ROBUSTA ---
 if 'paso' not in st.session_state:
     st.session_state.update({'paso': 0, 'respuestas': [], 'iniciado': False})
 
 # --- PANTALLA DE BIENVENIDA ---
 if not st.session_state.iniciado:
     st.markdown("### Bienvenido al sistema de evaluación")
-    st.write("Este sistema implementa modelos de **Aprendizaje Automático** para analizar tus hábitos académicos.")
+    st.write("Este sistema implementa modelos de **Aprendizaje Automático (Machine Learning)** para analizar tus hábitos académicos y niveles de estrés. Al completar este cuestionario, el algoritmo procesará tus variables para brindarte un diagnóstico proyectado y recomendaciones personalizadas.")
     
     if st.button("🚀 Comenzar Test"):
         st.session_state.iniciado = True
@@ -52,7 +52,7 @@ elif st.session_state.paso < 8:
         st.session_state.paso += 1
         st.rerun()
 
-# --- PANTALLA DE RESULTADOS Y GUARDADO ---
+# --- PANTALLA DE RESULTADOS PROFESIONAL ---
 else:
     ruta_modelo = "modelos/modelo_stress_rf.pkl"
     if not os.path.exists(ruta_modelo):
@@ -60,11 +60,10 @@ else:
         st.stop()
         
     modelo = joblib.load(ruta_modelo)
-    datos_actuales = np.array([st.session_state.respuestas])
-    estres = modelo.predict(datos_actuales)[0] 
+    estres = modelo.predict(np.array([st.session_state.respuestas]))[0] # 0: BAJO, 1: MODERADO, 2: ALTO
     rendimiento = 2 - estres 
     
-    # --- IMPORTANTE: Guardamos el estado para que el reporte lo lea ---
+    # GUARDADO PARA EL REPORTE
     st.session_state['ultimo_diagnostico'] = {
         'datos': st.session_state.respuestas,
         'estres': estres,
@@ -73,20 +72,40 @@ else:
     
     st.markdown("### 📋 Informe de Resultados")
     
+    # Métricas visuales
     col1, col2 = st.columns(2)
     col1.metric("Nivel de Estrés", ["BAJO", "MODERADO", "ALTO"][estres])
     col2.metric("Proyección", ["MALO", "IRREGULAR", "ALTO"][rendimiento])
     
-    recs = ["Mantén hábitos saludables.", "Prioriza el descanso.", "Busca apoyo profesional."]
-    st.write(f"**Sugerencia:** {recs[estres]}")
+    # 1. Recomendación general según nivel (Información completa)
+    recs = [
+        "Mantén hábitos saludables y organiza tus tareas pendientes.",
+        "Prioriza el descanso y aplica técnicas de gestión del tiempo.",
+        "Es momento de tomar acción inmediata para proteger tu bienestar emocional."
+    ]
+    st.write(f"**Sugerencia Estratégica:** {recs[estres]}")
     
+    # 2. Análisis académico extra
+    analisis = ["Necesitas tutorías extra.", "Organiza mejor tus tiempos.", "¡Excelente ritmo, continúa así!"]
+    st.info(f"💡 **Análisis Académico:** {analisis[rendimiento]}")
+    
+    # 3. Bloque EXTRA si el estrés es ALTO
     if estres == 2:
-        st.warning("⚠️ **Atención:** Se recomienda contactar con Bienestar Universitario.")
+        st.warning("⚠️ **Nota de Atención Profesional:**")
+        st.markdown("""
+        Debido a que los indicadores sugieren un nivel de estrés elevado, te recomendamos:
+        - **Buscar apoyo profesional:** Considera agendar una cita con el psicólogo del área de Bienestar Universitario.
+        - **Desconexión:** Reduce actividades académicas no esenciales por 48 horas.
+        - **Comunicación:** Habla con un tutor o docente de confianza sobre tu situación actual.
+        *Tu salud es prioridad sobre cualquier calificación.*
+        """)
     else:
-        st.success("¡Excelente ritmo, continúa así!")
+        st.success("¡Excelente! Continúa monitoreando tu bienestar para mantener este equilibrio.")
 
     if st.button("🔄 Reiniciar Evaluación"):
-        st.session_state.update({'paso': 0, 'respuestas': [], 'iniciado': False})
+        st.session_state.paso = 0
+        st.session_state.respuestas = []
+        st.session_state.iniciado = False
         if 'ultimo_diagnostico' in st.session_state:
             del st.session_state['ultimo_diagnostico']
         st.rerun()
