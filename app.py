@@ -137,6 +137,9 @@ st.markdown("""
         margin-bottom: 15px;
         font-weight: bold !important;
     }
+    div[data-testid="stNotification"] * {
+        color: #0c1c30 !important;
+    }
     .illustration-box {
         display: flex;
         justify-content: center;
