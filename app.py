@@ -26,18 +26,18 @@ st.markdown("""
     [data-testid="stSidebar"] {
         display: none !important;
     }
-    .header-institucional {
+    .cabecera-unificada {
         background-color: #0c1c30;
+        border-radius: 8px 8px 0 0;
         padding: 20px 30px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         color: white;
         margin-top: 0px !important;
-        margin-bottom: 0px;
-        border-radius: 8px 8px 0 0;
+        margin-bottom: 0px !important;
     }
-    .header-institucional h2 {
+    .cabecera-unificada h2 {
         color: white !important;
         margin: 0;
         font-size: 1.2rem !important;
@@ -48,14 +48,15 @@ st.markdown("""
         align-items: center;
         gap: 10px;
     }
-    .cabecera-navegacion {
-        background-color: #142840 !important;
+    div[data-testid="stHorizontalBlock"]:has(button[key^="nav_"]) {
+        background-color: #0c1c30 !important;
         padding: 10px 20px !important;
-        margin-top: 0px !important;
+        margin-top: -2px !important;
         margin-bottom: 30px !important;
         border-radius: 0 0 8px 8px !important;
+        gap: 0px !important;
     }
-    .cabecera-navegacion button {
+    div[data-testid="stHorizontalBlock"]:has(button[key^="nav_"]) button {
         background-color: transparent !important;
         color: #ffffff !important;
         border: none !important;
@@ -66,11 +67,12 @@ st.markdown("""
         text-decoration: underline !important;
         box-shadow: none !important;
         transition: none !important;
+        width: auto !important;
     }
-    .cabecera-navegacion button:hover {
+    div[data-testid="stHorizontalBlock"]:has(button[key^="nav_"]) button:hover {
         color: #cfd8dc !important;
     }
-    .cabecera-navegacion div[data-testid="column"]:nth-child(1) button {
+    div[data-testid="stHorizontalBlock"]:has(button[key^="nav_"]) div[data-testid="column"]:nth-child(1) button {
         background-color: #2e7d32 !important;
         color: white !important;
         text-decoration: none !important;
@@ -143,7 +145,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("""
-    <div class="header-institucional">
+    <div class="cabecera-unificada">
         <div class="header-logo">
             <span style="font-weight: 900; font-size: 1.6rem; color: #e53935;">UCV</span>
         </div>
@@ -153,11 +155,10 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="cabecera-navegacion">', unsafe_allow_html=True)
 cols_nav = st.columns([1, 1.3, 1.2, 1.3, 1.4, 4])
 with cols_nav[0]:
     if st.button("Inicio", key="nav_inicio", use_container_width=True):
-        st.switch_page("app.py")
+        st.rerun()
 with cols_nav[1]:
     if st.button("Dashboard General", key="nav_dash", use_container_width=True):
         st.switch_page("pages/Dashboard_General.py")
@@ -170,7 +171,6 @@ with cols_nav[3]:
 with cols_nav[4]:
     if st.button("Simulador de Escenarios", key="nav_sim", use_container_width=True):
         st.switch_page("pages/Simulador_de_Escenarios.py")
-st.markdown('</div>', unsafe_allow_html=True)
 
 col1, col2 = st.columns([1.1, 0.9], gap="large")
 
