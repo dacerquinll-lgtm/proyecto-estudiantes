@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import os
 
-st.set_page_config(page_title="MindCare Analytics", page_icon="🧠", layout="wide", initial_sidebar_state="expanded")
+st.set_page_config(page_title="MindCare Analytics", page_icon="🧠", layout="wide", initial_sidebar_state="collapsed")
 
 if 'datasets' not in st.session_state:
     ruta = os.path.join("datasets", "StressLevelDataset_limpio.csv")
@@ -17,21 +17,14 @@ st.markdown("""
         background-color: #f8f9fa;
     }
     [data-testid="stHeader"] {
-        background: transparent;
-        height: 0px;
+        display: none !important;
     }
     .block-container {
         padding-top: 1rem !important;
         padding-bottom: 0rem !important;
     }
     [data-testid="stSidebar"] {
-        background-color: #0c1c30 !important;
-    }
-    [data-testid="stSidebar"] * {
-        color: #ffffff !important;
-    }
-    [data-testid="stSidebarNav"] {
-        background-color: #0c1c30 !important;
+        display: none !important;
     }
     .header-institucional {
         background-color: #0c1c30;
@@ -40,8 +33,8 @@ st.markdown("""
         align-items: center;
         justify-content: space-between;
         color: white;
-        border-radius: 8px;
-        margin-bottom: 30px;
+        border-radius: 8px 8px 0 0;
+        margin-bottom: 0px;
     }
     .header-institucional h2 {
         color: white !important;
@@ -53,6 +46,31 @@ st.markdown("""
         display: flex;
         align-items: center;
         gap: 10px;
+    }
+    .nav-bar {
+        background-color: #142840;
+        padding: 10px 20px;
+        display: flex;
+        gap: 15px;
+        border-radius: 0 0 8px 8px;
+        margin-bottom: 30px;
+    }
+    .nav-link {
+        color: #cfd8dc !important;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 0.9rem;
+        padding: 6px 12px;
+        border-radius: 4px;
+        transition: background 0.2s;
+    }
+    .nav-link:hover {
+        background-color: #1c3b5e;
+        color: #ffffff !important;
+    }
+    .nav-active {
+        background-color: #2e7d32;
+        color: white !important;
     }
     .bienvenida-titulo {
         color: #2e7d32 !important;
@@ -87,24 +105,23 @@ st.markdown("""
         font-size: 0.95rem !important;
         transition: all 0.2s ease;
         text-align: center;
+        cursor: pointer;
     }
     div.stButton > button[key="btn_eval"] {
-        background-color: #1b5e20 !important;
+        background-color: #2e7d32 !important;
         color: white !important;
         border: none !important;
     }
     div.stButton > button[key="btn_eval"]:hover {
-        background-color: #2e7d32 !important;
-        transform: translateY(-2px);
+        background-color: #1b5e20 !important;
     }
     div.stButton > button[key="btn_info"] {
         background-color: transparent !important;
-        color: #1b5e20 !important;
-        border: 2px solid #1b5e20 !important;
+        color: #2e7d32 !important;
+        border: 2px solid #2e7d32 !important;
     }
     div.stButton > button[key="btn_info"]:hover {
         background-color: #e8f5e9 !important;
-        transform: translateY(-2px);
     }
     .status-card {
         background-color: #ffffff;
@@ -112,16 +129,18 @@ st.markdown("""
         border-radius: 12px;
         border: 1px solid #e2e8f0;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
     }
     .status-card h4 {
         color: #0c1c30 !important;
+        margin-top: 0px;
         margin-bottom: 15px;
+        font-weight: bold !important;
     }
     .illustration-box {
         display: flex;
         justify-content: center;
         align-items: center;
-        height: auto;
         margin-top: 20px;
     }
     </style>
@@ -135,6 +154,13 @@ st.markdown("""
         <div>
             <h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2>
         </div>
+    </div>
+    <div class="nav-bar">
+        <a class="nav-link nav-active" href="/">Inicio</a>
+        <a class="nav-link" href="/Dashboard_General" target="_self">Dashboard General</a>
+        <a class="nav-link" href="/Detector_de_Estres" target="_self">Detector de Estrés</a>
+        <a class="nav-link" href="/Reportes_y_Exportacion" target="_self">Reportes y Exportación</a>
+        <a class="nav-link" href="/Simulador_de_Escenarios" target="_self">Simulador de Escenarios</a>
     </div>
 """, unsafe_allow_html=True)
 
