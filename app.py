@@ -4,7 +4,9 @@ import os
 
 st.set_page_config(page_title="MindCare Analytics", page_icon="🧠", layout="wide", initial_sidebar_state="collapsed")
 
-pagina_activa = 1
+# Define la ruta activa para esta página (en app.py es "/")
+# En las páginas secundarias usarías "/Dashboard_General", "/Detector_de_Estres", etc.
+ruta_activa = "/"
 
 if 'datasets' not in st.session_state:
     ruta = os.path.join("datasets", "StressLevelDataset_limpio.csv")
@@ -76,7 +78,8 @@ st.markdown(f"""
         text-decoration: underline !important;
     }}
     
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) div[data-testid="column"]:nth-child({pagina_activa}) div[data-testid="stPageLink"] a {{
+    /* Selector directo por la URL del enlace activo */
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) div[data-testid="stPageLink"] a[href="{ruta_activa}"] {{
         background-color: #2e7d32 !important;
         color: white !important;
         text-decoration: none !important;
