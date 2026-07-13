@@ -5,84 +5,96 @@ import os
 
 st.set_page_config(page_title="MindCare Analytics - Dashboard", page_icon="📊", layout="wide", initial_sidebar_state="collapsed")
 
-st.markdown("""
+pagina_activa = 2
+
+st.markdown(f"""
     <style>
-    .stApp {
+    .stApp {{
         background-color: #f8f9fa;
-    }
-    [data-testid="stHeader"] {
+    }}
+    [data-testid="stHeader"] {{
         display: none !important;
-    }
-    .block-container {
-        padding-top: 1rem !important;
+    }}
+    .block-container {{
+        padding-top: 0rem !important;
         padding-bottom: 0rem !important;
-    }
-    [data-testid="stSidebar"] {
+    }}
+    [data-testid="stSidebar"] {{
         display: none !important;
-    }
-    .header-institucional {
+    }}
+    
+    .header-institucional {{
         background-color: #0c1c30;
-        padding: 15px 30px;
+        padding: 20px 30px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         color: white;
-        border-radius: 8px 8px 0 0;
+        margin-top: 0px !important;
         margin-bottom: 0px;
-    }
-    .header-institucional h2 {
+        border-radius: 8px 8px 0 0;
+    }}
+    .header-institucional h2 {{
         color: white !important;
         margin: 0;
         font-size: 1.2rem !important;
         font-weight: 600 !important;
-    }
-    .header-logo {
+    }}
+    .header-logo {{
         display: flex;
         align-items: center;
         gap: 10px;
-    }
-    .nav-bar {
-        background-color: #142840;
-        padding: 10px 20px;
-        display: flex;
-        gap: 15px;
-        border-radius: 0 0 8px 8px;
-        margin-bottom: 30px;
-    }
-    .nav-link {
-        color: #cfd8dc !important;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 0.9rem;
-        padding: 6px 12px;
-        border-radius: 4px;
-        transition: background 0.2s;
-    }
-    .nav-link:hover {
-        background-color: #1c3b5e;
+    }}
+    
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) {{
+        background-color: #142840 !important;
+        padding: 10px 20px !important;
+        margin-top: 0px !important;
+        margin-bottom: 30px !important;
+        border-radius: 0 0 8px 8px !important;
+        gap: 0px !important;
+    }}
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) div[data-testid="stPageLink"] a {{
+        background-color: transparent !important;
         color: #ffffff !important;
-    }
-    .nav-active {
-        background-color: #2e7d32;
+        border: none !important;
+        font-weight: bold !important;
+        font-size: 0.9rem !important;
+        padding: 6px 12px !important;
+        text-decoration: underline !important;
+        box-shadow: none !important;
+        display: inline-flex !important;
+    }}
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) div[data-testid="stPageLink"] a:hover {{
+        color: #cfd8dc !important;
+        text-decoration: underline !important;
+    }}
+    
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) > div[data-testid="column"]:nth-of-type({pagina_activa}) div[data-testid="stPageLink"] a {{
+        background-color: #2e7d32 !important;
         color: white !important;
-    }
-    h1, h2, h3, h4 {
+        text-decoration: none !important;
+        padding: 8px 16px !important;
+        border-radius: 4px !important;
+    }}
+    
+    h1, h2, h3, h4 {{
         color: #0c1c30 !important;
         font-weight: bold !important;
-    }
-    div[data-testid="metric-container"] {
+    }}
+    div[data-testid="metric-container"] {{
         background-color: #ffffff;
         border: 1px solid #e2e8f0;
         padding: 15px;
         border-radius: 8px;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    }
-    div[data-testid="metric-container"] * {
+    }}
+    div[data-testid="metric-container"] * {{
         color: #0c1c30 !important;
-    }
-    div[data-testid="stNotification"] * {
+    }}
+    div[data-testid="stNotification"] * {{
         color: #0c1c30 !important;
-    }
+    }}
     </style>
 """, unsafe_allow_html=True)
 
@@ -95,14 +107,19 @@ st.markdown("""
             <h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2>
         </div>
     </div>
-    <div class="nav-bar">
-        <a class="nav-link" href="/" target="_self">Inicio</a>
-        <a class="nav-link nav-active" href="/Dashboard_General" target="_self">Dashboard General</a>
-        <a class="nav-link" href="/Detector_de_Estres" target="_self">Detector de Estrés</a>
-        <a class="nav-link" href="/Reportes_y_Exportacion" target="_self">Reportes y Exportación</a>
-        <a class="nav-link" href="/Simulador_de_Escenarios" target="_self">Simulador de Escenarios</a>
-    </div>
 """, unsafe_allow_html=True)
+
+cols_nav = st.columns([1, 1.3, 1.2, 1.3, 1.4, 4])
+with cols_nav[0]:
+    st.page_link("app.py", label="Inicio", icon=None)
+with cols_nav[1]:
+    st.page_link("pages/Dashboard_General.py", label="Dashboard General", icon=None)
+with cols_nav[2]:
+    st.page_link("pages/Detector_de_Estres.py", label="Detector de Estrés", icon=None)
+with cols_nav[3]:
+    st.page_link("pages/Reportes_y_Exportacion.py", label="Reportes y Exportación", icon=None)
+with cols_nav[4]:
+    st.page_link("pages/Simulador_de_Escenarios.py", label="Simulador de Escenarios", icon=None)
 
 if 'datasets' not in st.session_state or st.session_state['datasets'] is None:
     ruta = os.path.join("datasets", "StressLevelDataset_limpio.csv")
