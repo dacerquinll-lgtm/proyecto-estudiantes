@@ -1,15 +1,9 @@
 import streamlit as st
+import plotly.express as px
 import pandas as pd
 import os
 
-st.set_page_config(page_title="MindCare Analytics", page_icon="🧠", layout="wide", initial_sidebar_state="collapsed")
-
-if 'datasets' not in st.session_state:
-    ruta = os.path.join("datasets", "StressLevelDataset_limpio.csv")
-    if os.path.exists(ruta):
-        st.session_state['datasets'] = {'estres': pd.read_csv(ruta)}
-    else:
-        st.session_state['datasets'] = None
+st.set_page_config(page_title="MindCare Analytics - Dashboard", page_icon="📊", layout="wide", initial_sidebar_state="collapsed")
 
 st.markdown("""
     <style>
@@ -20,7 +14,7 @@ st.markdown("""
         display: none !important;
     }
     .block-container {
-        padding-top: 0rem !important;
+        padding-top: 1rem !important;
         padding-bottom: 0rem !important;
     }
     [data-testid="stSidebar"] {
@@ -28,14 +22,13 @@ st.markdown("""
     }
     .header-institucional {
         background-color: #0c1c30;
-        padding: 20px 30px;
+        padding: 15px 30px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         color: white;
-        margin-top: 0px !important;
-        margin-bottom: 0px;
         border-radius: 8px 8px 0 0;
+        margin-bottom: 0px;
     }
     .header-institucional h2 {
         color: white !important;
@@ -50,98 +43,45 @@ st.markdown("""
     }
     .nav-bar {
         background-color: #142840;
-        padding: 12px 30px;
+        padding: 10px 20px;
         display: flex;
         gap: 15px;
-        margin-bottom: 30px;
         border-radius: 0 0 8px 8px;
+        margin-bottom: 30px;
     }
-    .nav-button {
-        background-color: transparent;
-        color: #cfd8dc;
-        border: none;
+    .nav-link {
+        color: #cfd8dc !important;
+        text-decoration: none;
         font-weight: bold;
         font-size: 0.9rem;
         padding: 6px 12px;
         border-radius: 4px;
-        cursor: pointer;
         transition: background 0.2s;
     }
-    .nav-button:hover {
+    .nav-link:hover {
         background-color: #1c3b5e;
-        color: #ffffff;
+        color: #ffffff !important;
     }
     .nav-active {
         background-color: #2e7d32;
-        color: white;
-    }
-    .bienvenida-titulo {
-        color: #2e7d32 !important;
-        font-size: 2.2rem !important;
-        font-weight: bold !important;
-        margin-bottom: 5px;
-    }
-    .bienvenida-sub {
-        color: #0c1c30 !important;
-        font-size: 1.8rem !important;
-        font-weight: 800 !important;
-        line-height: 1.2;
-        margin-bottom: 20px;
-    }
-    .bienvenida-texto {
-        color: #4a5568;
-        font-size: 1rem;
-        line-height: 1.6;
-        margin-bottom: 30px;
-    }
-    .btn-container {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        max-width: 320px;
-    }
-    div.stButton > button {
-        width: 100% !important;
-        border-radius: 6px !important;
-        font-weight: bold !important;
-        padding: 12px 20px !important;
-        font-size: 0.95rem !important;
-        transition: all 0.2s ease;
-        text-align: center;
-        cursor: pointer;
-    }
-    div.stButton > button[key="btn_eval"] {
-        background-color: #2e7d32 !important;
         color: white !important;
-        border: none !important;
     }
-    div.stButton > button[key="btn_eval"]:hover {
-        background-color: #1b5e20 !important;
-    }
-    div.stButton > button[key="btn_info"] {
-        background-color: transparent !important;
-        color: #2e7d32 !important;
-        border: 2px solid #2e7d32 !important;
-    }
-    div.stButton > button[key="btn_info"]:hover {
-        background-color: #e8f5e9 !important;
-    }
-    .titulo-estado {
+    h1, h2, h3, h4 {
         color: #0c1c30 !important;
-        font-size: 1.3rem !important;
         font-weight: bold !important;
-        margin-top: 10px;
-        margin-bottom: 15px;
-        display: block;
+    }
+    div[data-testid="metric-container"] {
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    div[data-testid="metric-container"] * {
+        color: #0c1c30 !important;
     }
     div[data-testid="stNotification"] * {
         color: #0c1c30 !important;
-    }
-    .illustration-box {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 25px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -155,54 +95,67 @@ st.markdown("""
             <h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2>
         </div>
     </div>
+    <div class="nav-bar">
+        <a class="nav-link" href="/" target="_self">Inicio</a>
+        <a class="nav-link nav-active" href="/Dashboard_General" target="_self">Dashboard General</a>
+        <a class="nav-link" href="/Detector_de_Estres" target="_self">Detector de Estrés</a>
+        <a class="nav-link" href="/Reportes_y_Exportacion" target="_self">Reportes y Exportación</a>
+        <a class="nav-link" href="/Simulador_de_Escenarios" target="_self">Simulador de Escenarios</a>
+    </div>
 """, unsafe_allow_html=True)
 
-with st.container():
-    cols_nav = st.columns([1, 1.3, 1.2, 1.3, 1.4, 4])
-    with cols_nav[0]:
-        if st.button("Inicio", key="nav_inicio", use_container_width=True):
-            st.switch_page("app.py")
-    with cols_nav[1]:
-        if st.button("Dashboard General", key="nav_dash", use_container_width=True):
-            st.switch_page("pages/Dashboard_General.py")
-    with cols_nav[2]:
-        if st.button("Detector de Estrés", key="nav_detec", use_container_width=True):
-            st.switch_page("pages/Detector_de_Estres.py")
-    with cols_nav[3]:
-        if st.button("Reportes y Exportación", key="nav_rep", use_container_width=True):
-            st.switch_page("pages/Reportes_y_Exportacion.py")
-    with cols_nav[4]:
-        if st.button("Simulador de Escenarios", key="nav_sim", use_container_width=True):
-            st.switch_page("pages/Simulador_de_Escenarios.py")
-
-col1, col2 = st.columns([1.1, 0.9], gap="large")
-
-with col1:
-    st.markdown("""
-        <div class="home-container">
-            <h3 class="bienvenida-titulo">Bienvenido</h3>
-            <h1 class="bienvenida-sub">Sistema Inteligente para la Reducción de Estrés Académico</h1>
-            <p class="bienvenida-texto">
-                Plataforma basada en modelos de Machine Learning que analiza tus hábitos académicos 
-                y personales para identificar tu nivel de estrés y brindarte recomendaciones personalizadas.
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown('<div class="btn-container">', unsafe_allow_html=True)
-    st.button("Iniciar evaluación ➔", key="btn_eval")
-    st.button("Ver información ⓘ", key="btn_info")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-with col2:
-    st.markdown('<span class="titulo-estado">Estado del Sistema</span>', unsafe_allow_html=True)
-    
-    if st.session_state['datasets'] is not None:
-        st.success("✅ **Conexión con el Modelo:** RF-Optimizado v2.4")
-        st.info("✅ **Estado de Datos:** Dataset cargado correctamente.")
+if 'datasets' not in st.session_state or st.session_state['datasets'] is None:
+    ruta = os.path.join("datasets", "StressLevelDataset_limpio.csv")
+    if os.path.exists(ruta):
+        st.session_state['datasets'] = {'estres': pd.read_csv(ruta)}
     else:
-        st.error("⚠️ Error crítico: No se encontró 'datasets/StressLevelDataset_limpio.csv'")
+        st.error("❌ Archivo no encontrado. Por favor, asegúrese de tener 'datasets/StressLevelDataset_limpio.csv'.")
+        st.stop()
+
+df = st.session_state.datasets['estres']
+
+mapa_label = {0: "BAJO", 1: "MODERADO", 2: "ALTO"}
+df['stress_label'] = df['stress_level'].map(mapa_label)
+
+st.title("📊 Centro de Analítica Estudiantil")
+
+col1, col2, col3 = st.columns(3)
+col1.metric("Total Estudiantes", len(df))
+col2.metric("Nivel de Estrés Promedio", mapa_label.get(int(round(df['stress_level'].mean())), "N/A"))
+col3.metric("Ansiedad Promedio", round(df['anxiety_level'].mean(), 2))
+
+st.markdown("<br>", unsafe_allow_html=True)
+
+tab1, tab2 = st.tabs(["📉 Tendencia de Rendimiento", "⚠️ Factores de Riesgo"])
+
+with tab1:
+    st.subheader("Evolución del Rendimiento Académico")
     
-    st.markdown('<div class="illustration-box">', unsafe_allow_html=True)
-    st.image("assets/imagen.png", use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    df_line = df.groupby(['stress_level', 'stress_label'])['academic_performance'].mean().reset_index()
+    df_line = df_line.sort_values('stress_level')
+    
+    fig1 = px.line(df_line, x="stress_label", y="academic_performance", 
+                   markers=True,
+                   template="plotly_white",
+                   line_shape="spline",
+                   labels={"stress_label": "Nivel de Estrés", 
+                           "academic_performance": "Rendimiento Académico Promedio"})
+    
+    fig1.update_traces(line_color="#0c1c30", line_width=4, marker=dict(size=12, color="#2e7d32"))
+    fig1.update_yaxes(range=[0, 5])
+    st.plotly_chart(fig1, use_container_width=True)
+
+with tab2:
+    st.subheader("Promedio de Ansiedad por Nivel de Estrés")
+    df_bar = df.groupby(['stress_label'])['anxiety_level'].mean().reset_index()
+    
+    fig2 = px.bar(df_bar, x='stress_label', y='anxiety_level', 
+                  color='stress_label', template="plotly_white",
+                  labels={"stress_label": "Nivel de Estrés", 
+                          "anxiety_level": "Nivel de Ansiedad Promedio"},
+                  color_discrete_map={"BAJO": "#2e7d32", "MODERADO": "#ffa15a", "ALTO": "#ef553b"})
+    
+    fig2.update_layout(showlegend=False)
+    st.plotly_chart(fig2, use_container_width=True)
+
+st.info("💡 **Interpretación:** La tendencia descendente confirma que, al aumentar el nivel de estrés, el rendimiento académico disminuye de forma consistente.")
