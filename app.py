@@ -26,18 +26,18 @@ st.markdown("""
     [data-testid="stSidebar"] {
         display: none !important;
     }
-    .cabecera-unificada {
+    .header-institucional {
         background-color: #0c1c30;
-        border-radius: 8px 8px 0 0;
         padding: 20px 30px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         color: white;
         margin-top: 0px !important;
-        margin-bottom: 0px !important;
+        margin-bottom: 0px;
+        border-radius: 8px 8px 0 0;
     }
-    .cabecera-unificada h2 {
+    .header-institucional h2 {
         color: white !important;
         margin: 0;
         font-size: 1.2rem !important;
@@ -48,15 +48,15 @@ st.markdown("""
         align-items: center;
         gap: 10px;
     }
-    div[data-testid="stHorizontalBlock"]:has(button[key^="nav_"]) {
-        background-color: #0c1c30 !important;
-        padding: 10px 20px !important;
-        margin-top: -2px !important;
+    div[data-testid="stHorizontalBlock"]:first-of-type {
+        background-color: #142840 !important;
+        padding: 15px 25px !important;
+        margin-top: 0px !important;
         margin-bottom: 30px !important;
         border-radius: 0 0 8px 8px !important;
         gap: 0px !important;
     }
-    div[data-testid="stHorizontalBlock"]:has(button[key^="nav_"]) button {
+    div[data-testid="stHorizontalBlock"]:first-of-type button {
         background-color: transparent !important;
         color: #ffffff !important;
         border: none !important;
@@ -69,10 +69,10 @@ st.markdown("""
         transition: none !important;
         width: auto !important;
     }
-    div[data-testid="stHorizontalBlock"]:has(button[key^="nav_"]) button:hover {
+    div[data-testid="stHorizontalBlock"]:first-of-type button:hover {
         color: #cfd8dc !important;
     }
-    div[data-testid="stHorizontalBlock"]:has(button[key^="nav_"]) div[data-testid="column"]:nth-child(1) button {
+    div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(1) button {
         background-color: #2e7d32 !important;
         color: white !important;
         text-decoration: none !important;
@@ -105,7 +105,7 @@ st.markdown("""
         max-width: 320px;
     }
     div.stButton > button[key="btn_eval"] {
-        background-color: #0c1c30 !important;
+        background-color: #2e7d32 !important;
         color: white !important;
         border: none !important;
         width: 100% !important;
@@ -114,15 +114,21 @@ st.markdown("""
         padding: 12px 20px !important;
         font-size: 0.95rem !important;
     }
+    div.stButton > button[key="btn_eval"]:hover {
+        background-color: #1b5e20 !important;
+    }
     div.stButton > button[key="btn_info"] {
         background-color: transparent !important;
-        color: #0c1c30 !important;
-        border: 2px solid #0c1c30 !important;
+        color: #2e7d32 !important;
+        border: 2px solid #2e7d32 !important;
         width: 100% !important;
         border-radius: 6px !important;
         font-weight: bold !important;
         padding: 12px 20px !important;
         font-size: 0.95rem !important;
+    }
+    div.stButton > button[key="btn_info"]:hover {
+        background-color: #e8f5e9 !important;
     }
     .titulo-estado {
         color: #0c1c30 !important;
@@ -145,7 +151,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("""
-    <div class="cabecera-unificada">
+    <div class="header-institucional">
         <div class="header-logo">
             <span style="font-weight: 900; font-size: 1.6rem; color: #e53935;">UCV</span>
         </div>
