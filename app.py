@@ -26,16 +26,18 @@ st.markdown("""
     [data-testid="stSidebar"] {
         display: none !important;
     }
-    .header-institucional {
+    .cabecera-completa {
         background-color: #0c1c30;
+        border-radius: 8px;
+        padding: 0px;
+        margin-bottom: 30px;
+    }
+    .header-institucional {
         padding: 20px 30px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         color: white;
-        margin-top: 0px !important;
-        margin-bottom: 0px;
-        border-radius: 8px 8px 0 0;
     }
     .header-institucional h2 {
         color: white !important;
@@ -48,15 +50,14 @@ st.markdown("""
         align-items: center;
         gap: 10px;
     }
-    div[data-testid="stHorizontalBlock"]:has(button[key^="nav_"]) {
+    div[data-testid="stHorizontalBlock"] {
         background-color: #142840 !important;
-        padding: 10px 20px !important;
-        margin-top: 0px !important;
-        margin-bottom: 30px !important;
+        padding: 12px 30px !important;
+        margin: 0px !important;
         border-radius: 0 0 8px 8px !important;
-        gap: 0px !important;
+        gap: 15px !important;
     }
-    div[data-testid="stHorizontalBlock"]:has(button[key^="nav_"]) button {
+    div[data-testid="stHorizontalBlock"] button {
         background-color: transparent !important;
         color: #cfd8dc !important;
         border: none !important;
@@ -66,12 +67,13 @@ st.markdown("""
         border-radius: 4px !important;
         transition: background 0.2s !important;
         box-shadow: none !important;
+        width: auto !important;
     }
-    div[data-testid="stHorizontalBlock"]:has(button[key^="nav_"]) button:hover {
+    div[data-testid="stHorizontalBlock"] button:hover {
         background-color: #1c3b5e !important;
         color: #ffffff !important;
     }
-    div[data-testid="stHorizontalBlock"]:has(button[key^="nav_"]) div[data-testid="column"]:nth-child(1) button {
+    div[data-testid="stHorizontalBlock"] div[data-testid="column"]:nth-child(1) button {
         background-color: #2e7d32 !important;
         color: white !important;
     }
@@ -101,7 +103,6 @@ st.markdown("""
         max-width: 320px;
     }
     div.stButton > button {
-        width: 100% !important;
         border-radius: 6px !important;
         font-weight: bold !important;
         padding: 12px 20px !important;
@@ -114,6 +115,7 @@ st.markdown("""
         background-color: #2e7d32 !important;
         color: white !important;
         border: none !important;
+        width: 100% !important;
     }
     div.stButton > button[key="btn_eval"]:hover {
         background-color: #1b5e20 !important;
@@ -122,6 +124,7 @@ st.markdown("""
         background-color: transparent !important;
         color: #2e7d32 !important;
         border: 2px solid #2e7d32 !important;
+        width: 100% !important;
     }
     div.stButton > button[key="btn_info"]:hover {
         background-color: #e8f5e9 !important;
@@ -146,18 +149,18 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-    <div class="header-institucional">
-        <div class="header-logo">
-            <span style="font-weight: 900; font-size: 1.6rem; color: #e53935;">UCV</span>
-        </div>
-        <div>
-            <h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2>
-        </div>
-    </div>
-""", unsafe_allow_html=True)
-
 with st.container():
+    st.markdown("""
+        <div class="header-institucional">
+            <div class="header-logo">
+                <span style="font-weight: 900; font-size: 1.6rem; color: #e53935;">UCV</span>
+            </div>
+            <div>
+                <h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
     cols_nav = st.columns([1, 1.3, 1.2, 1.3, 1.4, 4])
     with cols_nav[0]:
         if st.button("Inicio", key="nav_inicio", use_container_width=True):
