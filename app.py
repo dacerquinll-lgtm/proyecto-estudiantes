@@ -48,13 +48,15 @@ st.markdown("""
         align-items: center;
         gap: 10px;
     }
-    div[data-testid="element-container"] + div[data-testid="element-container"]:has(div.stHorizontalBlock) {
-        background-color: #142840;
-        padding: 8px 30px;
-        margin-bottom: 30px;
-        border-radius: 0 0 8px 8px;
+    div[data-testid="stHorizontalBlock"]:first-of-type {
+        background-color: #142840 !important;
+        padding: 10px 20px !important;
+        margin-top: 0px !important;
+        margin-bottom: 30px !important;
+        border-radius: 0 0 8px 8px !important;
+        gap: 0px !important;
     }
-    div.stButton > button[key^="nav_"] {
+    div[data-testid="stHorizontalBlock"]:first-of-type button {
         background-color: transparent !important;
         color: #cfd8dc !important;
         border: none !important;
@@ -62,15 +64,14 @@ st.markdown("""
         font-size: 0.9rem !important;
         padding: 6px 12px !important;
         border-radius: 4px !important;
-        transition: background 0.2s;
-        text-align: center;
+        transition: background 0.2s !important;
         box-shadow: none !important;
     }
-    div.stButton > button[key^="nav_"]:hover {
+    div[data-testid="stHorizontalBlock"]:first-of-type button:hover {
         background-color: #1c3b5e !important;
         color: #ffffff !important;
     }
-    div.stButton > button[key="nav_inicio"] {
+    div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(1) button {
         background-color: #2e7d32 !important;
         color: white !important;
     }
