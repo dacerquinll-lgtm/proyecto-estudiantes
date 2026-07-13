@@ -48,29 +48,30 @@ st.markdown("""
         align-items: center;
         gap: 10px;
     }
-    .nav-bar {
+    div[data-testid="element-container"] + div[data-testid="element-container"]:has(div.stHorizontalBlock) {
         background-color: #142840;
-        padding: 12px 30px;
-        display: flex;
-        gap: 15px;
+        padding: 8px 30px;
         margin-bottom: 30px;
         border-radius: 0 0 8px 8px;
     }
-    .nav-link {
+    div.stButton > button[key^="nav_"] {
+        background-color: transparent !important;
         color: #cfd8dc !important;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 0.9rem;
-        padding: 6px 12px;
-        border-radius: 4px;
+        border: none !important;
+        font-weight: bold !important;
+        font-size: 0.9rem !important;
+        padding: 6px 12px !important;
+        border-radius: 4px !important;
         transition: background 0.2s;
+        text-align: center;
+        box-shadow: none !important;
     }
-    .nav-link:hover {
-        background-color: #1c3b5e;
+    div.stButton > button[key^="nav_"]:hover {
+        background-color: #1c3b5e !important;
         color: #ffffff !important;
     }
-    .nav-active {
-        background-color: #2e7d32;
+    div.stButton > button[key="nav_inicio"] {
+        background-color: #2e7d32 !important;
         color: white !important;
     }
     .bienvenida-titulo {
@@ -153,14 +154,25 @@ st.markdown("""
             <h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2>
         </div>
     </div>
-    <div class="nav-bar">
-        <a class="nav-link nav-active" href="/">Inicio</a>
-        <a class="nav-link" href="/Dashboard_General" target="_self">Dashboard General</a>
-        <a class="nav-link" href="/Detector_de_Estres" target="_self">Detector de Estrés</a>
-        <a class="nav-link" href="/Reportes_y_Exportacion" target="_self">Reportes y Exportación</a>
-        <a class="nav-link" href="/Simulador_de_Escenarios" target="_self">Simulador de Escenarios</a>
-    </div>
 """, unsafe_allow_html=True)
+
+with st.container():
+    cols_nav = st.columns([1, 1.3, 1.2, 1.3, 1.4, 4])
+    with cols_nav[0]:
+        if st.button("Inicio", key="nav_inicio", use_container_width=True):
+            st.switch_page("app.py")
+    with cols_nav[1]:
+        if st.button("Dashboard General", key="nav_dash", use_container_width=True):
+            st.switch_page("pages/Dashboard_General.py")
+    with cols_nav[2]:
+        if st.button("Detector de Estrés", key="nav_detec", use_container_width=True):
+            st.switch_page("pages/Detector_de_Estres.py")
+    with cols_nav[3]:
+        if st.button("Reportes y Exportación", key="nav_rep", use_container_width=True):
+            st.switch_page("pages/Reportes_y_Exportacion.py")
+    with cols_nav[4]:
+        if st.button("Simulador de Escenarios", key="nav_sim", use_container_width=True):
+            st.switch_page("pages/Simulador_de_Escenarios.py")
 
 col1, col2 = st.columns([1.1, 0.9], gap="large")
 
