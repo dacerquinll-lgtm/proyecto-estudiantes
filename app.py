@@ -27,19 +27,16 @@ st.markdown("""
         display: none !important;
     }
     
-    .cabecera-unificada {
-        background-color: #0c1c30;
-        border-radius: 8px;
-        margin-top: 0px !important;
-        margin-bottom: 30px !important;
-        overflow: hidden;
-    }
     .header-institucional {
+        background-color: #0c1c30;
         padding: 20px 30px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         color: white;
+        margin-top: 0px !important;
+        margin-bottom: 0px;
+        border-radius: 8px 8px 0 0;
     }
     .header-institucional h2 {
         color: white !important;
@@ -53,34 +50,35 @@ st.markdown("""
         gap: 10px;
     }
     
-    .barra-navegacion-html {
-        background-color: #142840;
-        padding: 10px 20px;
-        display: flex;
-        gap: 15px;
-        align-items: center;
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) {
+        background-color: #142840 !important;
+        padding: 10px 20px !important;
+        margin-top: 0px !important;
+        margin-bottom: 30px !important;
+        border-radius: 0 0 8px 8px !important;
+        gap: 0px !important;
     }
-    .nav-item {
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) div[data-testid="stPageLink"] a {
+        background-color: transparent !important;
         color: #ffffff !important;
+        border: none !important;
         font-weight: bold !important;
         font-size: 0.9rem !important;
+        padding: 6px 12px !important;
         text-decoration: underline !important;
-        padding: 6px 12px;
-        transition: color 0.2s;
+        box-shadow: none !important;
+        display: inline-flex !important;
     }
-    .nav-item:hover {
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) div[data-testid="stPageLink"] a:hover {
         color: #cfd8dc !important;
         text-decoration: underline !important;
     }
-    .nav-item-active {
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) div[data-testid="column"]:nth-child(1) div[data-testid="stPageLink"] a {
         background-color: #2e7d32 !important;
         color: white !important;
         text-decoration: none !important;
-        padding: 8px 16px;
-        border-radius: 4px;
-    }
-    .nav-item-active:hover {
-        color: white !important;
+        padding: 8px 16px !important;
+        border-radius: 4px !important;
     }
     
     .bienvenida-titulo {
@@ -149,24 +147,27 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("""
-    <div class="cabecera-unificada">
-        <div class="header-institucional">
-            <div class="header-logo">
-                <span style="font-weight: 900; font-size: 1.6rem; color: #e53935;">UCV</span>
-            </div>
-            <div>
-                <h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2>
-            </div>
+    <div class="header-institucional">
+        <div class="header-logo">
+            <span style="font-weight: 900; font-size: 1.6rem; color: #e53935;">UCV</span>
         </div>
-        <div class="barra-navegacion-html">
-            <a href="/" target="_self" class="nav-item nav-item-active">Inicio</a>
-            <a href="/Dashboard_General" target="_self" class="nav-item">Dashboard General</a>
-            <a href="/Detector_de_Estres" target="_self" class="nav-item">Detector de Estrés</a>
-            <a href="/Reportes_y_Exportacion" target="_self" class="nav-item">Reportes y Exportación</a>
-            <a href="/Simulador_de_Escenarios" target="_self" class="nav-item">Simulador de Escenarios</a>
+        <div>
+            <h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2>
         </div>
     </div>
 """, unsafe_allow_html=True)
+
+cols_nav = st.columns([1, 1.3, 1.2, 1.3, 1.4, 4])
+with cols_nav[0]:
+    st.page_link("app.py", label="Inicio", icon=None)
+with cols_nav[1]:
+    st.page_link("pages/Dashboard_General.py", label="Dashboard General", icon=None)
+with cols_nav[2]:
+    st.page_link("pages/Detector_de_Estres.py", label="Detector de Estrés", icon=None)
+with cols_nav[3]:
+    st.page_link("pages/Reportes_y_Exportacion.py", label="Reportes y Exportación", icon=None)
+with cols_nav[4]:
+    st.page_link("pages/Simulador_de_Escenarios.py", label="Simulador de Escenarios", icon=None)
 
 col1, col2 = st.columns([1.1, 0.9], gap="large")
 
