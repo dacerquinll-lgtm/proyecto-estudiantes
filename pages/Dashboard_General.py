@@ -82,16 +82,26 @@ st.markdown(f"""
         color: #0c1c30 !important;
         font-weight: bold !important;
     }}
-    div[data-testid="metric-container"] {{
-        background-color: #ffffff;
-        border: 1px solid #e2e8f0;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    
+    /* Corrección del contraste de las tarjetas de métricas */
+    div[data-testid="stMetric"] {{
+        background-color: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        padding: 15px !important;
+        border-radius: 8px !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
     }}
-    div[data-testid="metric-container"] * {{
+    div[data-testid="stMetricLabel"] {{
+        color: #4a5568 !important;
+        font-size: 0.9rem !important;
+        font-weight: 600 !important;
+    }}
+    div[data-testid="stMetricValue"] {{
         color: #0c1c30 !important;
+        font-size: 1.8rem !important;
+        font-weight: bold !important;
     }}
+    
     div[data-testid="stNotification"] * {{
         color: #0c1c30 !important;
     }}
@@ -160,6 +170,15 @@ with tab1:
     
     fig1.update_traces(line_color="#0c1c30", line_width=4, marker=dict(size=12, color="#2e7d32"))
     fig1.update_yaxes(range=[0, 5])
+    
+    # Ajuste de contraste para textos del gráfico
+    fig1.update_layout(
+        plot_bgcolor="rgba(0,0,0,0)",
+        paper_bgcolor="rgba(0,0,0,0)",
+        font=dict(color="#0c1c30"),
+        xaxis=dict(showgrid=True, gridcolor="#e2e8f0", linecolor="#0c1c30", tickfont=dict(color="#0c1c30")),
+        yaxis=dict(showgrid=True, gridcolor="#e2e8f0", linecolor="#0c1c30", tickfont=dict(color="#0c1c30"))
+    )
     st.plotly_chart(fig1, use_container_width=True)
 
 with tab2:
@@ -172,7 +191,15 @@ with tab2:
                           "anxiety_level": "Nivel de Ansiedad Promedio"},
                   color_discrete_map={"BAJO": "#2e7d32", "MODERADO": "#ffa15a", "ALTO": "#ef553b"})
     
-    fig2.update_layout(showlegend=False)
+    # Ajuste de contraste para textos del gráfico
+    fig2.update_layout(
+        showlegend=False,
+        plot_bgcolor="rgba(0,0,0,0)",
+        paper_bgcolor="rgba(0,0,0,0)",
+        font=dict(color="#0c1c30"),
+        xaxis=dict(linecolor="#0c1c30", tickfont=dict(color="#0c1c30")),
+        yaxis=dict(showgrid=True, gridcolor="#e2e8f0", linecolor="#0c1c30", tickfont=dict(color="#0c1c30"))
+    )
     st.plotly_chart(fig2, use_container_width=True)
 
 st.info("💡 **Interpretación:** La tendencia descendente confirma que, al aumentar el nivel de estrés, el rendimiento académico disminuye de forma consistente.")
