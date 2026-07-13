@@ -123,19 +123,13 @@ st.markdown("""
     div.stButton > button[key="btn_info"]:hover {
         background-color: #e8f5e9 !important;
     }
-    .status-card {
-        background-color: #ffffff;
-        padding: 25px;
-        border-radius: 12px;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        margin-bottom: 20px;
-    }
-    .status-card h4 {
+    .titulo-estado {
         color: #0c1c30 !important;
-        margin-top: 0px;
-        margin-bottom: 15px;
+        font-size: 1.3rem !important;
         font-weight: bold !important;
+        margin-top: 10px;
+        margin-bottom: 15px;
+        display: block;
     }
     div[data-testid="stNotification"] * {
         color: #0c1c30 !important;
@@ -144,7 +138,7 @@ st.markdown("""
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 20px;
+        margin-top: 25px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -187,16 +181,13 @@ with col1:
     st.markdown('</div>', unsafe_allow_html=True)
 
 with col2:
-    st.markdown('<div class="status-card">', unsafe_allow_html=True)
-    st.markdown("<h4>Estado del Sistema</h4>", unsafe_allow_html=True)
+    st.markdown('<span class="titulo-estado">Estado del Sistema</span>', unsafe_allow_html=True)
     
     if st.session_state['datasets'] is not None:
         st.success("✅ **Conexión con el Modelo:** RF-Optimizado v2.4")
         st.info("✅ **Estado de Datos:** Dataset cargado correctamente.")
     else:
         st.error("⚠️ Error crítico: No se encontró 'datasets/StressLevelDataset_limpio.csv'")
-        
-    st.markdown('</div>', unsafe_allow_html=True)
     
     st.markdown('<div class="illustration-box">', unsafe_allow_html=True)
     st.image("assets/imagen.png", use_container_width=True)
