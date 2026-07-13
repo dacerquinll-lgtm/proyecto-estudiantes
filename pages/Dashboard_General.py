@@ -83,39 +83,49 @@ st.markdown(f"""
         font-weight: bold !important;
     }}
     
-    /* Configuración de Tarjetas de Métricas con Fondo de Color */
     div[data-testid="stMetric"] {{
-        background-color: #0c1c30 !important;
-        border: 1px solid #0c1c30 !important;
         padding: 15px !important;
         border-radius: 8px !important;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
-    }}
-    div[data-testid="stMetric"] label[data-testid="stMetricLabel"] p {{
-        color: #90a4ae !important;
-        font-size: 0.95rem !important;
-        font-weight: bold !important;
-    }}
-    div[data-testid="stMetricValue"] div {{
-        color: #ffffff !important;
-        font-size: 1.8rem !important;
-        font-weight: bold !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
     }}
     
-    /* Corrección Definitiva del Color de las Pestañas (Tabs) */
-    button[data-baseweb="tab"] p {{
-        color: #546e7a !important;
-        font-weight: bold !important;
-        font-size: 0.95rem !important;
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stMetric"]) div[data-testid="column"]:nth-of-type(1) div[data-testid="stMetric"] {{
+        background-color: #e3f2fd !important;
+        border: 1px solid #90caf9 !important;
     }}
-    button[data-baseweb="tab"][aria-selected="true"] p {{
-        color: #2e7d32 !important;
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stMetric"]) div[data-testid="column"]:nth-of-type(1) div[data-testid="stMetric"] * {{
+        color: #0d47a1 !important;
     }}
+    
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stMetric"]) div[data-testid="column"]:nth-of-type(2) div[data-testid="stMetric"] {{
+        background-color: #fff3e0 !important;
+        border: 1px solid #ffcc80 !important;
+    }}
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stMetric"]) div[data-testid="column"]:nth-of-type(2) div[data-testid="stMetric"] * {{
+        color: #e65100 !important;
+    }}
+    
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stMetric"]) div[data-testid="column"]:nth-of-type(3) div[data-testid="stMetric"] {{
+        background-color: #ffebee !important;
+        border: 1px solid #ffcdd2 !important;
+    }}
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stMetric"]) div[data-testid="column"]:nth-of-type(3) div[data-testid="stMetric"] * {{
+        color: #c62828 !important;
+    }}
+    
     button[data-baseweb="tab"] {{
         border-bottom-color: #cfd8dc !important;
     }}
+    button[data-baseweb="tab"] * {{
+        color: #4a5568 !important;
+        font-weight: bold !important;
+        font-size: 0.95rem !important;
+    }}
     button[data-baseweb="tab"][aria-selected="true"] {{
         border-bottom-color: #2e7d32 !important;
+    }}
+    button[data-baseweb="tab"][aria-selected="true"] * {{
+        color: #2e7d32 !important;
     }}
     
     div[data-testid="stNotification"] * {{
