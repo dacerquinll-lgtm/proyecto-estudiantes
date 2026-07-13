@@ -26,16 +26,20 @@ st.markdown("""
     [data-testid="stSidebar"] {
         display: none !important;
     }
-    .header-institucional {
+    
+    .cabecera-unificada {
         background-color: #0c1c30;
+        border-radius: 8px;
+        margin-top: 0px !important;
+        margin-bottom: 30px !important;
+        overflow: hidden;
+    }
+    .header-institucional {
         padding: 20px 30px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         color: white;
-        margin-top: 0px !important;
-        margin-bottom: 0px;
-        border-radius: 8px 8px 0 0;
     }
     .header-institucional h2 {
         color: white !important;
@@ -48,37 +52,37 @@ st.markdown("""
         align-items: center;
         gap: 10px;
     }
-    .element-container:has(.nav-anchor) + .element-container div[data-testid="stHorizontalBlock"] {
-        background-color: #142840 !important;
-        padding: 15px 25px !important;
-        margin-top: 0px !important;
-        margin-bottom: 30px !important;
-        border-radius: 0 0 8px 8px !important;
-        gap: 0px !important;
+    
+    .barra-navegacion-html {
+        background-color: #142840;
+        padding: 10px 20px;
+        display: flex;
+        gap: 15px;
+        align-items: center;
     }
-    .element-container:has(.nav-anchor) + .element-container div[data-testid="stHorizontalBlock"] button {
-        background-color: transparent !important;
+    .nav-item {
         color: #ffffff !important;
-        border: none !important;
         font-weight: bold !important;
         font-size: 0.9rem !important;
-        padding: 6px 12px !important;
-        border-radius: 4px !important;
         text-decoration: underline !important;
-        box-shadow: none !important;
-        transition: none !important;
-        width: auto !important;
+        padding: 6px 12px;
+        transition: color 0.2s;
     }
-    .element-container:has(.nav-anchor) + .element-container div[data-testid="stHorizontalBlock"] button:hover {
+    .nav-item:hover {
         color: #cfd8dc !important;
+        text-decoration: underline !important;
     }
-    .element-container:has(.nav-anchor) + .element-container div[data-testid="stHorizontalBlock"] div[data-testid="column"]:nth-child(1) button {
+    .nav-item-active {
         background-color: #2e7d32 !important;
         color: white !important;
         text-decoration: none !important;
-        padding: 8px 16px !important;
-        border-radius: 4px !important;
+        padding: 8px 16px;
+        border-radius: 4px;
     }
+    .nav-item-active:hover {
+        color: white !important;
+    }
+    
     .bienvenida-titulo {
         color: #2e7d32 !important;
         font-size: 2.2rem !important;
@@ -145,33 +149,24 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("""
-    <div class="header-institucional">
-        <div class="header-logo">
-            <span style="font-weight: 900; font-size: 1.6rem; color: #e53935;">UCV</span>
+    <div class="cabecera-unificada">
+        <div class="header-institucional">
+            <div class="header-logo">
+                <span style="font-weight: 900; font-size: 1.6rem; color: #e53935;">UCV</span>
+            </div>
+            <div>
+                <h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2>
+            </div>
         </div>
-        <div>
-            <h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2>
+        <div class="barra-navegacion-html">
+            <a href="/" target="_self" class="nav-item nav-item-active">Inicio</a>
+            <a href="/Dashboard_General" target="_self" class="nav-item">Dashboard General</a>
+            <a href="/Detector_de_Estres" target="_self" class="nav-item">Detector de Estrés</a>
+            <a href="/Reportes_y_Exportacion" target="_self" class="nav-item">Reportes y Exportación</a>
+            <a href="/Simulador_de_Escenarios" target="_self" class="nav-item">Simulador de Escenarios</a>
         </div>
     </div>
 """, unsafe_allow_html=True)
-
-st.markdown('<div class="nav-anchor"></div>', unsafe_allow_html=True)
-cols_nav = st.columns([1, 1.3, 1.2, 1.3, 1.4, 4])
-with cols_nav[0]:
-    if st.button("Inicio", key="nav_inicio", use_container_width=True):
-        st.rerun()
-with cols_nav[1]:
-    if st.button("Dashboard General", key="nav_dash", use_container_width=True):
-        st.switch_page("pages/Dashboard_General.py")
-with cols_nav[2]:
-    if st.button("Detector de Estrés", key="nav_detec", use_container_width=True):
-        st.switch_page("pages/Detector_de_Estres.py")
-with cols_nav[3]:
-    if st.button("Reportes y Exportación", key="nav_rep", use_container_width=True):
-        st.switch_page("pages/Reportes_y_Exportacion.py")
-with cols_nav[4]:
-    if st.button("Simulador de Escenarios", key="nav_sim", use_container_width=True):
-        st.switch_page("pages/Simulador_de_Escenarios.py")
 
 col1, col2 = st.columns([1.1, 0.9], gap="large")
 
