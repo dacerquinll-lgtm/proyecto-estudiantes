@@ -48,7 +48,7 @@ st.markdown("""
         align-items: center;
         gap: 10px;
     }
-    div[data-testid="stHorizontalBlock"]:first-of-type {
+    .element-container:has(.nav-anchor) + .element-container div[data-testid="stHorizontalBlock"] {
         background-color: #142840 !important;
         padding: 15px 25px !important;
         margin-top: 0px !important;
@@ -56,7 +56,7 @@ st.markdown("""
         border-radius: 0 0 8px 8px !important;
         gap: 0px !important;
     }
-    div[data-testid="stHorizontalBlock"]:first-of-type button {
+    .element-container:has(.nav-anchor) + .element-container div[data-testid="stHorizontalBlock"] button {
         background-color: transparent !important;
         color: #ffffff !important;
         border: none !important;
@@ -69,10 +69,10 @@ st.markdown("""
         transition: none !important;
         width: auto !important;
     }
-    div[data-testid="stHorizontalBlock"]:first-of-type button:hover {
+    .element-container:has(.nav-anchor) + .element-container div[data-testid="stHorizontalBlock"] button:hover {
         color: #cfd8dc !important;
     }
-    div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(1) button {
+    .element-container:has(.nav-anchor) + .element-container div[data-testid="stHorizontalBlock"] div[data-testid="column"]:nth-child(1) button {
         background-color: #2e7d32 !important;
         color: white !important;
         text-decoration: none !important;
@@ -105,7 +105,7 @@ st.markdown("""
         max-width: 320px;
     }
     div.stButton > button[key="btn_eval"] {
-        background-color: #2e7d32 !important;
+        background-color: #0c1c30 !important;
         color: white !important;
         border: none !important;
         width: 100% !important;
@@ -114,21 +114,15 @@ st.markdown("""
         padding: 12px 20px !important;
         font-size: 0.95rem !important;
     }
-    div.stButton > button[key="btn_eval"]:hover {
-        background-color: #1b5e20 !important;
-    }
     div.stButton > button[key="btn_info"] {
         background-color: transparent !important;
-        color: #2e7d32 !important;
-        border: 2px solid #2e7d32 !important;
+        color: #0c1c30 !important;
+        border: 2px solid #0c1c30 !important;
         width: 100% !important;
         border-radius: 6px !important;
         font-weight: bold !important;
         padding: 12px 20px !important;
         font-size: 0.95rem !important;
-    }
-    div.stButton > button[key="btn_info"]:hover {
-        background-color: #e8f5e9 !important;
     }
     .titulo-estado {
         color: #0c1c30 !important;
@@ -161,6 +155,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
+st.markdown('<div class="nav-anchor"></div>', unsafe_allow_html=True)
 cols_nav = st.columns([1, 1.3, 1.2, 1.3, 1.4, 4])
 with cols_nav[0]:
     if st.button("Inicio", key="nav_inicio", use_container_width=True):
