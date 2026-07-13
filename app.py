@@ -4,6 +4,8 @@ import os
 
 st.set_page_config(page_title="MindCare Analytics", page_icon="🧠", layout="wide", initial_sidebar_state="collapsed")
 
+pagina_activa = 1
+
 if 'datasets' not in st.session_state:
     ruta = os.path.join("datasets", "StressLevelDataset_limpio.csv")
     if os.path.exists(ruta):
@@ -11,23 +13,23 @@ if 'datasets' not in st.session_state:
     else:
         st.session_state['datasets'] = None
 
-st.markdown("""
+st.markdown(f"""
     <style>
-    .stApp {
+    .stApp {{
         background-color: #f8f9fa !important;
-    }
-    [data-testid="stHeader"] {
+    }}
+    [data-testid="stHeader"] {{
         display: none !important;
-    }
-    .block-container {
+    }}
+    .block-container {{
         padding-top: 0rem !important;
         padding-bottom: 0rem !important;
-    }
-    [data-testid="stSidebar"] {
+    }}
+    [data-testid="stSidebar"] {{
         display: none !important;
-    }
+    }}
     
-    .header-institucional {
+    .header-institucional {{
         background-color: #0c1c30;
         padding: 20px 30px;
         display: flex;
@@ -37,28 +39,28 @@ st.markdown("""
         margin-top: 0px !important;
         margin-bottom: 0px;
         border-radius: 8px 8px 0 0;
-    }
-    .header-institucional h2 {
+    }}
+    .header-institucional h2 {{
         color: white !important;
         margin: 0;
         font-size: 1.2rem !important;
         font-weight: 600 !important;
-    }
-    .header-logo {
+    }}
+    .header-logo {{
         display: flex;
         align-items: center;
         gap: 10px;
-    }
+    }}
     
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) {
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) {{
         background-color: #142840 !important;
         padding: 10px 20px !important;
         margin-top: 0px !important;
         margin-bottom: 30px !important;
         border-radius: 0 0 8px 8px !important;
         gap: 0px !important;
-    }
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) div[data-testid="stPageLink"] a {
+    }}
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) div[data-testid="stPageLink"] a {{
         background-color: transparent !important;
         color: #ffffff !important;
         border: none !important;
@@ -68,45 +70,46 @@ st.markdown("""
         text-decoration: underline !important;
         box-shadow: none !important;
         display: inline-flex !important;
-    }
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) div[data-testid="stPageLink"] a:hover {
+    }}
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) div[data-testid="stPageLink"] a:hover {{
         color: #cfd8dc !important;
         text-decoration: underline !important;
-    }
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) div[data-testid="column"]:nth-child(1) div[data-testid="stPageLink"] a {
+    }}
+    
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) div[data-testid="column"]:nth-child({pagina_activa}) div[data-testid="stPageLink"] a {{
         background-color: #2e7d32 !important;
         color: white !important;
         text-decoration: none !important;
         padding: 8px 16px !important;
         border-radius: 4px !important;
-    }
+    }}
     
-    .bienvenida-titulo {
+    .bienvenida-titulo {{
         color: #2e7d32 !important;
         font-size: 2.2rem !important;
         font-weight: bold !important;
         margin-bottom: 5px;
-    }
-    .bienvenida-sub {
+    }}
+    .bienvenida-sub {{
         color: #0c1c30 !important;
         font-size: 1.8rem !important;
         font-weight: 800 !important;
         line-height: 1.2;
         margin-bottom: 20px;
-    }
-    .bienvenida-texto {
+    }}
+    .bienvenida-texto {{
         color: #4a5568;
         font-size: 1rem;
         line-height: 1.6;
         margin-bottom: 30px;
-    }
-    .btn-container {
+    }}
+    .btn-container {{
         display: flex;
         flex-direction: column;
         gap: 12px;
         max-width: 320px;
-    }
-    div.stButton > button[key="btn_eval"] {
+    }}
+    div.stButton > button[key="btn_eval"] {{
         background-color: #0c1c30 !important;
         color: white !important;
         border: none !important;
@@ -115,8 +118,8 @@ st.markdown("""
         font-weight: bold !important;
         padding: 12px 20px !important;
         font-size: 0.95rem !important;
-    }
-    div.stButton > button[key="btn_info"] {
+    }}
+    div.stButton > button[key="btn_info"] {{
         background-color: transparent !important;
         color: #0c1c30 !important;
         border: 2px solid #0c1c30 !important;
@@ -125,24 +128,24 @@ st.markdown("""
         font-weight: bold !important;
         padding: 12px 20px !important;
         font-size: 0.95rem !important;
-    }
-    .titulo-estado {
+    }}
+    .titulo-estado {{
         color: #0c1c30 !important;
         font-size: 1.3rem !important;
         font-weight: bold !important;
         margin-top: 10px;
         margin-bottom: 15px;
         display: block;
-    }
-    div[data-testid="stNotification"] * {
+    }}
+    div[data-testid="stNotification"] * {{
         color: #0c1c30 !important;
-    }
-    .illustration-box {
+    }}
+    .illustration-box {{
         display: flex;
         justify-content: center;
         align-items: center;
         margin-top: 25px;
-    }
+    }}
     </style>
 """, unsafe_allow_html=True)
 
