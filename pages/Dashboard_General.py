@@ -10,7 +10,7 @@ pagina_activa = 2
 st.markdown(f"""
     <style>
     .stApp {{
-        background-color: #f8f9fa;
+        background-color: #f8f9fa !important;
     }}
     [data-testid="stHeader"] {{
         display: none !important;
@@ -83,7 +83,7 @@ st.markdown(f"""
         font-weight: bold !important;
     }}
     
-    /* Corrección del contraste de las tarjetas de métricas */
+    /* Forzar texto de métricas y títulos */
     div[data-testid="stMetric"] {{
         background-color: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
@@ -91,15 +91,25 @@ st.markdown(f"""
         border-radius: 8px !important;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
     }}
-    div[data-testid="stMetricLabel"] {{
+    div[data-testid="stMetric"] label[data-testid="stMetricLabel"] p {{
         color: #4a5568 !important;
-        font-size: 0.9rem !important;
+        font-size: 0.95rem !important;
         font-weight: 600 !important;
     }}
-    div[data-testid="stMetricValue"] {{
+    div[data-testid="stMetricValue"] div {{
         color: #0c1c30 !important;
         font-size: 1.8rem !important;
         font-weight: bold !important;
+    }}
+    
+    /* Arreglo para que las pestañas (Tabs) se vean perfectamente */
+    button[data-baseweb="tab"] {{
+        color: #718096 !important;
+        font-weight: 600 !important;
+    }}
+    button[data-baseweb="tab"][aria-selected="true"] {{
+        color: #2e7d32 !important;
+        border-bottom-color: #2e7d32 !important;
     }}
     
     div[data-testid="stNotification"] * {{
@@ -171,13 +181,24 @@ with tab1:
     fig1.update_traces(line_color="#0c1c30", line_width=4, marker=dict(size=12, color="#2e7d32"))
     fig1.update_yaxes(range=[0, 5])
     
-    # Ajuste de contraste para textos del gráfico
     fig1.update_layout(
         plot_bgcolor="rgba(0,0,0,0)",
         paper_bgcolor="rgba(0,0,0,0)",
         font=dict(color="#0c1c30"),
-        xaxis=dict(showgrid=True, gridcolor="#e2e8f0", linecolor="#0c1c30", tickfont=dict(color="#0c1c30")),
-        yaxis=dict(showgrid=True, gridcolor="#e2e8f0", linecolor="#0c1c30", tickfont=dict(color="#0c1c30"))
+        xaxis=dict(
+            title_font=dict(color="#0c1c30"),
+            showgrid=True, 
+            gridcolor="#e2e8f0", 
+            linecolor="#0c1c30", 
+            tickfont=dict(color="#0c1c30")
+        ),
+        yaxis=dict(
+            title_font=dict(color="#0c1c30"),
+            showgrid=True, 
+            gridcolor="#e2e8f0", 
+            linecolor="#0c1c30", 
+            tickfont=dict(color="#0c1c30")
+        )
     )
     st.plotly_chart(fig1, use_container_width=True)
 
@@ -191,14 +212,23 @@ with tab2:
                           "anxiety_level": "Nivel de Ansiedad Promedio"},
                   color_discrete_map={"BAJO": "#2e7d32", "MODERADO": "#ffa15a", "ALTO": "#ef553b"})
     
-    # Ajuste de contraste para textos del gráfico
     fig2.update_layout(
         showlegend=False,
         plot_bgcolor="rgba(0,0,0,0)",
         paper_bgcolor="rgba(0,0,0,0)",
         font=dict(color="#0c1c30"),
-        xaxis=dict(linecolor="#0c1c30", tickfont=dict(color="#0c1c30")),
-        yaxis=dict(showgrid=True, gridcolor="#e2e8f0", linecolor="#0c1c30", tickfont=dict(color="#0c1c30"))
+        xaxis=dict(
+            title_font=dict(color="#0c1c30"),
+            linecolor="#0c1c30", 
+            tickfont=dict(color="#0c1c30")
+        ),
+        yaxis=dict(
+            title_font=dict(color="#0c1c30"),
+            showgrid=True, 
+            gridcolor="#e2e8f0", 
+            linecolor="#0c1c30", 
+            tickfont=dict(color="#0c1c30")
+        )
     )
     st.plotly_chart(fig2, use_container_width=True)
 
