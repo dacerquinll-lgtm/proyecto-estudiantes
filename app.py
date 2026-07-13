@@ -18,9 +18,14 @@ st.markdown("""
     }
     [data-testid="stHeader"] {
         display: none !important;
+        height: 0px !important;
+    }
+    .stAppHeader {
+        display: none !important;
     }
     .block-container {
         padding-top: 0rem !important;
+        margin-top: -45px !important;
         padding-bottom: 0rem !important;
     }
     [data-testid="stSidebar"] {
