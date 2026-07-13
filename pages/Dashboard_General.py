@@ -83,32 +83,38 @@ st.markdown(f"""
         font-weight: bold !important;
     }}
     
-    /* Forzar texto de métricas y títulos */
+    /* Configuración de Tarjetas de Métricas con Fondo de Color */
     div[data-testid="stMetric"] {{
-        background-color: #ffffff !important;
-        border: 1px solid #e2e8f0 !important;
+        background-color: #0c1c30 !important;
+        border: 1px solid #0c1c30 !important;
         padding: 15px !important;
         border-radius: 8px !important;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
     }}
     div[data-testid="stMetric"] label[data-testid="stMetricLabel"] p {{
-        color: #4a5568 !important;
+        color: #90a4ae !important;
         font-size: 0.95rem !important;
-        font-weight: 600 !important;
+        font-weight: bold !important;
     }}
     div[data-testid="stMetricValue"] div {{
-        color: #0c1c30 !important;
+        color: #ffffff !important;
         font-size: 1.8rem !important;
         font-weight: bold !important;
     }}
     
-    /* Arreglo para que las pestañas (Tabs) se vean perfectamente */
+    /* Corrección Definitiva del Color de las Pestañas (Tabs) */
+    button[data-baseweb="tab"] p {{
+        color: #546e7a !important;
+        font-weight: bold !important;
+        font-size: 0.95rem !important;
+    }}
+    button[data-baseweb="tab"][aria-selected="true"] p {{
+        color: #2e7d32 !important;
+    }}
     button[data-baseweb="tab"] {{
-        color: #718096 !important;
-        font-weight: 600 !important;
+        border-bottom-color: #cfd8dc !important;
     }}
     button[data-baseweb="tab"][aria-selected="true"] {{
-        color: #2e7d32 !important;
         border-bottom-color: #2e7d32 !important;
     }}
     
