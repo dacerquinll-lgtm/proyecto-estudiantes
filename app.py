@@ -14,7 +14,7 @@ if 'datasets' not in st.session_state:
 st.markdown("""
     <style>
     .stApp {
-        background-color: #f8f9fa;
+        background-color: #f8f9fa !important;
     }
     [data-testid="stHeader"] {
         display: none !important;
@@ -48,7 +48,7 @@ st.markdown("""
         align-items: center;
         gap: 10px;
     }
-    div[data-testid="stHorizontalBlock"]:first-of-type {
+    div[data-testid="stHorizontalBlock"]:has(button[key^="nav_"]) {
         background-color: #142840 !important;
         padding: 10px 20px !important;
         margin-top: 0px !important;
@@ -56,7 +56,7 @@ st.markdown("""
         border-radius: 0 0 8px 8px !important;
         gap: 0px !important;
     }
-    div[data-testid="stHorizontalBlock"]:first-of-type button {
+    div[data-testid="stHorizontalBlock"]:has(button[key^="nav_"]) button {
         background-color: transparent !important;
         color: #cfd8dc !important;
         border: none !important;
@@ -67,11 +67,11 @@ st.markdown("""
         transition: background 0.2s !important;
         box-shadow: none !important;
     }
-    div[data-testid="stHorizontalBlock"]:first-of-type button:hover {
+    div[data-testid="stHorizontalBlock"]:has(button[key^="nav_"]) button:hover {
         background-color: #1c3b5e !important;
         color: #ffffff !important;
     }
-    div[data-testid="stHorizontalBlock"]:first-of-type div[data-testid="column"]:nth-child(1) button {
+    div[data-testid="stHorizontalBlock"]:has(button[key^="nav_"]) div[data-testid="column"]:nth-child(1) button {
         background-color: #2e7d32 !important;
         color: white !important;
     }
