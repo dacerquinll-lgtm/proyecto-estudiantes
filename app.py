@@ -1,135 +1,180 @@
 import streamlit as st
-
 import pandas as pd
-
 import os
 
-
-
-# 1. Configuración de página
-
-st.set_page_config(page_title="MindCare Analytics", page_icon="🧠", layout="wide")
-
-
-
-# 2. Inicialización del Dataset (Global y Corregida)
+st.set_page_config(page_title="MindCare Analytics", page_icon="🧠", layout="wide", initial_sidebar_state="expanded")
 
 if 'datasets' not in st.session_state:
-
     ruta = os.path.join("datasets", "StressLevelDataset_limpio.csv")
-
     if os.path.exists(ruta):
-
         st.session_state['datasets'] = {'estres': pd.read_csv(ruta)}
-
     else:
-
         st.session_state['datasets'] = None
 
-
-
-# 3. CSS para Estilo Dark Profesional (Se aplica a toda la App)
-
 st.markdown("""
-
     <style>
-
-    .stApp { background-color: #0f1116; }
-
-    .metric-card {
-
-        background: linear-gradient(135deg, #1e1e26 0%, #252530 100%);
-
-        padding: 25px;
-
-        border-radius: 20px;
-
-        border: 1px solid #333;
-
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-
+    .stApp {
+        background-color: #f8f9fa;
+    }
+    [data-testid="stHeader"] {
+        background: transparent;
+        height: 0px;
+    }
+    .block-container {
+        padding-top: 1rem !important;
+        padding-bottom: 0rem !important;
+    }
+    [data-testid="stSidebar"] {
+        background-color: #0c1c30 !important;
+    }
+    [data-testid="stSidebar"] * {
+        color: #ffffff !important;
+    }
+    [data-testid="stSidebarNav"] {
+        background-color: #0c1c30 !important;
+    }
+    .header-institucional {
+        background-color: #0c1c30;
+        padding: 15px 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: white;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .header-institucional h2 {
+        color: white !important;
+        margin: 0;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+    }
+    .header-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .bienvenida-titulo {
+        color: #2e7d32 !important;
+        font-size: 2.2rem !important;
+        font-weight: bold !important;
+        margin-bottom: 5px;
+    }
+    .bienvenida-sub {
+        color: #0c1c30 !important;
+        font-size: 1.8rem !important;
+        font-weight: 800 !important;
+        line-height: 1.2;
         margin-bottom: 20px;
-
-        color: white;
-
     }
-
-    h1, h2, h3 { color: #ffffff !important; font-weight: 800 !important; }
-
-    .stInfo { background-color: #1e1e26; border-left: 5px solid #00d4ff; }
-
+    .bienvenida-texto {
+        color: #4a5568;
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 30px;
+    }
+    .btn-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-width: 320px;
+    }
     div.stButton > button {
-
-        background: linear-gradient(90deg, #00d4ff, #0055ff);
-
-        border: none;
-
-        color: white;
-
-        padding: 10px 25px;
-
-        border-radius: 50px;
-
-        font-weight: bold;
-
-        transition: 0.3s;
-
+        width: 100% !important;
+        border-radius: 6px !important;
+        font-weight: bold !important;
+        padding: 12px 20px !important;
+        font-size: 0.95rem !important;
+        transition: all 0.2s ease;
+        text-align: center;
     }
-
-    div.stButton > button:hover { transform: scale(1.05); }
-
+    div.stButton > button[key="btn_eval"] {
+        background-color: #1b5e20 !important;
+        color: white !important;
+        border: none !important;
+    }
+    div.stButton > button[key="btn_eval"]:hover {
+        background-color: #2e7d32 !important;
+        transform: translateY(-2px);
+    }
+    div.stButton > button[key="btn_info"] {
+        background-color: transparent !important;
+        color: #1b5e20 !important;
+        border: 2px solid #1b5e20 !important;
+    }
+    div.stButton > button[key="btn_info"]:hover {
+        background-color: #e8f5e9 !important;
+        transform: translateY(-2px);
+    }
+    .status-card {
+        background-color: #ffffff;
+        padding: 25px;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+    .status-card h4 {
+        color: #0c1c30 !important;
+        margin-bottom: 15px;
+    }
+    .illustration-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        margin-top: 20px;
+    }
+    .illustration-box img {
+        max-width: 85%;
+        height: auto;
+    }
     </style>
-
 """, unsafe_allow_html=True)
 
-
-
-# 4. Interfaz Principal
-
-st.title("🧠 MindCare Analytics")
-
-st.subheader("Sistema Inteligente de Bienestar Estudiantil")
-
-
-
-col_a, col_b = st.columns([1, 1])
-
-
-
-with col_a:
-
-    st.markdown("""
-
-    <div class="metric-card">
-
-        <h3>Bienvenido de nuevo</h3>
-
-        <p>Tu sistema está analizando datos en tiempo real. Selecciona un módulo en el menú lateral para comenzar tu sesión de trabajo.</p>
-
+st.markdown("""
+    <div class="header-institucional">
+        <div class="header-logo">
+            <span style="font-weight: 900; font-size: 1.6rem; color: #e53935;">UCV</span>
+        </div>
+        <div>
+            <h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2>
+        </div>
     </div>
+""", unsafe_allow_html=True)
 
+col1, col2 = st.columns([1.1, 0.9], gap="large")
+
+with col1:
+    st.markdown("""
+        <div class="home-container">
+            <h3 class="bienvenida-titulo">Bienvenido</h3>
+            <h1 class="bienvenida-sub">Sistema Inteligente para la Reducción de Estrés Académico</h1>
+            <p class="bienvenida-texto">
+                Plataforma basada en modelos de Machine Learning que analiza tus hábitos académicos 
+                y personales para identificar tu nivel de estrés y brindarte recomendaciones personalizadas.
+            </p>
+        </div>
     """, unsafe_allow_html=True)
+    
+    st.markdown('<div class="btn-container">', unsafe_allow_html=True)
+    st.button("Iniciar evaluación ➔", key="btn_eval")
+    st.button("Ver información ⓘ", key="btn_info")
+    st.markdown('</div>', unsafe_allow_html=True)
 
-
-
-with col_b:
-
+with col2:
+    st.markdown('<div class="status-card">', unsafe_allow_html=True)
+    st.markdown("<h4>Estado del Sistema</h4>", unsafe_allow_html=True)
+    
     if st.session_state['datasets'] is not None:
-
-        st.info("✅ **Conexión con el Modelo:** RF-Optimizado v2.4")
-
+        st.success("✅ **Conexión con el Modelo:** RF-Optimizado v2.4")
         st.info("✅ **Estado de Datos:** Dataset cargado correctamente.")
-
     else:
-
         st.error("⚠️ Error crítico: No se encontró 'datasets/StressLevelDataset_limpio.csv'")
-
-
-
-# 5. Acceso Rápido
-
-st.markdown("---")
-
-st.write("### 🚀 Acceso Rápido")
-
-st.warning("Nota: Usa el menú lateral para una navegación fluida.")
+        
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    st.markdown("""
+        <div class="illustration-box">
+            <img src="https://img.freepik.com/vectores-gratis/concept-concept-de-sante-mentale-illustration_114360-8452.jpg">
+        </div>
+    """, unsafe_allow_html=True)
