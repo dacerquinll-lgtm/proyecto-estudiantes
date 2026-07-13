@@ -20,20 +20,25 @@ st.markdown("""
         display: none !important;
     }
     .block-container {
-        padding-top: 1rem !important;
+        padding-top: 0rem !important;
         padding-bottom: 0rem !important;
+        padding-left: 0rem !important;
+        padding-right: 0rem !important;
+        max-width: 100% !important;
     }
     [data-testid="stSidebar"] {
         display: none !important;
     }
     .header-institucional {
         background-color: #0c1c30;
-        padding: 15px 30px;
+        padding: 20px 45px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         color: white;
-        border-radius: 8px 8px 0 0;
+        margin-top: 0px !important;
+        margin-left: 0px !important;
+        margin-right: 0px !important;
         margin-bottom: 0px;
     }
     .header-institucional h2 {
@@ -49,10 +54,9 @@ st.markdown("""
     }
     .nav-bar {
         background-color: #142840;
-        padding: 10px 20px;
+        padding: 12px 45px;
         display: flex;
         gap: 15px;
-        border-radius: 0 0 8px 8px;
         margin-bottom: 30px;
     }
     .nav-link {
@@ -71,6 +75,10 @@ st.markdown("""
     .nav-active {
         background-color: #2e7d32;
         color: white !important;
+    }
+    .main-content {
+        padding-left: 45px;
+        padding-right: 45px;
     }
     .bienvenida-titulo {
         color: #2e7d32 !important;
@@ -161,6 +169,8 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
+st.markdown('<div class="main-content">', unsafe_allow_html=True)
+
 col1, col2 = st.columns([1.1, 0.9], gap="large")
 
 with col1:
@@ -192,3 +202,5 @@ with col2:
     st.markdown('<div class="illustration-box">', unsafe_allow_html=True)
     st.image("assets/imagen.png", use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
