@@ -121,12 +121,8 @@ st.markdown("""
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100%;
-        margin-top: 20px;
-    }
-    .illustration-box img {
-        max-width: 85%;
         height: auto;
+        margin-top: 20px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -173,8 +169,6 @@ with col2:
         
     st.markdown('</div>', unsafe_allow_html=True)
     
-    st.markdown("""
-        <div class="illustration-box">
-            <img src="https://img.freepik.com/vectores-gratis/concept-concept-de-sante-mentale-illustration_114360-8452.jpg">
-        </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<div class="illustration-box">', unsafe_allow_html=True)
+    st.image("assets/imagen.png", use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
