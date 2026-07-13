@@ -4,9 +4,9 @@ import os
 
 st.set_page_config(page_title="MindCare Analytics", page_icon="🧠", layout="wide", initial_sidebar_state="collapsed")
 
-# Define la key del botón que quieres que se pinte de verde en esta página
-# Para app.py es "inicio". En las otras páginas usarás "dash", "detec", "rep" o "sim".
-nav_activa = "inicio"
+# Define el número de la columna que quieres pintar de verde (1 para Inicio, 2 para Dashboard, etc.)
+# En las otras páginas solo cambias este número (ej: 2 en Dashboard_General.py)
+pagina_activa = 1
 
 if 'datasets' not in st.session_state:
     ruta = os.path.join("datasets", "StressLevelDataset_limpio.csv")
@@ -78,8 +78,8 @@ st.markdown(f"""
         text-decoration: underline !important;
     }}
     
-    /* Selector directo e indestructible por el data-testid del elemento activo */
-    div[data-testid="stPageLink-{nav_activa}"] a {{
+    /* Selector ultra preciso usando :nth-of-type para pintar la columna activa */
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) > div[data-testid="column"]:nth-of-type({pagina_activa}) div[data-testid="stPageLink"] a {{
         background-color: #2e7d32 !important;
         color: white !important;
         text-decoration: none !important;
@@ -165,15 +165,15 @@ st.markdown("""
 
 cols_nav = st.columns([1, 1.3, 1.2, 1.3, 1.4, 4])
 with cols_nav[0]:
-    st.page_link("app.py", label="Inicio", icon=None, key="inicio")
+    st.page_link("app.py", label="Inicio", icon=None)
 with cols_nav[1]:
-    st.page_link("pages/Dashboard_General.py", label="Dashboard General", icon=None, key="dash")
+    st.page_link("pages/Dashboard_General.py", label="Dashboard General", icon=None)
 with cols_nav[2]:
-    st.page_link("pages/Detector_de_Estres.py", label="Detector de Estrés", icon=None, key="detec")
+    st.page_link("pages/Detector_de_Estres.py", label="Detector de Estrés", icon=None)
 with cols_nav[3]:
-    st.page_link("pages/Reportes_y_Exportacion.py", label="Reportes y Exportación", icon=None, key="rep")
+    st.page_link("pages/Reportes_y_Exportacion.py", label="Reportes y Exportación", icon=None)
 with cols_nav[4]:
-    st.page_link("pages/Simulador_de_Escenarios.py", label="Simulador de Escenarios", icon=None, key="sim")
+    st.page_link("pages/Simulador_de_Escenarios.py", label="Simulador de Escenarios", icon=None)
 
 col1, col2 = st.columns([1.1, 0.9], gap="large")
 
