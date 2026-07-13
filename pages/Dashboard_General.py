@@ -83,40 +83,49 @@ st.markdown(f"""
         font-weight: bold !important;
     }}
     
-    div[data-testid="stMetric"] {{
+    div[data-testid="stMetric"], div[data-testid="metric-container"] {{
         padding: 15px !important;
         border-radius: 8px !important;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08) !important;
     }}
     
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stMetric"]) div[data-testid="column"]:nth-of-type(1) div[data-testid="stMetric"] {{
+    div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(1) div[data-testid="stMetric"],
+    div[data-testid="column"]:has(div[data-testid="metric-container"]):nth-of-type(1) div[data-testid="metric-container"] {{
         background-color: #e3f2fd !important;
         border: 1px solid #90caf9 !important;
     }}
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stMetric"]) div[data-testid="column"]:nth-of-type(1) div[data-testid="stMetric"] * {{
+    div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(1) div[data-testid="stMetric"] *,
+    div[data-testid="column"]:has(div[data-testid="metric-container"]):nth-of-type(1) div[data-testid="metric-container"] * {{
         color: #0d47a1 !important;
     }}
     
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stMetric"]) div[data-testid="column"]:nth-of-type(2) div[data-testid="stMetric"] {{
+    div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(2) div[data-testid="stMetric"],
+    div[data-testid="column"]:has(div[data-testid="metric-container"]):nth-of-type(2) div[data-testid="metric-container"] {{
         background-color: #fff3e0 !important;
         border: 1px solid #ffcc80 !important;
     }}
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stMetric"]) div[data-testid="column"]:nth-of-type(2) div[data-testid="stMetric"] * {{
+    div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(2) div[data-testid="stMetric"] *,
+    div[data-testid="column"]:has(div[data-testid="metric-container"]):nth-of-type(2) div[data-testid="metric-container"] * {{
         color: #e65100 !important;
     }}
     
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stMetric"]) div[data-testid="column"]:nth-of-type(3) div[data-testid="stMetric"] {{
+    div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(3) div[data-testid="stMetric"],
+    div[data-testid="column"]:has(div[data-testid="metric-container"]):nth-of-type(3) div[data-testid="metric-container"] {{
         background-color: #ffebee !important;
         border: 1px solid #ffcdd2 !important;
     }}
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stMetric"]) div[data-testid="column"]:nth-of-type(3) div[data-testid="stMetric"] * {{
+    div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(3) div[data-testid="stMetric"] *,
+    div[data-testid="column"]:has(div[data-testid="metric-container"]):nth-of-type(3) div[data-testid="metric-container"] * {{
         color: #c62828 !important;
     }}
     
     button[data-baseweb="tab"] {{
+        background-color: transparent !important;
         border-bottom-color: #cfd8dc !important;
     }}
-    button[data-baseweb="tab"] * {{
+    button[data-baseweb="tab"] p,
+    button[data-baseweb="tab"] span,
+    button[data-baseweb="tab"] div {{
         color: #4a5568 !important;
         font-weight: bold !important;
         font-size: 0.95rem !important;
@@ -124,7 +133,9 @@ st.markdown(f"""
     button[data-baseweb="tab"][aria-selected="true"] {{
         border-bottom-color: #2e7d32 !important;
     }}
-    button[data-baseweb="tab"][aria-selected="true"] * {{
+    button[data-baseweb="tab"][aria-selected="true"] p,
+    button[data-baseweb="tab"][aria-selected="true"] span,
+    button[data-baseweb="tab"][aria-selected="true"] div {{
         color: #2e7d32 !important;
     }}
     
