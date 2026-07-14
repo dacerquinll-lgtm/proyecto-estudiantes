@@ -229,3 +229,5 @@ else:
         if 'ultimo_diagnostico' in st.session_state:
             del st.session_state['ultimo_diagnostico']
         st.rerun()
+
+    st.markdown('<div style="height: 40px;"></div>', unsafe_allow_html=True)
