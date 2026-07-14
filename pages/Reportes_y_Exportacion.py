@@ -130,6 +130,7 @@ if 'ultimo_diagnostico' in st.session_state:
         for i in range(8):
             cols_metric[i % 4].markdown(f"<div style='color:black; font-size: 0.9rem;'>• <b>{labels_metric[i]}:</b> {datos[i]} / 10</div>", unsafe_allow_html=True)
 
+        st.markdown('<div style="height: 20px;"></div>', unsafe_allow_html=True)
     # Añadimos un margen superior al input para separar
     st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
     nombre = st.text_input("Nombre Completo del Estudiante:", "Estudiante")
