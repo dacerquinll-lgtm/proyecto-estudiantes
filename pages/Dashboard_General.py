@@ -138,3 +138,4 @@ with tab2:
     fig2.update_yaxes(title="Nivel de Ansiedad Promedio", color="#0c1c30", gridcolor="#e0e0e0", tickfont=dict(color="#0c1c30"), title_font=dict(color="#0c1c30"))
     st.plotly_chart(fig2, use_container_width=True)
     st.info("💡 **Interpretación:** Se observa una correlación directa y ascendente: a mayores niveles de estrés reportados, los niveles de ansiedad promedio entre los estudiantes se incrementan de forma severa.")
+    st.markdown('<div style="height: 50px;"></div>', unsafe_allow_html=True)
