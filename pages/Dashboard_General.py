@@ -1,12 +1,3 @@
-import streamlit as st
-import plotly.express as px
-import pandas as pd
-import os
-
-st.set_page_config(page_title="MindCare Analytics - Dashboard", page_icon="📊", layout="wide", initial_sidebar_state="collapsed")
-
-pagina_activa = 2
-
 st.markdown(f"""
     <style>
     .stApp {{
@@ -102,30 +93,19 @@ st.markdown(f"""
     div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(3) div[data-testid="stMetric"] {{ background-color: #ffebee !important; border: 1px solid #ffcdd2 !important; }}
     div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(3) div[data-testid="stMetric"] * {{ color: #c62828 !important; }}
     
-    button[data-baseweb="tab"] div {
-        color: #000000 !important; /* Cambiado a negro */
+    button[data-baseweb="tab"] div {{
+        color: #000000 !important;
         font-weight: bold !important;
         font-size: 0.95rem !important;
-    }
-    button[data-baseweb="tab"][aria-selected="true"] div {
-        color: #2e7d32 !important; /* Mantiene el verde cuando está seleccionada */
-    }
+    }}
+    button[data-baseweb="tab"][aria-selected="true"] div {{
+        color: #2e7d32 !important;
+    }}
     
     div[data-testid="stNotification"] * {{
         color: #0c1c30 !important;
     }}
     </style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-    <div class="header-institucional">
-        <div class="header-logo">
-            <span style="font-weight: 900; font-size: 1.6rem; color: #e53935;">UCV</span>
-        </div>
-        <div>
-            <h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2>
-        </div>
-    </div>
 """, unsafe_allow_html=True)
 
 cols_nav = st.columns([1, 1.3, 1.2, 1.3, 1.4, 4])
