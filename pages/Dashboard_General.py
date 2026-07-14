@@ -33,30 +33,29 @@ st.markdown("""
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
     
-    /* CORRECCIÓN ABSOLUTA PARA PESTAÑAS (ACTIVAS E INACTIVAS) */
-    button[data-baseweb="tab"] {
-        color: #0c1c30 !important;
+    /* CORRECCIÓN ESTRICTA DE PESTAÑAS ACTIVAS E INACTIVAS */
+    div[data-baseweb="tab-list"] button[data-baseweb="tab"] {
         opacity: 1 !important;
     }
-    button[data-baseweb="tab"] p {
+    div[data-baseweb="tab-list"] button[data-baseweb="tab"] span,
+    div[data-baseweb="tab-list"] button[data-baseweb="tab"] p {
+        opacity: 1 !important;
+    }
+    
+    /* Pestaña Seleccionada (Activa) */
+    div[data-baseweb="tab-list"] button[data-baseweb="tab"][aria-selected="true"] span,
+    div[data-baseweb="tab-list"] button[data-baseweb="tab"][aria-selected="true"] p,
+    div[data-baseweb="tab-list"] button[data-baseweb="tab"][aria-selected="true"] {
+        color: #e53935 !important;
+        font-weight: bold !important;
+    }
+    
+    /* Pestaña No Seleccionada (Inactiva) */
+    div[data-baseweb="tab-list"] button[data-baseweb="tab"][aria-selected="false"] span,
+    div[data-baseweb="tab-list"] button[data-baseweb="tab"][aria-selected="false"] p,
+    div[data-baseweb="tab-list"] button[data-baseweb="tab"][aria-selected="false"] {
         color: #0c1c30 !important;
         font-weight: bold !important;
-        opacity: 1 !important;
-    }
-    button[data-baseweb="tab"] div {
-        color: #0c1c30 !important;
-        font-weight: bold !important;
-        opacity: 1 !important;
-    }
-    /* Estilo para la pestaña inactiva */
-    button[data-baseweb="tab"][aria-selected="false"] {
-        color: #555555 !important; /* Un gris oscuro muy legible para diferenciar la inactiva de la activa */
-        opacity: 0.85 !important;
-    }
-    button[data-baseweb="tab"][aria-selected="false"] p, 
-    button[data-baseweb="tab"][aria-selected="false"] div {
-        color: #555555 !important;
-        opacity: 0.85 !important;
     }
     
     h1, h2, h3, h4 { color: #0c1c30 !important; font-weight: bold !important; }
