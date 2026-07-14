@@ -123,7 +123,7 @@ with cols_nav[2]: st.page_link("pages/Detector_de_Estres.py", label="Detector de
 with cols_nav[3]: st.page_link("pages/Reportes_y_Exportacion.py", label="Reportes y Exportación")
 with cols_nav[4]: st.page_link("pages/Simulador_de_Escenarios.py", label="Simulador de Escenarios")
 
-st.title("🧠 Detector Integral Académico")
+st.title("🧠 Detector de Estrés Académico")
 
 if 'iniciado' not in st.session_state:
     st.session_state.update({'respuestas': [], 'iniciado': False})
