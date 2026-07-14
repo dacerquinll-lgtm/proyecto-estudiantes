@@ -5,8 +5,6 @@ import os
 
 st.set_page_config(page_title="MindCare Analytics - Dashboard", page_icon="📊", layout="wide", initial_sidebar_state="collapsed")
 
-pagina_activa = 2
-
 st.markdown("""
     <style>
     .stApp { background-color: #f8f9fa !important; }
@@ -27,30 +25,6 @@ st.markdown("""
     }
     .header-institucional h2 { color: white !important; margin: 0; font-size: 1.2rem !important; font-weight: 600 !important; }
     
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) {
-        background-color: #1a2a40 !important;
-        padding: 10px 20px !important;
-        margin-top: 0px !important;
-        margin-bottom: 30px !important;
-        border-radius: 0 0 8px 8px !important;
-        gap: 0px !important;
-    }
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) div[data-testid="stPageLink"] a {
-        background-color: transparent !important;
-        color: #ffffff !important;
-        font-weight: bold !important;
-        font-size: 0.9rem !important;
-        padding: 6px 12px !important;
-        text-decoration: none !important;
-        display: inline-flex !important;
-    }
-    
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) > div[data-testid="column"]:nth-of-type(2) div[data-testid="stPageLink"] a {
-        background-color: #2e7d32 !important;
-        color: white !important;
-        border-radius: 4px !important;
-    }
-    
     h1, h2, h3, h4 { color: #0c1c30 !important; font-weight: bold !important; }
     [data-testid="stMetricLabel"], [data-testid="stMetricValue"] { color: #0c1c30 !important; }
     div[data-testid="stMetric"] { padding: 15px !important; border-radius: 8px !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08) !important; }
@@ -65,28 +39,17 @@ st.markdown("""
 
 st.markdown("""
     <div class="header-institucional">
-        <div class="header-logo">
-            <span style="font-weight: 900; font-size: 1.6rem; color: #e53935;">UCV</span>
-        </div>
-        <div>
-            <h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2>
-        </div>
+        <div><span style="font-weight: 900; font-size: 1.6rem; color: #e53935;">UCV</span></div>
+        <div><h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2></div>
     </div>
 """, unsafe_allow_html=True)
 
-cols_nav = st.columns([0.8, 1.2, 1.2, 1.4, 1.4])
-with cols_nav[0]: st.page_link("app.py", label="Inicio")
-with cols_nav[1]: st.page_link("pages/Dashboard_General.py", label="Dashboard General")
-with cols_nav[2]: st.page_link("pages/Detector_de_Estres.py", label="Detector de Estrés")
-with cols_nav[3]: st.page_link("pages/Reportes_y_Exportacion.py", label="Reportes y Exportación")
-with cols_nav[4]: st.page_link("pages/Simulador_de_Escenarios.py", label="Simulador de Escenarios")
-
-if 'datasets' not in st.session_state or st.session_state['datasets'] is None:
+if 'datasets' not in st.session_state:
     ruta = os.path.join("datasets", "StressLevelDataset_limpio.csv")
     if os.path.exists(ruta):
         st.session_state['datasets'] = {'estres': pd.read_csv(ruta)}
     else:
-        st.error("❌ Archivo no encontrado.")
+        st.error("Archivo no encontrado.")
         st.stop()
 
 df = st.session_state.datasets['estres']
@@ -107,12 +70,9 @@ with tab1:
     df_line = df.groupby(['stress_level', 'stress_label'])['academic_performance'].mean().reset_index().sort_values('stress_level')
     fig1 = px.line(df_line, x="stress_label", y="academic_performance", markers=True, template="plotly_white")
     fig1.update_traces(line_color="#0c1c30", line_width=4, marker=dict(size=12, color="#2e7d32"))
-    fig1.update_layout(
-        plot_bgcolor="white", paper_bgcolor="white", 
-        font=dict(color="#0c1c30", size=14),
-        xaxis=dict(title="Nivel de Estrés", titlefont=dict(color="#0c1c30", size=16), tickfont=dict(color="#0c1c30", size=14), gridcolor="#e0e0e0"),
-        yaxis=dict(title="Rendimiento Académico", titlefont=dict(color="#0c1c30", size=16), tickfont=dict(color="#0c1c30", size=14), gridcolor="#e0e0e0")
-    )
+    fig1.update_layout(plot_bgcolor="white", paper_bgcolor="white", font=dict(color="#0c1c30", size=14))
+    fig1.update_xaxes(title="Nivel de Estrés", color="#0c1c30", gridcolor="#e0e0e0", title_font_size=16, tickfont_size=14)
+    fig1.update_yaxes(title="Rendimiento Académico", color="#0c1c30", gridcolor="#e0e0e0", title_font_size=16, tickfont_size=14)
     st.plotly_chart(fig1, use_container_width=True)
 
 with tab2:
@@ -124,12 +84,9 @@ with tab2:
         color_discrete_map={"BAJO": "#2e7d32", "MODERADO": "#ffa15a", "ALTO": "#ef553b"},
         category_orders={"stress_label": ["BAJO", "MODERADO", "ALTO"]}
     )
-    fig2.update_layout(
-        showlegend=False, plot_bgcolor="white", paper_bgcolor="white", 
-        font=dict(color="#0c1c30", size=14),
-        xaxis=dict(title="Nivel de Estrés", titlefont=dict(color="#0c1c30", size=16), tickfont=dict(color="#0c1c30", size=14), gridcolor="#e0e0e0"),
-        yaxis=dict(title="Nivel de Ansiedad Promedio", titlefont=dict(color="#0c1c30", size=16), tickfont=dict(color="#0c1c30", size=14), gridcolor="#e0e0e0")
-    )
+    fig2.update_layout(showlegend=False, plot_bgcolor="white", paper_bgcolor="white", font=dict(color="#0c1c30", size=14))
+    fig2.update_xaxes(title="Nivel de Estrés", color="#0c1c30", gridcolor="#e0e0e0", title_font_size=16, tickfont_size=14)
+    fig2.update_yaxes(title="Nivel de Ansiedad Promedio", color="#0c1c30", gridcolor="#e0e0e0", title_font_size=16, tickfont_size=14)
     st.plotly_chart(fig2, use_container_width=True)
 
 st.info("💡 **Interpretación:** La tendencia descendente confirma que, al aumentar el nivel de estrés, el rendimiento académico disminuye de forma consistente.")
