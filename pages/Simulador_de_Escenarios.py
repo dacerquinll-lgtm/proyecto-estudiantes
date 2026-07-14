@@ -7,18 +7,10 @@ st.set_page_config(page_title="Simulador de Proyecciones", layout="wide", initia
 
 st.markdown("""
     <style>
-    /* NUEVA REGLA DE PRIORIDAD */
-    .main p { color: #000000 !important; opacity: 1 !important; }
-    
     .stApp { background-color: #f8f9fa !important; }
     [data-testid="stHeader"] { display: none !important; }
     .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
-    
-    /* Mantenemos el estilo funcional de la página de reportes */
-    [data-testid="stContainer"] div, [data-testid="stContainer"] p, [data-testid="stMetricValue"], [data-testid="stMetricLabel"] {
-        color: #000000 !important;
-    }
     
     .header-institucional {
         background-color: #0c1c30;
@@ -81,13 +73,12 @@ diag = st.session_state['ultimo_diagnostico']
 datos_base = np.array(diag['datos']) 
 estres_base = diag['estres']
 
-# Texto explicativo forzado a ser negro mediante el contenedor que ya definimos arriba
+# Texto corregido con estilo directo para garantizar visibilidad sin afectar el resto
 st.markdown("""
-    <div style="margin-bottom: 25px; color: #000000 !important; font-size: 1.1rem;">
+    <p style="color: #000000 !important; font-size: 1.1rem; margin-bottom: 25px;">
         Esta herramienta compara cómo evolucionaría tu situación académica según las acciones que decidas tomar.
-    </div>
+    </p>
 """, unsafe_allow_html=True)
-
 
 if st.button("🚀 Calcular Proyecciones"):
     ruta_modelo = os.path.join("modelos", "modelo_stress_rf.pkl")
