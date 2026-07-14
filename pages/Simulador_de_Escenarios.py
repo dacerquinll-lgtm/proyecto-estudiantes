@@ -64,7 +64,7 @@ with cols_nav[2]: st.page_link("pages/Detector_de_Estres.py", label="Detector de
 with cols_nav[3]: st.page_link("pages/Reportes_y_Exportacion.py", label="Reportes y Exportación")
 with cols_nav[4]: st.page_link("pages/Simulador_de_Escenarios.py", label="Simulador de Escenarios")
 
-st.title("📈 Simulador de Proyecciones de Bienestar")
+st.title("📈 Simulador de Proyecciones")
 
 if 'ultimo_diagnostico' not in st.session_state:
     st.warning("⚠️ Debes completar primero el diagnóstico en el Detector Integral.")
