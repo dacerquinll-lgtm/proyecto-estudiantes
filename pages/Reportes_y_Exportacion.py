@@ -121,8 +121,10 @@ if 'ultimo_diagnostico' in st.session_state:
         col_res2.metric("Proyección de Rendimiento", mapa_rend.get(rendimiento))
         
         st.write("---")
-        # Corrección: Forzamos un color de texto oscuro y negrita extrema
         st.markdown("<h4 style='color: #0c1c30 !important; font-weight: 900 !important;'>Variables detalladas:</h4>", unsafe_allow_html=True)
+        
+        # Corrección de espacio aplicado aquí
+        st.markdown("<style>[data-testid='column'] { max-width: 220px !important; }</style>", unsafe_allow_html=True)
         cols_metric = st.columns(4)
         labels_metric = [
             "Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", 
