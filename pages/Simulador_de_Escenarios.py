@@ -12,7 +12,17 @@ st.markdown("""
     .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
     
-    /* CABECERA (Se mantiene intacta y profesional) */
+    /* FUERZA NEGRO EN TODO MENOS EN LA CABECERA */
+    div:not(.header-institucional):not(.header-institucional *), 
+    p:not(.header-institucional *), 
+    h1:not(.header-institucional *), 
+    h2:not(.header-institucional *), 
+    h3:not(.header-institucional *), 
+    .stMetricValue, .stMetricLabel {
+        color: #000000 !important;
+    }
+    
+    /* DISEÑO DE CABECERA (SE MANTIENE) */
     .header-institucional {
         background-color: #0c1c30;
         padding: 20px 30px;
@@ -22,7 +32,7 @@ st.markdown("""
         color: white;
         border-radius: 8px 8px 0 0;
     }
-    .header-institucional h2 { color: white !important; margin: 0; font-size: 1.2rem !important; font-weight: 600 !important; }
+    .header-institucional h2 { color: white !important; margin: 0; font-size: 1.2rem !important; }
     
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) {
         background-color: #1a2a40 !important;
@@ -34,11 +44,6 @@ st.markdown("""
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
     
-    /* FUERZA NEGRO SOLO EN ELEMENTOS ESPECÍFICOS DE LAS MÉTRICAS */
-    .stMetricValue, .stMetricLabel, div[data-testid="stMarkdownContainer"] p {
-        color: #000000 !important;
-    }
-    
     /* BOTÓN */
     div.stButton > button {
         background-color: #0c1c30 !important;
@@ -48,13 +53,6 @@ st.markdown("""
         font-weight: bold !important;
     }
     </style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-    <div class="header-institucional">
-        <div><span style="font-weight: 900; font-size: 1.6rem; color: #e53935;">UCV</span></div>
-        <div><h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2></div>
-    </div>
 """, unsafe_allow_html=True)
 
 cols_nav = st.columns([0.8, 1.2, 1.2, 1.4, 1.4])
