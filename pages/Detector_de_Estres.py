@@ -9,7 +9,13 @@ st.markdown("""
     <style>
     .stApp { background-color: #f8f9fa !important; }
     [data-testid="stHeader"] { display: none !important; }
-    .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
+    
+    /* CAMBIO CLAVE 1: Padding inferior para descolgar la página del borde */
+    .block-container { 
+        padding-top: 0rem !important; 
+        padding-bottom: 5rem !important; 
+    }
+    
     [data-testid="stSidebar"] { display: none !important; }
     
     .header-institucional {
@@ -153,7 +159,7 @@ elif len(st.session_state.respuestas) == 0:
         col_c, col_d = st.columns(2)
         with col_c:
             with st.container(border=True):
-                animo = st.slider("3. ¿Cómo calificarías tu estado de ánimo general? (1=Muy decaído, 10=Muy optimista)", 1, 10, 5)
+                animas = st.slider("3. ¿Cómo calificarías tu estado de ánimo general? (1=Muy decaído, 10=Muy optimista)", 1, 10, 5)
         with col_d:
             with st.container(border=True):
                 sueno = st.slider("4. ¿Cómo es la calidad de tu sueño? (1=Muy mala, 10=Excelente)", 1, 10, 5)
@@ -174,10 +180,11 @@ elif len(st.session_state.respuestas) == 0:
             with st.container(border=True):
                 interes = st.slider("8. ¿Cómo es tu interés académico? (1=Muy bajo, 10=Excelente)", 1, 10, 5)
             
-        st.markdown('<div style="margin-top: 15px;"></div>', unsafe_allow_html=True)
+        # CAMBIO CLAVE 2: Espacio explicito previo al boton del formulario
+        st.markdown('<div style="margin-top: 35px; margin-bottom: 10px;"></div>', unsafe_allow_html=True)
         enviar = st.form_submit_button("📊 Analizar nivel de estrés")
         if enviar:
-            st.session_state.respuestas = [ansiedad, confianza, animo, sueno, carga, recreativo, apoyo, interes]
+            st.session_state.respuestas = [ansiedad, confianza, animas, sueno, carga, recreativo, apoyo, interes]
             st.rerun()
 
 else:
@@ -224,7 +231,7 @@ else:
     if estres == 2:
         st.warning("⚠️ **Nota de Atención Profesional:**")
         st.markdown("""
-        Due to que los indicadores sugieren un nivel de estrés elevado, te recomendamos:
+        Debido a que los indicadores sugieren un nivel de estrés elevado, te recomendamos:
         - **Buscar apoyo profesional:** Considera agendar una cita con el psicólogo del área de Bienestar Universitario.
         - **Desconexión:** Reduce actividades académicas no esenciales por 48 horas.
         - **Comunicación:** Habla con un tutor o docente de confianza sobre tu situación actual.
@@ -234,7 +241,7 @@ else:
     else:
         st.success("¡Excelente! Continúa monitoreando tu bienestar para mantener este equilibrio.")
     
-    st.markdown('<div style="margin-top: 50px;"></div>', unsafe_allow_html=True)
+    st.markdown('<div style="margin-top: 30px;"></div>', unsafe_allow_html=True)
 
     if st.button("🔄 **Reiniciar Evaluación**"):
         st.session_state.respuestas = []
@@ -242,5 +249,3 @@ else:
         if 'ultimo_diagnostico' in st.session_state:
             del st.session_state['ultimo_diagnostico']
         st.rerun()
-
-    st.markdown('<div style="height: 40px;"></div>', unsafe_allow_html=True)
