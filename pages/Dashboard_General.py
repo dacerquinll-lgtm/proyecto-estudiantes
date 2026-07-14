@@ -71,9 +71,8 @@ with tab1:
     fig1 = px.line(df_line, x="stress_label", y="academic_performance", markers=True, template="plotly_white")
     fig1.update_traces(line_color="#0c1c30", line_width=4, marker=dict(size=12, color="#2e7d32"))
     fig1.update_layout(plot_bgcolor="white", paper_bgcolor="white", font=dict(color="#0c1c30", size=14))
-    # Forzando colores de texto en ejes y etiquetas
-    fig1.update_xaxes(title="Nivel de Estrés", color="#0c1c30", gridcolor="#e0e0e0", tickfont_color="#0c1c30", title_font_color="#0c1c30")
-    fig1.update_yaxes(title="Rendimiento Académico", color="#0c1c30", gridcolor="#e0e0e0", tickfont_color="#0c1c30", title_font_color="#0c1c30")
+    fig1.update_xaxes(title="Nivel de Estrés", color="#0c1c30", gridcolor="#e0e0e0", tickfont=dict(color="#0c1c30"), title_font=dict(color="#0c1c30"))
+    fig1.update_yaxes(title="Rendimiento Académico", color="#0c1c30", gridcolor="#e0e0e0", tickfont=dict(color="#0c1c30"), title_font=dict(color="#0c1c30"))
     st.plotly_chart(fig1, use_container_width=True)
 
 with tab2:
@@ -86,9 +85,8 @@ with tab2:
         category_orders={"stress_label": ["BAJO", "MODERADO", "ALTO"]}
     )
     fig2.update_layout(showlegend=False, plot_bgcolor="white", paper_bgcolor="white", font=dict(color="#0c1c30", size=14))
-    # Forzando colores de texto en ejes y etiquetas
-    fig2.update_xaxes(title="Nivel de Estrés", color="#0c1c30", gridcolor="#e0e0e0", tickfont_color="#0c1c30", title_font_color="#0c1c30")
-    fig2.update_yaxes(title="Nivel de Ansiedad Promedio", color="#0c1c30", gridcolor="#e0e0e0", tickfont_color="#0c1c30", title_font_color="#0c1c30")
+    fig2.update_xaxes(title="Nivel de Estrés", color="#0c1c30", gridcolor="#e0e0e0", tickfont=dict(color="#0c1c30"), title_font=dict(color="#0c1c30"))
+    fig2.update_yaxes(title="Nivel de Ansiedad Promedio", color="#0c1c30", gridcolor="#e0e0e0", tickfont=dict(color="#0c1c30"), title_font=dict(color="#0c1c30"))
     st.plotly_chart(fig2, use_container_width=True)
 
 st.info("💡 **Interpretación:** La tendencia descendente confirma que, al aumentar el nivel de estrés, el rendimiento académico disminuye de forma consistente.")
