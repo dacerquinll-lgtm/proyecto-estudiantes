@@ -101,19 +101,41 @@ col3.metric("Ansiedad Promedio", round(df['anxiety_level'].mean(), 2))
 tab1, tab2 = st.tabs(["📉 Tendencia de Rendimiento", "⚠️ Factores de Riesgo"])
 
 with tab1:
+    st.subheader("Evolución del Rendimiento Académico")
     df_line = df.groupby(['stress_level', 'stress_label'])['academic_performance'].mean().reset_index().sort_values('stress_level')
-    fig1 = px.line(df_line, x="stress_label", y="academic_performance", markers=True)
-    # FORZANDO TEMA CLARO:
-    fig1.update_layout(plot_bgcolor="white", paper_bgcolor="white", font=dict(color="#0c1c30", size=14))
-    fig1.update_xaxes(showgrid=True, gridcolor="#e0e0e0")
-    fig1.update_yaxes(showgrid=True, gridcolor="#e0e0e0")
+    fig1 = px.line(df_line, x="stress_label", y="academic_performance", markers=True, template="plotly_white")
+    
+    # Aplicando colores originales y nombres en español
+    fig1.update_traces(line_color="#0c1c30", line_width=4, marker=dict(size=12, color="#2e7d32"))
+    fig1.update_layout(
+        plot_bgcolor="white", 
+        paper_bgcolor="white", 
+        font=dict(color="#0c1c30", size=14),
+        xaxis_title="Nivel de Estrés",
+        yaxis_title="Rendimiento Académico"
+    )
     st.plotly_chart(fig1, use_container_width=True)
 
 with tab2:
+    st.subheader("Promedio de Ansiedad por Nivel de Estrés")
     df_bar = df.groupby(['stress_label'])['anxiety_level'].mean().reset_index()
-    fig2 = px.bar(df_bar, x='stress_label', y='anxiety_level', color='stress_label')
-    # FORZANDO TEMA CLARO:
-    fig2.update_layout(plot_bgcolor="white", paper_bgcolor="white", font=dict(color="#0c1c30", size=14), showlegend=False)
+    
+    # FORZANDO el orden correcto (Bajo, Moderado, Alto) y colores específicos
+    fig2 = px.bar(
+        df_bar, x='stress_label', y='anxiety_level', color='stress_label', 
+        template="plotly_white",
+        color_discrete_map={"BAJO": "#2e7d32", "MODERADO": "#ffa15a", "ALTO": "#ef553b"},
+        category_orders={"stress_label": ["BAJO", "MODERADO", "ALTO"]}
+    )
+    
+    # Aplicando nombres en español
+    fig2.update_layout(
+        showlegend=False, 
+        plot_bgcolor="white", 
+        paper_bgcolor="white", 
+        font=dict(color="#0c1c30", size=14),
+        xaxis_title="Nivel de Estrés",
+        yaxis_title="Nivel de Ansiedad Promedio"
+    )
     st.plotly_chart(fig2, use_container_width=True)
-
 st.info("💡 **Interpretación:** La tendencia descendente confirma que, al aumentar el nivel de estrés, el rendimiento académico disminuye de forma consistente.")
