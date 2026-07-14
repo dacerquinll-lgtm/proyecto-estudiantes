@@ -12,6 +12,11 @@ st.markdown("""
     .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
     
+    /* Regla específica para forzar color negro en texto y métricas */
+    .texto-negro, .texto-negro p, .texto-negro div, [data-testid="stMetricValue"], [data-testid="stMetricLabel"] {
+        color: #000000 !important;
+    }
+    
     .header-institucional {
         background-color: #0c1c30;
         padding: 20px 30px;
@@ -73,11 +78,13 @@ diag = st.session_state['ultimo_diagnostico']
 datos_base = np.array(diag['datos']) 
 estres_base = diag['estres']
 
-# Texto corregido con estilo directo para garantizar visibilidad sin afectar el resto
+# Aplicamos la clase .texto-negro aquí
 st.markdown("""
-    <p style="color: #000000 !important; font-size: 1.1rem; margin-bottom: 25px;">
-        Esta herramienta compara cómo evolucionaría tu situación académica según las acciones que decidas tomar.
-    </p>
+    <div class="texto-negro">
+        <p style="font-size: 1.1rem; margin-bottom: 25px;">
+            Esta herramienta compara cómo evolucionaría tu situación académica según las acciones que decidas tomar.
+        </p>
+    </div>
 """, unsafe_allow_html=True)
 
 if st.button("🚀 Calcular Proyecciones"):
@@ -97,6 +104,8 @@ if st.button("🚀 Calcular Proyecciones"):
     d_dificultad[5] -= 3
     res_dificultad = modelo.predict(d_dificultad.reshape(1, -1))[0]
 
+    # Aplicamos la clase .texto-negro envolviendo las columnas
+    st.markdown('<div class="texto-negro">', unsafe_allow_html=True)
     col1, col2, col3 = st.columns(3)
     
     def render_escenario(col, titulo, res, icono, explicacion):
@@ -107,14 +116,10 @@ if st.button("🚀 Calcular Proyecciones"):
             st.metric("Rendimiento", ["Malo", "Irregular", "Alto"][rend])
             st.write(f"**Análisis:** {explicacion}")
 
-    render_escenario(col1, "Situación Actual", res_actual, "⚖️", 
-                    "Es el resultado de continuar con tus hábitos de siempre.")
-    
-    render_escenario(col2, "Si realizas mejoras", res_mejora, "✅", 
-                    "El modelo proyecta una baja en el estrés y un mejor rendimiento.")
-    
-    render_escenario(col3, "Si aumentan las dificultades", res_dificultad, "⚠️", 
-                    "El nivel de estrés puede elevarse, afectando tu rendimiento.")
+    render_escenario(col1, "Situación Actual", res_actual, "⚖️", "Es el resultado de continuar con tus hábitos de siempre.")
+    render_escenario(col2, "Si realizas mejoras", res_mejora, "✅", "El modelo proyecta una baja en el estrés y un mejor rendimiento.")
+    render_escenario(col3, "Si aumentan las dificultades", res_dificultad, "⚠️", "El nivel de estrés puede elevarse, afectando tu rendimiento.")
+    st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("---")
     st.info("💡 **Recuerda:** Estas proyecciones sirven como guía para tu toma de decisiones.")
