@@ -76,7 +76,9 @@ st.markdown("""
     div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(1) div[data-testid="stMetric"] { background-color: #ffebee !important; border: 1px solid #ffcdd2 !important; }
     div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(2) div[data-testid="stMetric"] { background-color: #e3f2fd !important; border: 1px solid #90caf9 !important; }
     
-    div.stButton > button {
+    /* ESTILIZACIÓN DE BOTONES REGULARES Y DE FORMULARIO A COLOR VERDE */
+    div.stButton > button,
+    div[data-testid="stFormSubmitButton"] > button {
         background-color: #218838 !important;
         color: #ffffff !important;
         border: none !important;
@@ -84,11 +86,16 @@ st.markdown("""
         font-weight: bold !important;
         font-size: 16px !important;
         padding: 12px 30px !important;
+        width: 100% !important;
     }
-    div.stButton > button:hover {
+    
+    div.stButton > button:hover,
+    div[data-testid="stFormSubmitButton"] > button:hover {
         background-color: #1e7e34 !important;
     }
-    div.stButton > button p {
+    
+    div.stButton > button p,
+    div[data-testid="stFormSubmitButton"] > button p {
         color: #ffffff !important;
         font-size: 16px !important;
         font-weight: bold !important;
@@ -217,7 +224,7 @@ else:
     if estres == 2:
         st.warning("⚠️ **Nota de Atención Profesional:**")
         st.markdown("""
-        Debido a que los indicadores sugieren un nivel de estrés elevado, te recomendamos:
+        Due to que los indicadores sugieren un nivel de estrés elevado, te recomendamos:
         - **Buscar apoyo profesional:** Considera agendar una cita con el psicólogo del área de Bienestar Universitario.
         - **Desconexión:** Reduce actividades académicas no esenciales por 48 horas.
         - **Comunicación:** Habla con un tutor o docente de confianza sobre tu situación actual.
