@@ -77,15 +77,21 @@ st.markdown("""
     div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(2) div[data-testid="stMetric"] { background-color: #e3f2fd !important; border: 1px solid #90caf9 !important; }
     
     div.stButton > button {
-        background-color: #2e7d32 !important;
-        color: white !important;
+        background-color: #218838 !important;
+        color: #ffffff !important;
         border: none !important;
-        border-radius: 4px !important;
+        border-radius: 6px !important;
         font-weight: bold !important;
-        padding: 10px 24px !important;
+        font-size: 16px !important;
+        padding: 12px 30px !important;
     }
     div.stButton > button:hover {
-        background-color: #1b5e20 !important;
+        background-color: #1e7e34 !important;
+    }
+    div.stButton > button p {
+        color: #ffffff !important;
+        font-size: 16px !important;
+        font-weight: bold !important;
     }
     </style>
 """, unsafe_allow_html=True)
