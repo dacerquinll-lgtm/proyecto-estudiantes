@@ -105,7 +105,7 @@ df = st.session_state.datasets['estres']
 mapa_label = {0: "BAJO", 1: "MODERADO", 2: "ALTO"}
 df['stress_label'] = df['stress_level'].map(mapa_label)
 
-st.title("📊 Centro de Datos")
+st.title("📊 Centro de Datos para el Modelo de Aprendizaje")
 
 col1, col2, col3 = st.columns(3)
 col1.metric("Total Estudiantes", len(df))
