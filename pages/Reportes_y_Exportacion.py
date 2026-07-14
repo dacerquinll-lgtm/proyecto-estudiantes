@@ -14,7 +14,7 @@ st.markdown("""
     .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
     
-    /* Estilos del encabezado */
+    /* Encabezado */
     .header-institucional {
         background-color: #0c1c30;
         padding: 20px 30px;
@@ -26,7 +26,7 @@ st.markdown("""
     }
     .header-institucional h2 { color: white !important; margin: 0; font-size: 1.2rem !important; font-weight: 600 !important; }
     
-    /* Estilos de navegación */
+    /* Navegación */
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) {
         background-color: #1a2a40 !important;
         padding: 10px 20px !important;
@@ -37,10 +37,15 @@ st.markdown("""
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
     
-    /* Forzar texto visible en el expansor */
+    /* Corrección crítica: Expander visible */
     [data-testid="stExpander"] div[role="button"] p {
         color: #0c1c30 !important;
-        font-weight: bold !important;
+        font-weight: 900 !important;
+        font-size: 18px !important;
+    }
+    [data-testid="stExpander"] {
+        border: 2px solid #0c1c30 !important;
+        background-color: #ffffff !important;
     }
     
     h1, h2, h3, h4 { color: #0c1c30 !important; font-weight: bold !important; }
@@ -111,45 +116,33 @@ if 'ultimo_diagnostico' in st.session_state:
     def generar_pdf(nombre, estres_txt, rend_txt, datos):
         buffer = io.BytesIO()
         c = canvas.Canvas(buffer, pagesize=letter)
-        
         c.setFillColorRGB(0.047, 0.11, 0.188)
         c.rect(0, 782, 612, 10, fill=True, stroke=False)
-        
         base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         ruta_logo = os.path.join(base_path, "assets", "detector.png")
         if os.path.exists(ruta_logo):
             c.drawImage(ruta_logo, 510, 710, width=50, height=50, preserveAspectRatio=True, mask='auto')
-        
         c.setFillColorRGB(0.047, 0.11, 0.188)
         c.setFont("Helvetica-Bold", 18)
         c.drawString(50, 735, "REPORTE GENERAL")
-        
         c.setFont("Helvetica", 9)
         c.setFillColorRGB(0.4, 0.4, 0.4)
         c.drawString(50, 718, "SISTEMA INTELIGENTE PARA LA REDUCCIÓN DE ESTRÉS")
-        
         c.setStrokeColorRGB(0.8, 0.8, 0.8)
         c.line(50, 700, 562, 700)
-        
         c.setFillColorRGB(0.047, 0.11, 0.188)
         c.setFont("Helvetica-Bold", 12)
         c.drawString(50, 670, "Información del Estudiante")
-        
         c.setFont("Helvetica", 11)
         c.setFillColorRGB(0.1, 0.1, 0.1)
         c.drawString(50, 650, f"Estudiante: {nombre}")
         c.drawString(50, 630, f"Nivel de Estrés: {estres_txt}")
         c.drawString(50, 610, f"Proyección de Rendimiento: {rend_txt}")
-        
         c.line(50, 590, 562, 590)
-        
         c.setFillColorRGB(0.047, 0.11, 0.188)
         c.setFont("Helvetica-Bold", 12)
         c.drawString(50, 565, "Métricas y Variables Analizadas")
-        
-        labels = ["Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", 
-                  "Carga de Estudio", "Actividades Extras", "Apoyo Social", "Interés Académico"]
-        
+        labels = ["Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", "Carga de Estudio", "Actividades Extras", "Apoyo Social", "Interés Académico"]
         y_pos = 535
         for i, label in enumerate(labels):
             c.setFillColorRGB(0.95, 0.95, 0.97)
@@ -160,11 +153,9 @@ if 'ultimo_diagnostico' in st.session_state:
             c.setFont("Helvetica", 10)
             c.drawRightString(540, y_pos, f"{datos[i]} / 10")
             y_pos -= 24
-            
         c.setFont("Helvetica-Oblique", 8)
         c.setFillColorRGB(0.5, 0.5, 0.5)
         c.drawString(50, 100, "Este reporte fue generado a través de sus datos obtenidos en el detector de estrés.")
-        
         c.save()
         buffer.seek(0)
         return buffer
