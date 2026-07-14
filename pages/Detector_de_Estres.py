@@ -151,7 +151,7 @@ elif len(st.session_state.respuestas) == 0:
         col_a, col_b = st.columns(2)
         with col_a:
             with st.container(border=True):
-                ansiedad = st.slider("1. ¿Cuál es tu nivel de ansiedad actual? (1=Extrema, 10=Ninguna)", 1, 10, 5)
+                ansiedad = st.slider("1. ¿Qué tan ansioso te sientes últimamente? (1=Extrema, 10=Ninguna)", 1, 10, 5)
         with col_b:
             with st.container(border=True):
                 confianza = st.slider("2. ¿Qué nivel de confianza tienes en ti mismo/a? (1=Muy baja, 10=Muy alta)", 1, 10, 5)
