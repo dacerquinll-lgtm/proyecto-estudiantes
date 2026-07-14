@@ -35,11 +35,12 @@ st.markdown("""
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
     
-    /* CORRECCIÓN: Forzar que el texto del expansor sea oscuro y visible */
-    [data-testid="stExpander"] div[role="button"] p {
+    /* SOLUCION DEFINITIVA PARA EL TEXTO DEL EXPANDER */
+    [data-testid="stExpander"] div[role="button"] p, 
+    [data-testid="stExpander"] div[role="button"] span,
+    [data-testid="stExpander"] div[role="button"] div {
         color: #0c1c30 !important;
         font-weight: 900 !important;
-        font-size: 18px !important;
     }
     [data-testid="stExpander"] {
         background-color: #ffffff !important;
