@@ -29,13 +29,14 @@ st.markdown("""
         margin-bottom: 30px !important;
         border-radius: 0 0 8px 8px !important;
     }
-    
-    div[data-testid="stPageLink"] a,
-    div[data-testid="stPageLink"] a *,
-    div[data-testid="stPageLink"] button,
-    div[data-testid="stPageLink"] button * {
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) a {
+        color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
+    }
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) span {
         color: #ffffff !important;
-        text-decoration: none !important;
+    }
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) p {
+        color: #ffffff !important;
     }
     
     div[data-testid="stForm"] div[data-testid="stVerticalBlockBorderWrapper"] {
@@ -85,7 +86,6 @@ st.markdown("""
     }
     div.stButton > button:hover {
         background-color: #1b5e20 !important;
-        color: white !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -174,8 +174,8 @@ else:
         st.stop()
         
     modelo = joblib.load(ruta_modelo)
-    estres = modelo.predict(np.array([st.session_state.respuestas]))[0] 
-    rendimiento = 2 - estres 
+    estres = modelo.predict(np.array([st.session_state.respuestas]))[0]
+    rendimiento = 2 - estres
     
     st.session_state['ultimo_diagnostico'] = {
         'datos': st.session_state.respuestas,
