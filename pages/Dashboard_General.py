@@ -55,7 +55,6 @@ st.markdown("""
     [data-testid="stMetricLabel"], [data-testid="stMetricValue"] { color: #0c1c30 !important; }
     div[data-testid="stMetric"] { padding: 15px !important; border-radius: 8px !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08) !important; }
     
-    /* Corrección de pestañas */
     button[data-baseweb="tab"] div { color: #0c1c30 !important; font-weight: bold !important; }
     
     div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(1) div[data-testid="stMetric"] { background-color: #e3f2fd !important; border: 1px solid #90caf9 !important; }
@@ -111,8 +110,8 @@ with tab1:
     fig1.update_layout(
         plot_bgcolor="white", paper_bgcolor="white", 
         font=dict(color="#0c1c30", size=14),
-        xaxis=dict(title="Nivel de Estrés", color="#0c1c30", gridcolor="#e0e0e0"),
-        yaxis=dict(title="Rendimiento Académico", color="#0c1c30", gridcolor="#e0e0e0")
+        xaxis=dict(title="Nivel de Estrés", titlefont=dict(color="#0c1c30", size=16), tickfont=dict(color="#0c1c30", size=14), gridcolor="#e0e0e0"),
+        yaxis=dict(title="Rendimiento Académico", titlefont=dict(color="#0c1c30", size=16), tickfont=dict(color="#0c1c30", size=14), gridcolor="#e0e0e0")
     )
     st.plotly_chart(fig1, use_container_width=True)
 
@@ -128,8 +127,8 @@ with tab2:
     fig2.update_layout(
         showlegend=False, plot_bgcolor="white", paper_bgcolor="white", 
         font=dict(color="#0c1c30", size=14),
-        xaxis=dict(title="Nivel de Estrés", color="#0c1c30", gridcolor="#e0e0e0"),
-        yaxis=dict(title="Nivel de Ansiedad Promedio", color="#0c1c30", gridcolor="#e0e0e0")
+        xaxis=dict(title="Nivel de Estrés", titlefont=dict(color="#0c1c30", size=16), tickfont=dict(color="#0c1c30", size=14), gridcolor="#e0e0e0"),
+        yaxis=dict(title="Nivel de Ansiedad Promedio", titlefont=dict(color="#0c1c30", size=16), tickfont=dict(color="#0c1c30", size=14), gridcolor="#e0e0e0")
     )
     st.plotly_chart(fig2, use_container_width=True)
 
