@@ -41,6 +41,26 @@ st.markdown("""
     
     h1, h2, h3, h4 { color: #0c1c30 !important; font-weight: bold !important; }
     
+    div[data-testid="stNotification"] {
+        background-color: #d4edda !important;
+        border: 1px solid #c3e6cb !important;
+    }
+    div[data-testid="stNotification"] p {
+        color: #155724 !important;
+        font-weight: bold !important;
+    }
+    
+    div[data-testid="stTextInput"] label p {
+        color: #0c1c30 !important;
+        font-weight: bold !important;
+        font-size: 1rem !important;
+    }
+    div[data-testid="stTextInput"] input {
+        background-color: #ffffff !important;
+        color: #0c1c30 !important;
+        border: 1px solid #ced4da !important;
+    }
+    
     div.stDownloadButton > button {
         background-color: #218838 !important;
         color: #ffffff !important;
