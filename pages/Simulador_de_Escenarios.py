@@ -51,16 +51,23 @@ st.markdown("""
     
     h1, h2, h3, h4 { color: #0c1c30 !important; font-weight: bold !important; }
     
+    /* ESTILIZACIÓN DE BOTONES AL COLOR VERDE ESTÁNDAR */
     div.stButton > button {
-        background-color: #0c1c30 !important;
+        background-color: #218838 !important;
         color: #ffffff !important;
         border: none !important;
         border-radius: 6px !important;
         font-weight: bold !important;
-        padding: 10px 24px !important;
+        font-size: 16px !important;
+        padding: 12px 30px !important;
     }
     div.stButton > button:hover {
-        background-color: #1a2a40 !important;
+        background-color: #1e7e34 !important;
+    }
+    div.stButton > button p {
+        color: #ffffff !important;
+        font-size: 16px !important;
+        font-weight: bold !important;
     }
     </style>
 """, unsafe_allow_html=True)
