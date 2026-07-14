@@ -83,12 +83,11 @@ estres_base = diag['estres']
 
 # Texto explicativo forzado a ser negro mediante el contenedor que ya definimos arriba
 st.markdown("""
-    <div style="background-color: transparent !important;">
-        <span style="color: #000000 !important; font-size: 16px; font-weight: normal !important; display: block;">
-            Esta herramienta compara cómo evolucionaría tu situación académica según las acciones que decidas tomar.
-        </span>
+    <div style="margin-bottom: 25px; color: #000000 !important; font-size: 1.1rem;">
+        Esta herramienta compara cómo evolucionaría tu situación académica según las acciones que decidas tomar.
     </div>
 """, unsafe_allow_html=True)
+
 
 if st.button("🚀 Calcular Proyecciones"):
     ruta_modelo = os.path.join("modelos", "modelo_stress_rf.pkl")
