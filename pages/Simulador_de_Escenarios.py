@@ -12,7 +12,6 @@ st.markdown("""
     .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
     
-    /* Regla específica para forzar color negro en texto y métricas */
     .texto-negro, .texto-negro p, .texto-negro div, [data-testid="stMetricValue"], [data-testid="stMetricLabel"] {
         color: #000000 !important;
     }
@@ -74,25 +73,31 @@ if 'ultimo_diagnostico' not in st.session_state:
     st.warning("⚠️ Debes completar primero el diagnóstico en el Detector Integral.")
     st.stop()
 
+if 'calculado' not in st.session_state:
+    st.session_state['calculado'] = False
+
 diag = st.session_state['ultimo_diagnostico']
 datos_base = np.array(diag['datos']) 
 estres_base = diag['estres']
 
-# Aplicamos la clase .texto-negro aquí
-st.markdown("""
-    <div class="texto-negro">
-        <p style="font-size: 1.1rem; margin-bottom: 25px;">
-            Esta herramienta compara cómo evolucionaría tu situación académica según las acciones que decidas tomar.
-        </p>
-    </div>
-""", unsafe_allow_html=True)
+if not st.session_state['calculado']:
+    st.markdown("""
+        <div class="texto-negro">
+            <p style="font-size: 1.1rem; margin-bottom: 25px;">
+                Esta herramienta compara cómo evolucionaría tu situación académica según las acciones que decidas tomar.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
 
-if st.button("🚀 Calcular Proyecciones"):
+    if st.button("🚀 Calcular Proyecciones"):
+        st.session_state['calculado'] = True
+        st.rerun()
+
+else:
     ruta_modelo = os.path.join("modelos", "modelo_stress_rf.pkl")
     modelo = joblib.load(ruta_modelo)
     
     res_actual = estres_base
-    
     d_mejora = datos_base.copy()
     d_mejora[3] += 2 
     d_mejora[4] -= 2 
@@ -104,7 +109,6 @@ if st.button("🚀 Calcular Proyecciones"):
     d_dificultad[5] -= 3
     res_dificultad = modelo.predict(d_dificultad.reshape(1, -1))[0]
 
-    # Aplicamos la clase .texto-negro envolviendo las columnas
     st.markdown('<div class="texto-negro">', unsafe_allow_html=True)
     col1, col2, col3 = st.columns(3)
     
@@ -122,4 +126,8 @@ if st.button("🚀 Calcular Proyecciones"):
     st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("---")
+    if st.button("⬅️ Volver al Simulador"):
+        st.session_state['calculado'] = False
+        st.rerun()
+
     st.info("💡 **Recuerda:** Estas proyecciones sirven como guía para tu toma de decisiones.")
