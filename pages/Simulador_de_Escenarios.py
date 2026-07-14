@@ -79,7 +79,11 @@ datos_base = np.array(diag['datos'])
 estres_base = diag['estres']
 
 # Texto explicativo forzado a ser negro mediante el contenedor que ya definimos arriba
-st.write("Esta herramienta compara cómo evolucionaría tu situación académica según las acciones que decidas tomar.")
+st.markdown("""
+    <p style="color: #000000 !important; font-size: 1.1rem;">
+        Esta herramienta compara cómo evolucionaría tu situación académica según las acciones que decidas tomar.
+    </p>
+""", unsafe_allow_html=True)
 
 if st.button("🚀 Calcular Proyecciones"):
     ruta_modelo = os.path.join("modelos", "modelo_stress_rf.pkl")
