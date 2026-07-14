@@ -10,7 +10,9 @@ st.markdown("""
     <style>
     .stApp { background-color: #f8f9fa !important; }
     [data-testid="stHeader"] { display: none !important; }
-    .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
+    
+    /* MARGEN INFERIOR PARA DESPEGAR DEL FINAL DE PÁGINA */
+    .block-container { padding-top: 0rem !important; padding-bottom: 5rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
     
     [data-testid="stContainer"] div, [data-testid="stContainer"] p, [data-testid="stMetricValue"], [data-testid="stMetricLabel"] {
@@ -122,8 +124,10 @@ if 'ultimo_diagnostico' in st.session_state:
         st.markdown("<h4 style='color: #0c1c30 !important; font-weight: 900 !important; margin-top: 20px !important; margin-bottom: 10px !important;'>Variables detalladas:</h4>", unsafe_allow_html=True)
         
         cols_metric = st.columns([1, 1, 1, 1], gap="small")
+        
+        # SUSTITUCIÓN REALIZADA AQUÍ: "Estado de Ánimo" en lugar de "Depresión"
         labels_metric = [
-            "Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", 
+            "Ansiedad", "Confianza en Sí Mismo", "Estado de Ánimo", "Calidad de Sueño", 
             "Carga de Estudio", "Actividades Extras", "Apoyo Social", "Interés Académico"
         ]
         
@@ -131,7 +135,7 @@ if 'ultimo_diagnostico' in st.session_state:
             cols_metric[i % 4].markdown(f"<div style='color:black; font-size: 0.9rem;'>• <b>{labels_metric[i]}:</b> {datos[i]} / 10</div>", unsafe_allow_html=True)
 
         st.markdown('<div style="height: 20px;"></div>', unsafe_allow_html=True)
-    # Añadimos un margen superior al input para separar
+
     st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
     nombre = st.text_input("Nombre Completo del Estudiante:", "Estudiante")
 
@@ -165,7 +169,12 @@ if 'ultimo_diagnostico' in st.session_state:
         c.setFillColorRGB(0.047, 0.11, 0.188)
         c.setFont("Helvetica-Bold", 12)
         c.drawString(50, 545, "Métricas y Variables Analizadas")
-        labels = ["Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", "Carga de Estudio", "Actividades Extras", "Apoyo Social", "Interés Académico"]
+        
+        labels = [
+            "Ansiedad", "Confianza en Sí Mismo", "Estado de Ánimo", "Calidad de Sueño", 
+            "Carga de Estudio", "Actividades Extras", "Apoyo Social", "Interés Académico"
+        ]
+        
         y_pos = 515
         for i, label in enumerate(labels):
             c.setFillColorRGB(0.95, 0.95, 0.97)
@@ -187,6 +196,7 @@ if 'ultimo_diagnostico' in st.session_state:
 
     pdf_buffer = generar_pdf(nombre, mapa_estres.get(estres), mapa_rend.get(rendimiento), datos)
     
+    st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
     st.download_button(
         label="📥 Descargar Reporte (PDF)",
         data=pdf_buffer,
@@ -196,5 +206,3 @@ if 'ultimo_diagnostico' in st.session_state:
 
 else:
     st.warning("⚠️ No se ha detectado un diagnóstico activo.")
-
-st.markdown('<div style="height: 40px;"></div>', unsafe_allow_html=True)
