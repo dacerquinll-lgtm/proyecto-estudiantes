@@ -83,9 +83,9 @@ estres_base = diag['estres']
 
 # Texto explicativo forzado a ser negro mediante el contenedor que ya definimos arriba
 st.markdown("""
-    <p style="color: #000000 !important; font-size: 1.1rem;">
+    <div style="color: #000000 !important; font-size: 16px; margin-bottom: 20px;">
         Esta herramienta compara cómo evolucionaría tu situación académica según las acciones que decidas tomar.
-    </p>
+    </div>
 """, unsafe_allow_html=True)
 
 if st.button("🚀 Calcular Proyecciones"):
