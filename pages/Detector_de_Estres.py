@@ -5,11 +5,12 @@ import os
 
 st.set_page_config(page_title="Detector de Estrés", layout="wide", initial_sidebar_state="collapsed")
 
+# Estilos CSS corregidos y aislados
 st.markdown("""
     <style>
     .stApp { background-color: #f8f9fa !important; }
     [data-testid="stHeader"] { display: none !important; }
-    .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
+    .block-container { padding-top: 0rem !important; padding-bottom: 3rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
     
     .header-institucional {
@@ -33,8 +34,8 @@ st.markdown("""
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
     
-    /* Estilo para las Tarjetas Contenedoras (Se aplica a los contenedores nativos con borde) */
-    div[data-testid="stVerticalBlockBorderWrapper"] {
+    /* Aplicar estilo de tarjeta blanca ÚNICAMENTE a los sliders del formulario de preguntas */
+    div[data-testid="stForm"] div[data-testid="stVerticalBlockBorderWrapper"] {
         background-color: #ffffff !important;
         border: 1px solid #e0e0e0 !important;
         border-radius: 8px !important;
@@ -51,10 +52,19 @@ st.markdown("""
         border: 1px solid #e0e0e0;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         margin-bottom: 25px;
+        color: #0c1c30 !important;
+    }
+    .tarjeta-evaluacion-info h3, .tarjeta-evaluacion-info h4, .tarjeta-evaluacion-info p {
+        color: #0c1c30 !important;
     }
     
-    /* Forzar que los textos del slider se lean perfectamente en fondo claro */
+    /* Forzar que las etiquetas y textos de Streamlit se lean perfectamente */
     .stSlider label, .stSlider span, .stSlider div {
+        color: #0c1c30 !important;
+    }
+    
+    /* Forzar color de texto oscuro para recomendaciones y textos de resultados */
+    div[data-testid="stMarkdownContainer"] p, div[data-testid="stMarkdownContainer"] li {
         color: #0c1c30 !important;
     }
     
@@ -120,7 +130,7 @@ if not st.session_state.iniciado:
         st.session_state.iniciado = True
         st.rerun()
 
-# --- FORMULARIO COMPLETO DE PREGUNTAS (Estilo Prototipo) ---
+# --- FORMULARIO COMPLETO DE PREGUNTAS ---
 elif len(st.session_state.respuestas) == 0:
     st.markdown("### Evaluación de Hábitos Académicos")
     st.markdown('<p style="color: #666;">Responde las siguientes preguntas para que el sistema pueda analizar tu nivel de estrés.</p>', unsafe_allow_html=True)
@@ -188,8 +198,8 @@ else:
     
     st.markdown("""
         <div class="tarjeta-evaluacion-info">
-            <h3 style="margin-top:0; color: #0c1c30;">📋 Resultado de tu evaluación</h3>
-            <p style="color: #666; font-size: 0.95rem;">El sistema ha analizado tus respuestas utilizando modelos de Machine Learning.</p>
+            <h3 style="margin-top:0;">📋 Resultado de tu evaluación</h3>
+            <p style="font-size: 0.95rem;">El sistema ha analizado tus respuestas utilizando modelos de Machine Learning.</p>
         </div>
     """, unsafe_allow_html=True)
     
@@ -207,7 +217,7 @@ else:
     
     st.markdown('<div class="tarjeta-evaluacion-info">', unsafe_allow_html=True)
     st.markdown(f"#### Recomendaciones sugeridas")
-    st.write(f"💡 **Sugerencia Estratégica:** {recs[estres]}")
+    st.markdown(f"💡 **Sugerencia Estratégica:** {recs[estres]}")
     
     analisis = ["Necesitas tutorías extra.", "Organiza mejor tus tiempos.", "¡Excelente ritmo, continúa así!"]
     st.info(f"📊 **Análisis Académico:** {analisis[rendimiento]}")
@@ -219,12 +229,16 @@ else:
         - **Buscar apoyo profesional:** Considera agendar una cita con el psicólogo del área de Bienestar Universitario.
         - **Desconexión:** Reduce actividades académicas no esenciales por 48 horas.
         - **Comunicación:** Habla con un tutor o docente de confianza sobre tu situación actual.
+        
         *Tu salud es prioridad sobre cualquier calificación.*
         """)
     else:
         st.success("¡Excelente! Continúa monitoreando tu bienestar para mantener este equilibrio.")
     
     st.markdown('</div>', unsafe_allow_html=True)
+
+    # Margen inferior antes del botón de reiniciar para que no quede pegado al final
+    st.markdown('<div style="margin-top: 40px; margin-bottom: 20px;"></div>', unsafe_allow_html=True)
 
     if st.button("🔄 Reiniciar Evaluación"):
         st.session_state.respuestas = []
