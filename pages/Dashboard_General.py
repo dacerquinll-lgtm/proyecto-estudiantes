@@ -102,14 +102,14 @@ st.markdown(f"""
     div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(3) div[data-testid="stMetric"] {{ background-color: #ffebee !important; border: 1px solid #ffcdd2 !important; }}
     div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(3) div[data-testid="stMetric"] * {{ color: #c62828 !important; }}
     
-    button[data-baseweb="tab"] div {{
-        color: #0c1c30 !important;
+    button[data-baseweb="tab"] div {
+        color: #000000 !important; /* Cambiado a negro */
         font-weight: bold !important;
         font-size: 0.95rem !important;
-    }}
-    button[data-baseweb="tab"][aria-selected="true"] div {{
-        color: #2e7d32 !important;
-    }}
+    }
+    button[data-baseweb="tab"][aria-selected="true"] div {
+        color: #2e7d32 !important; /* Mantiene el verde cuando está seleccionada */
+    }
     
     div[data-testid="stNotification"] * {{
         color: #0c1c30 !important;
