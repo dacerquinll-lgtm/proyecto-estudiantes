@@ -125,7 +125,6 @@ if 'ultimo_diagnostico' in st.session_state:
         labels_metric = [
             "Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", 
             "Carga de Estudio", "Actividades Extras", "Apoyo Social", "Interés Académico"
-            st.space(30)
         ]
         
         for i in range(8):
