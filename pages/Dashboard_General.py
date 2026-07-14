@@ -38,20 +38,6 @@ st.markdown("""
         opacity: 1 !important;
     }
     
-    .stTabs [data-baseweb="tab"][aria-selected="true"] p,
-    .stTabs [data-baseweb="tab"][aria-selected="true"] span,
-    .stTabs [data-baseweb="tab"][aria-selected="true"] {
-        color: #e53935 !important;
-        font-weight: bold !important;
-    }
-    
-    .stTabs [data-baseweb="tab"][aria-selected="false"] p,
-    .stTabs [data-baseweb="tab"][aria-selected="false"] span,
-    .stTabs [data-baseweb="tab"][aria-selected="false"] {
-        color: #0c1c30 !important;
-        font-weight: bold !important;
-    }
-    
     .stTabs [data-baseweb="tab-highlight"] {
         background-color: #e53935 !important;
     }
@@ -99,7 +85,10 @@ col1.metric("Total Estudiantes", len(df))
 col2.metric("Nivel de Estrés Promedio", mapa_label.get(int(round(df['stress_level'].mean())), "N/A"))
 col3.metric("Ansiedad Promedio", round(df['anxiety_level'].mean(), 2))
 
-tab1, tab2 = st.tabs(["📉 Tendencia de Rendimiento", "⚠️ Factores de Riesgo"])
+tab1, tab2 = st.tabs([
+    '<span style="color: #0c1c30 !important; opacity: 1 !important; font-weight: bold;">📉 Tendencia de Rendimiento</span>', 
+    '<span style="color: #0c1c30 !important; opacity: 1 !important; font-weight: bold;">⚠️ Factores de Riesgo</span>'
+])
 
 with tab1:
     st.subheader("Evolución del Rendimiento Académico")
