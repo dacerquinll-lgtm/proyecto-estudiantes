@@ -37,6 +37,19 @@ st.markdown("""
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) a {
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
+    
+    /* Diseño del botón personalizado */
+    div.stButton > button {
+        background-color: #0c1c30 !important;
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 6px !important;
+        font-weight: bold !important;
+        padding: 10px 24px !important;
+    }
+    div.stButton > button:hover {
+        background-color: #1a2a40 !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -67,6 +80,7 @@ estres_base = diag['estres']
 st.write("Esta herramienta compara cómo evolucionaría tu situación académica según las acciones que decidas tomar.")
 
 if st.button("🚀 Calcular Proyecciones"):
+    # Asegúrate de que la ruta sea correcta según tu estructura de carpetas
     ruta_modelo = "modelos/modelo_stress_rf.pkl"
     modelo = joblib.load(ruta_modelo)
     
