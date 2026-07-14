@@ -3,6 +3,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 import io
 import os
+import base64
 
 st.set_page_config(page_title="Reportes y Exportación", layout="wide", initial_sidebar_state="collapsed")
 
@@ -107,7 +108,7 @@ if 'ultimo_diagnostico' in st.session_state:
     mapa_estres = {0: "BAJO", 1: "MODERADO", 2: "ALTO"}
     mapa_rend = {0: "MALO", 1: "IRREGULAR", 2: "ALTO"}
     
-    st.success("✅ Diagnóstico detectado. Generando PDF.")
+    st.success("✅ Diagnóstico detectado.")
     nombre = st.text_input("Nombre Completo del Estudiante:", "Estudiante")
 
     def generar_pdf(nombre, estres_txt, rend_txt, datos):
@@ -182,12 +183,20 @@ if 'ultimo_diagnostico' in st.session_state:
 
     pdf_buffer = generar_pdf(nombre, mapa_estres.get(estres), mapa_rend.get(rendimiento), datos)
     
-    st.download_button(
-        label="📥 Descargar Reporte (PDF)",
-        data=pdf_buffer,
-        file_name=f"Reporte_{nombre.replace(' ', '_')}.pdf",
-        mime="application/pdf"
-    )
+    # Conversión a base64 para la vista previa
+    base64_pdf = base64.b64encode(pdf_buffer.getvalue()).decode('utf-8')
+    
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        st.download_button(
+            label="📥 Descargar Reporte (PDF)",
+            data=pdf_buffer,
+            file_name=f"Reporte_{nombre.replace(' ', '_')}.pdf",
+            mime="application/pdf"
+        )
+    
+    with st.expander("👀 Ver Vista Previa del Reporte"):
+        st.markdown(f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="500px" type="application/pdf"></iframe>', unsafe_allow_html=True)
 
 else:
     st.warning("⚠️ No se ha detectado un diagnóstico activo.")
