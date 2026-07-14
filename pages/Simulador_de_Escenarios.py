@@ -12,6 +12,7 @@ st.markdown("""
     .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
     
+    /* Mantenemos el estilo funcional de la página de reportes */
     [data-testid="stContainer"] div, [data-testid="stContainer"] p, [data-testid="stMetricValue"], [data-testid="stMetricLabel"] {
         color: #000000 !important;
     }
@@ -77,10 +78,10 @@ diag = st.session_state['ultimo_diagnostico']
 datos_base = np.array(diag['datos']) 
 estres_base = diag['estres']
 
+# Texto explicativo forzado a ser negro mediante el contenedor que ya definimos arriba
 st.write("Esta herramienta compara cómo evolucionaría tu situación académica según las acciones que decidas tomar.")
 
 if st.button("🚀 Calcular Proyecciones"):
-    # Ruta corregida según tu estructura
     ruta_modelo = os.path.join("modelos", "modelo_stress_rf.pkl")
     modelo = joblib.load(ruta_modelo)
     
@@ -111,7 +112,7 @@ if st.button("🚀 Calcular Proyecciones"):
                     "Es el resultado de continuar con tus hábitos de siempre.")
     
     render_escenario(col2, "Si realizas mejoras", res_mejora, "✅", 
-                    "El modelo proyecta una mejora en el estrés y rendimiento.")
+                    "El modelo proyecta una baja en el estrés y un mejor rendimiento.")
     
     render_escenario(col3, "Si aumentan las dificultades", res_dificultad, "⚠️", 
                     "El nivel de estrés puede elevarse, afectando tu rendimiento.")
