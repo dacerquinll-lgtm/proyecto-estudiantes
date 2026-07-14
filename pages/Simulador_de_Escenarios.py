@@ -12,17 +12,6 @@ st.markdown("""
     .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
     
-    /* FUERZA NEGRO EN TODO MENOS EN LA CABECERA */
-    div:not(.header-institucional):not(.header-institucional *), 
-    p:not(.header-institucional *), 
-    h1:not(.header-institucional *), 
-    h2:not(.header-institucional *), 
-    h3:not(.header-institucional *), 
-    .stMetricValue, .stMetricLabel {
-        color: #000000 !important;
-    }
-    
-    /* DISEÑO DE CABECERA (SE MANTIENE) */
     .header-institucional {
         background-color: #0c1c30;
         padding: 20px 30px;
@@ -32,7 +21,7 @@ st.markdown("""
         color: white;
         border-radius: 8px 8px 0 0;
     }
-    .header-institucional h2 { color: white !important; margin: 0; font-size: 1.2rem !important; }
+    .header-institucional h2 { color: white !important; margin: 0; font-size: 1.2rem !important; font-weight: 600 !important; }
     
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) {
         background-color: #1a2a40 !important;
@@ -44,15 +33,22 @@ st.markdown("""
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
     
-    /* BOTÓN */
     div.stButton > button {
         background-color: #0c1c30 !important;
         color: #ffffff !important;
         border: none !important;
         border-radius: 6px !important;
         font-weight: bold !important;
+        padding: 10px 24px !important;
     }
     </style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+    <div class="header-institucional">
+        <div><span style="font-weight: 900; font-size: 1.6rem; color: #e53935;">UCV</span></div>
+        <div><h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2></div>
+    </div>
 """, unsafe_allow_html=True)
 
 cols_nav = st.columns([0.8, 1.2, 1.2, 1.4, 1.4])
@@ -102,13 +98,13 @@ if st.button("🚀 Calcular Proyecciones"):
             st.write(f"**Análisis:** {explicacion}")
 
     render_escenario(col1, "Situación Actual", res_actual, "⚖️", 
-                    "Es el resultado de continuar con tus hábitos de siempre.")
+                    "Es el resultado de continuar con tus hábitos de siempre. El nivel de estrés se mantendrá estable.")
     
     render_escenario(col2, "Si realizas mejoras", res_mejora, "✅", 
-                    "El modelo proyecta una baja en el estrés y un mejor rendimiento.")
+                    "Al ajustar tu descanso y reducir la sobrecarga, el modelo proyecta una mejora.")
     
     render_escenario(col3, "Si aumentan las dificultades", res_dificultad, "⚠️", 
-                    "El nivel de estrés puede elevarse, afectando tu rendimiento.")
+                    "Si descuidas tus hábitos, el nivel de estrés puede elevarse.")
 
     st.markdown("---")
     st.info("💡 **Recuerda:** Estas proyecciones sirven como guía para tu toma de decisiones.")
