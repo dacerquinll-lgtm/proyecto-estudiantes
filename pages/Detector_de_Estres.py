@@ -5,36 +5,52 @@ import os
 
 st.set_page_config(page_title="Detector de Estrés", layout="wide", initial_sidebar_state="collapsed")
 
-# Estilos CSS corregidos y aislados
 st.markdown("""
     <style>
     .stApp { background-color: #f8f9fa !important; }
     [data-testid="stHeader"] { display: none !important; }
-    .block-container { padding-top: 0rem !important; padding-bottom: 4rem !important; }
+    .block-container { padding-top: 2rem !important; padding-bottom: 4rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
     
-    .header-institucional {
+    /* Cabecera unificada con fondo oscuro */
+    .header-institucional-unica {
         background-color: #0c1c30;
         padding: 20px 30px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        color: white;
         border-radius: 8px 8px 0 0;
+        color: white;
     }
-    .header-institucional h2 { color: white !important; margin: 0; font-size: 1.2rem !important; font-weight: 600 !important; }
+    .header-institucional-unica h2 { 
+        color: white !important; 
+        margin: 0; 
+        font-size: 1.2rem !important; 
+        font-weight: 600 !important; 
+    }
     
+    /* Contenedor del menú de navegación integrado */
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) {
-        background-color: #1a2a40 !important;
-        padding: 10px 20px !important;
+        background-color: #0c1c30 !important;
+        padding: 10px 30px !important;
+        margin-top: -2px !important;
         margin-bottom: 30px !important;
         border-radius: 0 0 8px 8px !important;
-    }
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) a {
-        color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
+        border-top: 1px solid #1a2a40 !important;
     }
     
-    /* Aplicar estilo de tarjeta blanca ÚNICAMENTE a los sliders del formulario de preguntas */
+    /* Forzar que los enlaces de st.page_link se vean blancos y legibles */
+    div[data-testid="stPageLink"] a {
+        background-color: transparent !important;
+        border: none !important;
+    }
+    div[data-testid="stPageLink"] p {
+        color: #ffffff !important;
+        font-weight: bold !important;
+        font-size: 0.95rem !important;
+    }
+    div[data-testid="stPageLink"]:hover p {
+        color: #e53935 !important;
+    }
+    
+    /* Estilo de tarjeta blanca únicamente a los sliders del formulario */
     div[data-testid="stForm"] div[data-testid="stVerticalBlockBorderWrapper"] {
         background-color: #ffffff !important;
         border: 1px solid #e0e0e0 !important;
@@ -44,7 +60,6 @@ st.markdown("""
         margin-bottom: 15px !important;
     }
     
-    /* Contenedor general para bloques de información */
     .tarjeta-evaluacion-info {
         background-color: #ffffff;
         padding: 30px;
@@ -54,33 +69,22 @@ st.markdown("""
         margin-bottom: 25px;
         color: #0c1c30 !important;
     }
-    .tarjeta-evaluacion-info h3, .tarjeta-evaluacion-info h4, .tarjeta-evaluacion-info p {
-        color: #0c1c30 !important;
-    }
     
-    /* Forzar que las etiquetas y textos de Streamlit se lean perfectamente */
     .stSlider label, .stSlider span, .stSlider div {
         color: #0c1c30 !important;
     }
     
-    /* Forzar color de texto oscuro para recomendaciones y textos de resultados */
     div[data-testid="stMarkdownContainer"] p, div[data-testid="stMarkdownContainer"] li {
         color: #0c1c30 !important;
-    }
-    
-    .stProgress > div > div > div > div {
-        background-color: #2e7d32 !important;
     }
     
     h1, h2, h3, h4 { color: #0c1c30 !important; font-weight: bold !important; }
     [data-testid="stMetricLabel"], [data-testid="stMetricValue"] { color: #0c1c30 !important; }
     div[data-testid="stMetric"] { padding: 15px !important; border-radius: 8px !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08) !important; }
     
-    /* Personalización de Métricas de Resultados */
     div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(1) div[data-testid="stMetric"] { background-color: #ffebee !important; border: 1px solid #ffcdd2 !important; }
     div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(2) div[data-testid="stMetric"] { background-color: #e3f2fd !important; border: 1px solid #90caf9 !important; }
     
-    /* Botón general */
     div.stButton > button {
         background-color: #2e7d32 !important;
         color: white !important;
@@ -96,13 +100,17 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# Cabecera Superior Única
 st.markdown("""
-    <div class="header-institucional">
-        <div><span style="font-weight: 900; font-size: 1.6rem; color: #e53935;">UCV</span></div>
-        <div><h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2></div>
+    <div class="header-institucional-unica">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div><span style="font-weight: 900; font-size: 1.6rem; color: #e53935;">UCV</span></div>
+            <div><h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2></div>
+        </div>
     </div>
 """, unsafe_allow_html=True)
 
+# Menú de Navegación integrado justo debajo sin cortes extraños
 cols_nav = st.columns([0.8, 1.2, 1.2, 1.4, 1.4])
 with cols_nav[0]: st.page_link("app.py", label="Inicio")
 with cols_nav[1]: st.page_link("pages/Dashboard_General.py", label="Dashboard General")
