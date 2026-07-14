@@ -3,16 +3,90 @@ import joblib
 import numpy as np
 import os
 
-# Configuración de página centrada
-st.set_page_config(page_title="Detector Integral", layout="centered")
+# Configuración de página centrada con diseño institucional
+st.set_page_config(page_title="Detector de Estrés", layout="wide", initial_sidebar_state="collapsed")
 
-# CSS para eliminar líneas divisorias intrusivas
+# Estilos CSS institucionales y estructura limpia de tarjetas
 st.markdown("""
     <style>
-    h1, h2, h3 { border-bottom: none !important; }
-    hr { display: none !important; }
+    .stApp { background-color: #f8f9fa !important; }
+    [data-testid="stHeader"] { display: none !important; }
+    .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
+    [data-testid="stSidebar"] { display: none !important; }
+    
+    .header-institucional {
+        background-color: #0c1c30;
+        padding: 20px 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: white;
+        border-radius: 8px 8px 0 0;
+    }
+    .header-institucional h2 { color: white !important; margin: 0; font-size: 1.2rem !important; font-weight: 600 !important; }
+    
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) {
+        background-color: #1a2a40 !important;
+        padding: 10px 20px !important;
+        margin-bottom: 30px !important;
+        border-radius: 0 0 8px 8px !important;
+    }
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) a {
+        color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
+    }
+    
+    /* Contenedor tipo Tarjeta Blanca (Prototipo) */
+    .tarjeta-evaluacion {
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        margin-bottom: 25px;
+    }
+    
+    .stProgress > div > div > div > div {
+        background-color: #2e7d32 !important;
+    }
+    
+    h1, h2, h3, h4 { color: #0c1c30 !important; font-weight: bold !important; }
+    [data-testid="stMetricLabel"], [data-testid="stMetricValue"] { color: #0c1c30 !important; }
+    div[data-testid="stMetric"] { padding: 15px !important; border-radius: 8px !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08) !important; }
+    
+    /* Personalización de Métricas de Resultados */
+    div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(1) div[data-testid="stMetric"] { background-color: #ffebee !important; border: 1px solid #ffcdd2 !important; }
+    div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(2) div[data-testid="stMetric"] { background-color: #e3f2fd !important; border: 1px solid #90caf9 !important; }
+    
+    div.stButton > button {
+        background-color: #2e7d32 !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 4px !important;
+        font-weight: bold !important;
+        padding: 10px 24px !important;
+    }
+    div.stButton > button:hover {
+        background-color: #1b5e20 !important;
+        color: white !important;
+    }
     </style>
 """, unsafe_allow_html=True)
+
+# Encabezado Institucional
+st.markdown("""
+    <div class="header-institucional">
+        <div><span style="font-weight: 900; font-size: 1.6rem; color: #e53935;">UCV</span></div>
+        <div><h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2></div>
+    </div>
+""", unsafe_allow_html=True)
+
+# Menú de Navegación Sincronizado
+cols_nav = st.columns([0.8, 1.2, 1.2, 1.4, 1.4])
+with cols_nav[0]: st.page_link("app.py", label="Inicio")
+with cols_nav[1]: st.page_link("pages/Dashboard_General.py", label="Dashboard General")
+with cols_nav[2]: st.page_link("pages/Detector_de_Estres.py", label="Detector de Estrés")
+with cols_nav[3]: st.page_link("pages/Reportes_y_Exportacion.py", label="Reportes y Exportación")
+with cols_nav[4]: st.page_link("pages/Simulador_de_Escenarios.py", label="Simulador de Escenarios")
 
 st.title("🧠 Detector Integral Académico")
 
@@ -22,8 +96,15 @@ if 'paso' not in st.session_state:
 
 # --- PANTALLA DE BIENVENIDA ---
 if not st.session_state.iniciado:
-    st.markdown("### Bienvenido al sistema de evaluación")
-    st.write("Este sistema implementa modelos de **Aprendizaje Automático (Machine Learning)** para analizar tus hábitos académicos y niveles de estrés. Al completar este cuestionario, el algoritmo procesará tus variables para brindarte un diagnóstico proyectado y recomendaciones personalizadas.")
+    st.markdown("""
+        <div class="tarjeta-evaluacion">
+            <h3 style="margin-top:0;">Evaluación de hábitos académicos</h3>
+            <p style="color: #4a5568; line-height: 1.6;">
+                Este sistema implementa modelos de <b>Aprendizaje Automático (Machine Learning)</b> para analizar tus hábitos académicos y niveles de estrés. 
+                Al completar este cuestionario de 8 preguntas, el algoritmo procesará tus variables para brindarte un diagnóstico proyectado y recomendaciones personalizadas.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
     
     if st.button("🚀 Comenzar Test"):
         st.session_state.iniciado = True
@@ -42,12 +123,18 @@ elif st.session_state.paso < 8:
         ("¿Cómo es tu interés académico? (1=Muy bajo, 10=Excelente)", 5)
     ]
     
-    st.markdown(f"### Pregunta {st.session_state.paso + 1} de 8")
+    st.markdown(f"### Cuestionario Académico")
+    
+    # Tarjeta Contenedora del Slider
+    st.markdown('<div class="tarjeta-evaluacion">', unsafe_allow_html=True)
+    st.write(f"**Pregunta {st.session_state.paso + 1} de 8**")
     st.progress((st.session_state.paso) / 8)
+    st.markdown('<br>', unsafe_allow_html=True)
     
     val = st.slider(preguntas[st.session_state.paso][0], 1, 10, preguntas[st.session_state.paso][1])
+    st.markdown('</div>', unsafe_allow_html=True)
     
-    if st.button("Siguiente"):
+    if st.button("Siguiente ➔"):
         st.session_state.respuestas.append(val)
         st.session_state.paso += 1
         st.rerun()
@@ -70,26 +157,36 @@ else:
         'rendimiento': rendimiento
     }
     
-    st.markdown("### 📋 Informe de Resultados")
+    st.markdown("""
+        <div class="tarjeta-evaluacion">
+            <h3 style="margin-top:0; color: #0c1c30;">📋 Resultado de tu evaluación</h3>
+            <p style="color: #666; font-size: 0.95rem;">El sistema ha analizado tus respuestas utilizando modelos de Machine Learning.</p>
+        </div>
+    """, unsafe_allow_html=True)
     
     # Métricas visuales
     col1, col2 = st.columns(2)
-    col1.metric("Nivel de Estrés", ["BAJO", "MODERADO", "ALTO"][estres])
-    col2.metric("Proyección", ["MALO", "IRREGULAR", "ALTO"][rendimiento])
+    col1.metric("Nivel de Estrés Predicho", ["BAJO", "MODERADO", "ALTO"][estres])
+    col2.metric("Rendimiento Académico Proyectado", ["MALO", "IRREGULAR", "ALTO"][rendimiento])
     
-    # 1. Recomendación general según nivel (Información completa)
+    st.markdown('<div style="margin-top: 25px;"></div>', unsafe_allow_html=True)
+    
+    # Recomendación general según nivel (Información completa)
     recs = [
         "Mantén hábitos saludables y organiza tus tareas pendientes.",
         "Prioriza el descanso y aplica técnicas de gestión del tiempo.",
         "Es momento de tomar acción inmediata para proteger tu bienestar emocional."
     ]
-    st.write(f"**Sugerencia Estratégica:** {recs[estres]}")
     
-    # 2. Análisis académico extra
+    st.markdown('<div class="tarjeta-evaluacion">', unsafe_allow_html=True)
+    st.markdown(f"#### Recomendaciones sugeridas")
+    st.write(f"💡 **Sugerencia Estratégica:** {recs[estres]}")
+    
+    # Análisis académico extra
     analisis = ["Necesitas tutorías extra.", "Organiza mejor tus tiempos.", "¡Excelente ritmo, continúa así!"]
-    st.info(f"💡 **Análisis Académico:** {analisis[rendimiento]}")
+    st.info(f"📊 **Análisis Académico:** {analisis[rendimiento]}")
     
-    # 3. Bloque EXTRA si el estrés es ALTO
+    # Bloque EXTRA si el estrés es ALTO
     if estres == 2:
         st.warning("⚠️ **Nota de Atención Profesional:**")
         st.markdown("""
@@ -101,6 +198,8 @@ else:
         """)
     else:
         st.success("¡Excelente! Continúa monitoreando tu bienestar para mantener este equilibrio.")
+    
+    st.markdown('</div>', unsafe_allow_html=True)
 
     if st.button("🔄 Reiniciar Evaluación"):
         st.session_state.paso = 0
