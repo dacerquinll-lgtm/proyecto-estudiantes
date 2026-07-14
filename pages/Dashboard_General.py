@@ -33,26 +33,25 @@ st.markdown("""
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
     
-    .stTabs button,
-    .stTabs button *,
-    .stTabs [data-baseweb="tab"],
-    .stTabs [data-baseweb="tab"] *,
-    .stTabs [data-testid="stTab"],
-    .stTabs [data-testid="stTab"] * {
-        color: #0c1c30 !important;
+    div[data-baseweb="tab-list"] button,
+    div[data-baseweb="tab-list"] button *,
+    div[data-baseweb="tab-list"] button div,
+    div[data-baseweb="tab-list"] button p,
+    div[data-baseweb="tab-list"] button span {
         opacity: 1 !important;
-        -webkit-text-fill-color: #0c1c30 !important;
+        -webkit-text-fill-color: initial !important;
     }
     
-    .stTabs button[aria-selected="true"],
-    .stTabs button[aria-selected="true"] *,
-    .stTabs [data-baseweb="tab"][aria-selected="true"],
-    .stTabs [data-baseweb="tab"][aria-selected="true"] *,
-    .stTabs [data-testid="stTab"][aria-selected="true"],
-    .stTabs [data-testid="stTab"][aria-selected="true"] * {
+    div[data-baseweb="tab-list"] button[aria-selected="true"],
+    div[data-baseweb="tab-list"] button[aria-selected="true"] * {
         color: #e53935 !important;
-        -webkit-text-fill-color: #e53935 !important;
-        opacity: 1 !important;
+        font-weight: bold !important;
+    }
+    
+    div[data-baseweb="tab-list"] button[aria-selected="false"],
+    div[data-baseweb="tab-list"] button[aria-selected="false"] * {
+        color: #0c1c30 !important;
+        font-weight: bold !important;
     }
     
     .stTabs [data-baseweb="tab-highlight"] {
@@ -113,6 +112,7 @@ with tab1:
     fig1.update_xaxes(title="Nivel de Estrés", color="#0c1c30", gridcolor="#e0e0e0", tickfont=dict(color="#0c1c30"), title_font=dict(color="#0c1c30"))
     fig1.update_yaxes(title="Rendimiento Académico", color="#0c1c30", gridcolor="#e0e0e0", tickfont=dict(color="#0c1c30"), title_font=dict(color="#0c1c30"))
     st.plotly_chart(fig1, use_container_width=True)
+    st.info("💡 **Interpretación:** La tendencia descendente confirma que, al aumentar el nivel de estrés, el rendimiento académico disminuye de forma consistente.")
 
 with tab2:
     st.subheader("Promedio de Ansiedad por Nivel de Estrés")
@@ -124,5 +124,4 @@ with tab2:
     fig2.update_xaxes(title="Nivel de Estrés", color="#0c1c30", gridcolor="#e0e0e0", tickfont=dict(color="#0c1c30"), title_font=dict(color="#0c1c30"))
     fig2.update_yaxes(title="Nivel de Ansiedad Promedio", color="#0c1c30", gridcolor="#e0e0e0", tickfont=dict(color="#0c1c30"), title_font=dict(color="#0c1c30"))
     st.plotly_chart(fig2, use_container_width=True)
-
-st.info("💡 **Interpretación:** La tendencia descendente confirma que, al aumentar el nivel de estrés, el rendimiento académico disminuye de forma consistente.")
+    st.info("💡 **Interpretación:** Se observa una correlación directa y ascendente: a mayores niveles de estrés reportados, los niveles de ansiedad promedio entre los estudiantes se incrementan de forma severa.")
