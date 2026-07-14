@@ -4,8 +4,6 @@ import os
 
 st.set_page_config(page_title="MindCare Analytics", page_icon="🧠", layout="wide", initial_sidebar_state="collapsed")
 
-pagina_activa = 1
-
 if 'datasets' not in st.session_state:
     ruta = os.path.join("datasets", "StressLevelDataset_limpio.csv")
     if os.path.exists(ruta):
@@ -47,7 +45,6 @@ st.markdown("""
         font-weight: 600 !important;
     }
     
-    /* Menú con azul ligeramente más claro para diferenciar */
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) {
         background-color: #1a2a40 !important;
         padding: 10px 20px !important;
@@ -66,9 +63,10 @@ st.markdown("""
         display: inline-flex !important;
     }
     
-    /* Resaltado de página activa en verde */
+    /* SOLUCIÓN AL ESTADO ACTIVO DE INICIO */
+    /* Forzamos que el primer enlace (Inicio) tenga el fondo de selección activa cuando estemos en app.py */
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) > div[data-testid="column"]:nth-of-type(1) div[data-testid="stPageLink"] a {
-        background-color: #2e7d32 !important;
+        background-color: rgba(255, 255, 255, 0.2) !important;
         color: white !important;
         border-radius: 4px !important;
     }
@@ -92,7 +90,6 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Menú corregido con distribución equitativa
 cols_nav = st.columns([0.8, 1.2, 1.2, 1.4, 1.4])
 with cols_nav[0]: st.page_link("app.py", label="Inicio")
 with cols_nav[1]: st.page_link("pages/Dashboard_General.py", label="Dashboard General")
