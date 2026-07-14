@@ -13,6 +13,11 @@ st.markdown("""
     .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
     
+    /* Fuerza el color negro en los elementos de texto dentro del contenedor */
+    [data-testid="stContainer"] div, [data-testid="stContainer"] p, [data-testid="stMetricValue"], [data-testid="stMetricLabel"] {
+        color: #000000 !important;
+    }
+    
     .header-institucional {
         background-color: #0c1c30;
         padding: 20px 30px;
@@ -109,16 +114,20 @@ if 'ultimo_diagnostico' in st.session_state:
     
     st.success("✅ Diagnóstico detectado. Generando PDF.")
     
-    # CUADRO DE RESULTADOS SOLICITADO
     st.subheader("📋 Resumen del Test")
     with st.container(border=True):
         col_res1, col_res2 = st.columns(2)
         col_res1.metric("Nivel de Estrés", mapa_estres.get(estres))
         col_res2.metric("Proyección de Rendimiento", mapa_rend.get(rendimiento))
+        
         st.write("---")
         st.markdown("**Variables detalladas:**")
         cols_metric = st.columns(4)
-        labels_metric = ["Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", "Carga de Estudio", "Actividades Extras", "Apoyo Social", "Interés Académico"]
+        labels_metric = [
+            "Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", 
+            "Carga de Estudio", "Actividades Extras", "Apoyo Social", "Interés Académico"
+        ]
+        
         for i in range(8):
             cols_metric[i % 4].write(f"• **{labels_metric[i]}:** {datos[i]} / 10")
 
