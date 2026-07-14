@@ -45,6 +45,11 @@ st.markdown("""
         margin-bottom: 25px;
     }
     
+    /* Corrección de color de textos de sliders para que se vean en fondo claro */
+    .stSlider label, .stSlider span, .stSlider div {
+        color: #0c1c30 !important;
+    }
+    
     .stProgress > div > div > div > div {
         background-color: #2e7d32 !important;
     }
@@ -91,8 +96,8 @@ with cols_nav[4]: st.page_link("pages/Simulador_de_Escenarios.py", label="Simula
 st.title("🧠 Detector Integral Académico")
 
 # --- INICIALIZACIÓN ROBUSTA ---
-if 'paso' not in st.session_state:
-    st.session_state.update({'paso': 0, 'respuestas': [], 'iniciado': False})
+if 'iniciado' not in st.session_state:
+    st.session_state.update({'respuestas': [], 'iniciado': False})
 
 # --- PANTALLA DE BIENVENIDA ---
 if not st.session_state.iniciado:
@@ -110,36 +115,65 @@ if not st.session_state.iniciado:
         st.session_state.iniciado = True
         st.rerun()
 
-# --- FLUJO DE CUESTIONARIO ---
-elif st.session_state.paso < 8:
-    preguntas = [
-        ("¿Cuál es tu nivel de ansiedad actual? (1=Extrema, 10=Ninguna)", 5),
-        ("¿Qué nivel de confianza tienes en ti mismo/a? (1=Muy baja, 10=Muy alta)", 5),
-        ("¿Cómo calificarías tu estado de ánimo general? (1=Muy decaído, 10=Muy optimista)", 5),
-        ("¿Cómo es la calidad de tu sueño? (1=Muy mala, 10=Excelente)", 5),
-        ("¿Qué capacidad tienes para manejar tu carga de estudio? (1=Desbordado/a, 10=Control total)", 5),
-        ("¿Qué tanto tiempo dedicas a actividades recreativas? (1=Nada, 10=Lo suficiente)", 5),
-        ("¿Cuánto apoyo social sientes que recibes? (1=Nada, 10=Muchísimo)", 5),
-        ("¿Cómo es tu interés académico? (1=Muy bajo, 10=Excelente)", 5)
-    ]
+# --- FORMULARIO COMPLETO DE PREGUNTAS (Estilo Prototipo Fig. A2) ---
+elif len(st.session_state.respuestas) == 0:
+    st.markdown("### Evaluación de Hábitos Académicos")
+    st.markdown('<p style="color: #666;">Responde las siguientes preguntas para que el sistema pueda analizar tu nivel de estrés.</p>', unsafe_allow_html=True)
     
-    st.markdown(f"### Cuestionario Académico")
-    
-    # Tarjeta Contenedora del Slider
-    st.markdown('<div class="tarjeta-evaluacion">', unsafe_allow_html=True)
-    st.write(f"**Pregunta {st.session_state.paso + 1} de 8**")
-    st.progress((st.session_state.paso) / 8)
-    st.markdown('<br>', unsafe_allow_html=True)
-    
-    val = st.slider(preguntas[st.session_state.paso][0], 1, 10, preguntas[st.session_state.paso][1])
-    st.markdown('</div>', unsafe_allow_html=True)
-    
-    if st.button("Siguiente ➔"):
-        st.session_state.respuestas.append(val)
-        st.session_state.paso += 1
-        st.rerun()
+    # Formulario para agrupar todas las preguntas
+    with st.form("formulario_evaluacion"):
+        
+        # Fila 1
+        col_a, col_b = st.columns(2)
+        with col_a:
+            st.markdown('<div class="tarjeta-evaluacion">', unsafe_allow_html=True)
+            ansiedad = st.slider("1. ¿Cuál es tu nivel de ansiedad actual? (1=Extrema, 10=Ninguna)", 1, 10, 5)
+            st.markdown('</div>', unsafe_allow_html=True)
+        with col_b:
+            st.markdown('<div class="tarjeta-evaluacion">', unsafe_allow_html=True)
+            confianza = st.slider("2. ¿Qué nivel de confianza tienes en ti mismo/a? (1=Muy baja, 10=Muy alta)", 1, 10, 5)
+            st.markdown('</div>', unsafe_allow_html=True)
+            
+        # Fila 2
+        col_c, col_d = st.columns(2)
+        with col_c:
+            st.markdown('<div class="tarjeta-evaluacion">', unsafe_allow_html=True)
+            animo = st.slider("3. ¿Cómo calificarías tu estado de ánimo general? (1=Muy decaído, 10=Muy optimista)", 1, 10, 5)
+            st.markdown('</div>', unsafe_allow_html=True)
+        with col_d:
+            st.markdown('<div class="tarjeta-evaluacion">', unsafe_allow_html=True)
+            sueno = st.slider("4. ¿Cómo es la calidad de tu sueño? (1=Muy mala, 10=Excelente)", 1, 10, 5)
+            st.markdown('</div>', unsafe_allow_html=True)
+            
+        # Fila 3
+        col_e, col_f = st.columns(2)
+        with col_e:
+            st.markdown('<div class="tarjeta-evaluacion">', unsafe_allow_html=True)
+            carga = st.slider("5. ¿Qué capacidad tienes para manejar tu carga de estudio? (1=Desbordado/a, 10=Control total)", 1, 10, 5)
+            st.markdown('</div>', unsafe_allow_html=True)
+        with col_f:
+            st.markdown('<div class="tarjeta-evaluacion">', unsafe_allow_html=True)
+            recreativo = st.slider("6. ¿Qué tanto tiempo dedicas a actividades recreativas? (1=Nada, 10=Lo suficiente)", 1, 10, 5)
+            st.markdown('</div>', unsafe_allow_html=True)
+            
+        # Fila 4
+        col_g, col_h = st.columns(2)
+        with col_g:
+            st.markdown('<div class="tarjeta-evaluacion">', unsafe_allow_html=True)
+            apoyo = st.slider("7. ¿Cuánto apoyo social sientes que recibes? (1=Nada, 10=Muchísimo)", 1, 10, 5)
+            st.markdown('</div>', unsafe_allow_html=True)
+        with col_h:
+            st.markdown('<div class="tarjeta-evaluacion">', unsafe_allow_html=True)
+            interes = st.slider("8. ¿Cómo es tu interés académico? (1=Muy bajo, 10=Excelente)", 1, 10, 5)
+            st.markdown('</div>', unsafe_allow_html=True)
+            
+        # Botón de envío del formulario
+        enviar = st.form_submit_button("📊 Analizar nivel de estrés")
+        if enviar:
+            st.session_state.respuestas = [ansiedad, confianza, animo, sueno, carga, recreativo, apoyo, interes]
+            st.rerun()
 
-# --- PANTALLA DE RESULTADOS PROFESIONAL ---
+# --- PANTALLA DE RESULTADOS PROFESIONAL (Estilo Prototipo Fig. A3 y A4) ---
 else:
     ruta_modelo = "modelos/modelo_stress_rf.pkl"
     if not os.path.exists(ruta_modelo):
@@ -190,7 +224,7 @@ else:
     if estres == 2:
         st.warning("⚠️ **Nota de Atención Profesional:**")
         st.markdown("""
-        Debido a que los indicadores sugieren un nivel de estrés elevado, te recomendamos:
+        Due to high stress indicators, we recommend:
         - **Buscar apoyo profesional:** Considera agendar una cita con el psicólogo del área de Bienestar Universitario.
         - **Desconexión:** Reduce actividades académicas no esenciales por 48 horas.
         - **Comunicación:** Habla con un tutor o docente de confianza sobre tu situación actual.
@@ -202,7 +236,6 @@ else:
     st.markdown('</div>', unsafe_allow_html=True)
 
     if st.button("🔄 Reiniciar Evaluación"):
-        st.session_state.paso = 0
         st.session_state.respuestas = []
         st.session_state.iniciado = False
         if 'ultimo_diagnostico' in st.session_state:
