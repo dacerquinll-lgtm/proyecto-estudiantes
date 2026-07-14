@@ -10,7 +10,7 @@ st.markdown("""
     <style>
     .stApp { background-color: #f8f9fa !important; }
     [data-testid="stHeader"] { display: none !important; }
-    .block-container { padding-top: 0rem !important; padding-bottom: 3rem !important; }
+    .block-container { padding-top: 0rem !important; padding-bottom: 4rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
     
     .header-institucional {
@@ -80,6 +80,7 @@ st.markdown("""
     div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(1) div[data-testid="stMetric"] { background-color: #ffebee !important; border: 1px solid #ffcdd2 !important; }
     div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(2) div[data-testid="stMetric"] { background-color: #e3f2fd !important; border: 1px solid #90caf9 !important; }
     
+    /* Botón general */
     div.stButton > button {
         background-color: #2e7d32 !important;
         color: white !important;
@@ -215,8 +216,7 @@ else:
         "Es momento de tomar acción inmediata para proteger tu bienestar emocional."
     ]
     
-    st.markdown('<div class="tarjeta-evaluacion-info">', unsafe_allow_html=True)
-    st.markdown(f"#### Recomendaciones sugeridas")
+    st.markdown("### Recomendaciones sugeridas")
     st.markdown(f"💡 **Sugerencia Estratégica:** {recs[estres]}")
     
     analisis = ["Necesitas tutorías extra.", "Organiza mejor tus tiempos.", "¡Excelente ritmo, continúa así!"]
@@ -235,12 +235,10 @@ else:
     else:
         st.success("¡Excelente! Continúa monitoreando tu bienestar para mantener este equilibrio.")
     
-    st.markdown('</div>', unsafe_allow_html=True)
+    # Margen inferior antes del botón de reiniciar
+    st.markdown('<div style="margin-top: 50px;"></div>', unsafe_allow_html=True)
 
-    # Margen inferior antes del botón de reiniciar para que no quede pegado al final
-    st.markdown('<div style="margin-top: 40px; margin-bottom: 20px;"></div>', unsafe_allow_html=True)
-
-    if st.button("🔄 Reiniciar Evaluación"):
+    if st.button("🔄 **Reiniciar Evaluación**"):
         st.session_state.respuestas = []
         st.session_state.iniciado = False
         if 'ultimo_diagnostico' in st.session_state:
