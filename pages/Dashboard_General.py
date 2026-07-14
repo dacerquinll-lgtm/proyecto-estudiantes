@@ -33,34 +33,36 @@ st.markdown("""
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
     
-    /* CORRECCIÓN ESTRICTA DE PESTAÑAS ACTIVAS E INACTIVAS */
-    div[data-baseweb="tab-list"] button[data-baseweb="tab"] {
-        opacity: 1 !important;
-    }
-    div[data-baseweb="tab-list"] button[data-baseweb="tab"] span,
-    div[data-baseweb="tab-list"] button[data-baseweb="tab"] p {
+    .stTabs [data-baseweb="tab-list"] button,
+    .stTabs [data-baseweb="tab-list"] button * {
         opacity: 1 !important;
     }
     
-    /* Pestaña Seleccionada (Activa) */
-    div[data-baseweb="tab-list"] button[data-baseweb="tab"][aria-selected="true"] span,
-    div[data-baseweb="tab-list"] button[data-baseweb="tab"][aria-selected="true"] p,
-    div[data-baseweb="tab-list"] button[data-baseweb="tab"][aria-selected="true"] {
+    .stTabs [data-baseweb="tab"][aria-selected="true"] p,
+    .stTabs [data-baseweb="tab"][aria-selected="true"] span,
+    .stTabs [data-baseweb="tab"][aria-selected="true"] {
         color: #e53935 !important;
         font-weight: bold !important;
     }
     
-    /* Pestaña No Seleccionada (Inactiva) */
-    div[data-baseweb="tab-list"] button[data-baseweb="tab"][aria-selected="false"] span,
-    div[data-baseweb="tab-list"] button[data-baseweb="tab"][aria-selected="false"] p,
-    div[data-baseweb="tab-list"] button[data-baseweb="tab"][aria-selected="false"] {
+    .stTabs [data-baseweb="tab"][aria-selected="false"] p,
+    .stTabs [data-baseweb="tab"][aria-selected="false"] span,
+    .stTabs [data-baseweb="tab"][aria-selected="false"] {
         color: #0c1c30 !important;
         font-weight: bold !important;
+    }
+    
+    .stTabs [data-baseweb="tab-highlight"] {
+        background-color: #e53935 !important;
     }
     
     h1, h2, h3, h4 { color: #0c1c30 !important; font-weight: bold !important; }
     [data-testid="stMetricLabel"], [data-testid="stMetricValue"] { color: #0c1c30 !important; }
     div[data-testid="stMetric"] { padding: 15px !important; border-radius: 8px !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08) !important; }
+    
+    div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(1) div[data-testid="stMetric"] { background-color: #e3f2fd !important; border: 1px solid #90caf9 !important; }
+    div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(2) div[data-testid="stMetric"] { background-color: #fff3e0 !important; border: 1px solid #ffcc80 !important; }
+    div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(3) div[data-testid="stMetric"] { background-color: #ffebee !important; border: 1px solid #ffcdd2 !important; }
     </style>
 """, unsafe_allow_html=True)
 
