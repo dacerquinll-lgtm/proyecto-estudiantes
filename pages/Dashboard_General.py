@@ -83,48 +83,26 @@ st.markdown(f"""
         font-weight: bold !important;
     }}
     
+    /* CORRECCIÓN DE COLOR PARA MÉTRICAS: Fuerza el color oscuro en etiquetas y valores */
+    [data-testid="stMetricLabel"], [data-testid="stMetricValue"] {{
+        color: #0c1c30 !important;
+    }}
+    
     div[data-testid="stMetric"], div[data-testid="metric-container"] {{
         padding: 15px !important;
         border-radius: 8px !important;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08) !important;
     }}
     
-    div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(1) div[data-testid="stMetric"],
-    div[data-testid="column"]:has(div[data-testid="metric-container"]):nth-of-type(1) div[data-testid="metric-container"] {{
-        background-color: #e3f2fd !important;
-        border: 1px solid #90caf9 !important;
-    }}
-    div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(1) div[data-testid="stMetric"] *,
-    div[data-testid="column"]:has(div[data-testid="metric-container"]):nth-of-type(1) div[data-testid="metric-container"] * {{
-        color: #0d47a1 !important;
-    }}
-    
-    div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(2) div[data-testid="stMetric"],
-    div[data-testid="column"]:has(div[data-testid="metric-container"]):nth-of-type(2) div[data-testid="metric-container"] {{
-        background-color: #fff3e0 !important;
-        border: 1px solid #ffcc80 !important;
-    }}
-    div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(2) div[data-testid="stMetric"] *,
-    div[data-testid="column"]:has(div[data-testid="metric-container"]):nth-of-type(2) div[data-testid="metric-container"] * {{
-        color: #e65100 !important;
-    }}
-    
-    div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(3) div[data-testid="stMetric"],
-    div[data-testid="column"]:has(div[data-testid="metric-container"]):nth-of-type(3) div[data-testid="metric-container"] {{
-        background-color: #ffebee !important;
-        border: 1px solid #ffcdd2 !important;
-    }}
-    div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(3) div[data-testid="stMetric"] *,
-    div[data-testid="column"]:has(div[data-testid="metric-container"]):nth-of-type(3) div[data-testid="metric-container"] * {{
-        color: #c62828 !important;
-    }}
+    /* Colores de fondo de las tarjetas */
+    div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(1) div[data-testid="stMetric"] {{ background-color: #e3f2fd !important; border: 1px solid #90caf9 !important; }}
+    div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(2) div[data-testid="stMetric"] {{ background-color: #fff3e0 !important; border: 1px solid #ffcc80 !important; }}
+    div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(3) div[data-testid="stMetric"] {{ background-color: #ffebee !important; border: 1px solid #ffcdd2 !important; }}
     
     button[data-baseweb="tab"] {{
         background-color: transparent !important;
         border-bottom-color: #cfd8dc !important;
     }}
-    button[data-baseweb="tab"] p,
-    button[data-baseweb="tab"] span,
     button[data-baseweb="tab"] div {{
         color: #4a5568 !important;
         font-weight: bold !important;
@@ -133,8 +111,6 @@ st.markdown(f"""
     button[data-baseweb="tab"][aria-selected="true"] {{
         border-bottom-color: #2e7d32 !important;
     }}
-    button[data-baseweb="tab"][aria-selected="true"] p,
-    button[data-baseweb="tab"][aria-selected="true"] span,
     button[data-baseweb="tab"][aria-selected="true"] div {{
         color: #2e7d32 !important;
     }}
@@ -173,11 +149,10 @@ if 'datasets' not in st.session_state or st.session_state['datasets'] is None:
     if os.path.exists(ruta):
         st.session_state['datasets'] = {'estres': pd.read_csv(ruta)}
     else:
-        st.error("❌ Archivo no encontrado. Por favor, asegúrese de tener 'datasets/StressLevelDataset_limpio.csv'.")
+        st.error("❌ Archivo no encontrado.")
         st.stop()
 
 df = st.session_state.datasets['estres']
-
 mapa_label = {0: "BAJO", 1: "MODERADO", 2: "ALTO"}
 df['stress_label'] = df['stress_level'].map(mapa_label)
 
@@ -194,69 +169,17 @@ tab1, tab2 = st.tabs(["📉 Tendencia de Rendimiento", "⚠️ Factores de Riesg
 
 with tab1:
     st.subheader("Evolución del Rendimiento Académico")
-    
-    df_line = df.groupby(['stress_level', 'stress_label'])['academic_performance'].mean().reset_index()
-    df_line = df_line.sort_values('stress_level')
-    
-    fig1 = px.line(df_line, x="stress_label", y="academic_performance", 
-                   markers=True,
-                   template="plotly_white",
-                   line_shape="spline",
-                   labels={"stress_label": "Nivel de Estrés", 
-                           "academic_performance": "Rendimiento Académico Promedio"})
-    
+    df_line = df.groupby(['stress_level', 'stress_label'])['academic_performance'].mean().reset_index().sort_values('stress_level')
+    fig1 = px.line(df_line, x="stress_label", y="academic_performance", markers=True, template="plotly_white", line_shape="spline")
     fig1.update_traces(line_color="#0c1c30", line_width=4, marker=dict(size=12, color="#2e7d32"))
-    fig1.update_yaxes(range=[0, 5])
-    
-    fig1.update_layout(
-        plot_bgcolor="rgba(0,0,0,0)",
-        paper_bgcolor="rgba(0,0,0,0)",
-        font=dict(color="#0c1c30"),
-        xaxis=dict(
-            title_font=dict(color="#0c1c30"),
-            showgrid=True, 
-            gridcolor="#e2e8f0", 
-            linecolor="#0c1c30", 
-            tickfont=dict(color="#0c1c30")
-        ),
-        yaxis=dict(
-            title_font=dict(color="#0c1c30"),
-            showgrid=True, 
-            gridcolor="#e2e8f0", 
-            linecolor="#0c1c30", 
-            tickfont=dict(color="#0c1c30")
-        )
-    )
+    fig1.update_layout(plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)", font=dict(color="#0c1c30"))
     st.plotly_chart(fig1, use_container_width=True)
 
 with tab2:
     st.subheader("Promedio de Ansiedad por Nivel de Estrés")
     df_bar = df.groupby(['stress_label'])['anxiety_level'].mean().reset_index()
-    
-    fig2 = px.bar(df_bar, x='stress_label', y='anxiety_level', 
-                  color='stress_label', template="plotly_white",
-                  labels={"stress_label": "Nivel de Estrés", 
-                          "anxiety_level": "Nivel de Ansiedad Promedio"},
-                  color_discrete_map={"BAJO": "#2e7d32", "MODERADO": "#ffa15a", "ALTO": "#ef553b"})
-    
-    fig2.update_layout(
-        showlegend=False,
-        plot_bgcolor="rgba(0,0,0,0)",
-        paper_bgcolor="rgba(0,0,0,0)",
-        font=dict(color="#0c1c30"),
-        xaxis=dict(
-            title_font=dict(color="#0c1c30"),
-            linecolor="#0c1c30", 
-            tickfont=dict(color="#0c1c30")
-        ),
-        yaxis=dict(
-            title_font=dict(color="#0c1c30"),
-            showgrid=True, 
-            gridcolor="#e2e8f0", 
-            linecolor="#0c1c30", 
-            tickfont=dict(color="#0c1c30")
-        )
-    )
+    fig2 = px.bar(df_bar, x='stress_label', y='anxiety_level', color='stress_label', template="plotly_white", color_discrete_map={"BAJO": "#2e7d32", "MODERADO": "#ffa15a", "ALTO": "#ef553b"})
+    fig2.update_layout(showlegend=False, plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)", font=dict(color="#0c1c30"))
     st.plotly_chart(fig2, use_container_width=True)
 
 st.info("💡 **Interpretación:** La tendencia descendente confirma que, al aumentar el nivel de estrés, el rendimiento académico disminuye de forma consistente.")
