@@ -14,7 +14,6 @@ st.markdown("""
     .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
     
-    /* Encabezado */
     .header-institucional {
         background-color: #0c1c30;
         padding: 20px 30px;
@@ -26,7 +25,6 @@ st.markdown("""
     }
     .header-institucional h2 { color: white !important; margin: 0; font-size: 1.2rem !important; font-weight: 600 !important; }
     
-    /* Navegación */
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) {
         background-color: #1a2a40 !important;
         padding: 10px 20px !important;
@@ -37,15 +35,15 @@ st.markdown("""
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
     
-    /* Corrección crítica: Expander visible */
+    /* CORRECCIÓN: Forzar que el texto del expansor sea oscuro y visible */
     [data-testid="stExpander"] div[role="button"] p {
         color: #0c1c30 !important;
         font-weight: 900 !important;
         font-size: 18px !important;
     }
     [data-testid="stExpander"] {
-        border: 2px solid #0c1c30 !important;
         background-color: #ffffff !important;
+        border: 2px solid #0c1c30 !important;
     }
     
     h1, h2, h3, h4 { color: #0c1c30 !important; font-weight: bold !important; }
