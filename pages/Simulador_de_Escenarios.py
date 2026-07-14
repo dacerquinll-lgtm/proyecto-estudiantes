@@ -12,6 +12,7 @@ st.markdown("""
     .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
     
+    /* CABECERA (Se mantiene oscura) */
     .header-institucional {
         background-color: #0c1c30;
         padding: 20px 30px;
@@ -33,6 +34,12 @@ st.markdown("""
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
     
+    /* FORZAR NEGRO EN EL CUERPO (Solución para que no sea invisible) */
+    h1, h2, h3, p, div:not(.header-institucional):not(.header-institucional *) {
+        color: #000000 !important;
+    }
+    
+    /* BOTÓN */
     div.stButton > button {
         background-color: #0c1c30 !important;
         color: #ffffff !important;
@@ -98,13 +105,13 @@ if st.button("🚀 Calcular Proyecciones"):
             st.write(f"**Análisis:** {explicacion}")
 
     render_escenario(col1, "Situación Actual", res_actual, "⚖️", 
-                    "Es el resultado de continuar con tus hábitos de siempre. El nivel de estrés se mantendrá estable.")
+                    "Es el resultado de continuar con tus hábitos de siempre.")
     
     render_escenario(col2, "Si realizas mejoras", res_mejora, "✅", 
-                    "Al ajustar tu descanso y reducir la sobrecarga, el modelo proyecta una mejora.")
+                    "El modelo proyecta una baja en el estrés y un mejor rendimiento.")
     
     render_escenario(col3, "Si aumentan las dificultades", res_dificultad, "⚠️", 
-                    "Si descuidas tus hábitos, el nivel de estrés puede elevarse.")
+                    "El nivel de estrés puede elevarse, afectando tu rendimiento.")
 
     st.markdown("---")
     st.info("💡 **Recuerda:** Estas proyecciones sirven como guía para tu toma de decisiones.")
