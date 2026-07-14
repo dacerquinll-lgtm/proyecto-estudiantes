@@ -49,28 +49,32 @@ st.markdown("""
         font-weight: 600 !important;
     }
     
-    /* CORRECCIÓN: Fondo y color de fuente para el menú */
+    /* Mantenemos tu diseño azul oscuro en el menú */
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) {
-        background-color: #e2e8f0 !important; /* Fondo claro para el menú */
+        background-color: #0c1c30 !important;
         padding: 10px 20px !important;
         margin-top: 0px !important;
         margin-bottom: 30px !important;
         border-radius: 0 0 8px 8px !important;
+        gap: 0px !important;
     }
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) div[data-testid="stPageLink"] a {
-        color: #0c1c30 !important; /* Texto oscuro para visibilidad */
+        background-color: transparent !important;
+        color: #ffffff !important; /* Texto blanco sobre azul */
         font-weight: bold !important;
-        text-decoration: none !important;
+        text-decoration: underline !important;
     }
     
-    /* Página activa resaltada */
+    /* Resaltado de página activa en verde */
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) > div[data-testid="column"]:nth-of-type(1) div[data-testid="stPageLink"] a {
         background-color: #2e7d32 !important;
         color: white !important;
+        text-decoration: none !important;
         padding: 8px 16px !important;
         border-radius: 4px !important;
     }
     
+    h1, h2, h3, h4 { color: #0c1c30 !important; }
     .bienvenida-titulo { color: #2e7d32 !important; font-size: 2.2rem !important; font-weight: bold !important; }
     .bienvenida-sub { color: #0c1c30 !important; font-size: 1.8rem !important; font-weight: 800 !important; }
     </style>
