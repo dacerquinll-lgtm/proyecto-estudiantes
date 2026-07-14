@@ -117,12 +117,11 @@ if 'ultimo_diagnostico' in st.session_state:
         c.setFillColorRGB(0.047, 0.11, 0.188)
         c.rect(0, 782, 612, 10, fill=True, stroke=False)
         
-        # Ruta absoluta para asegurar que encuentre el archivo en la carpeta assets
         base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         ruta_logo = os.path.join(base_path, "assets", "detector.png")
         
         if os.path.exists(ruta_logo):
-            c.drawImage(ruta_logo, 480, 690, width=80, height=80, preserveAspectRatio=True, mask='auto')
+            c.drawImage(ruta_logo, 510, 710, width=50, height=50, preserveAspectRatio=True, mask='auto')
         
         c.setFillColorRGB(0.047, 0.11, 0.188)
         c.setFont("Helvetica-Bold", 18)
