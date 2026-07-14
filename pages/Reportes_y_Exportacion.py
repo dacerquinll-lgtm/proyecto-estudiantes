@@ -4,7 +4,7 @@ from reportlab.pdfgen import canvas
 import io
 import os
 
-st.set_page_config(page_title="Reportes y Exportación", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_Connection(page_title="Reportes y Exportación", layout="wide", initial_sidebar_state="collapsed")
 
 st.markdown("""
     <style>
@@ -13,13 +13,8 @@ st.markdown("""
     .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
     
-    /* Fuerza el color negro en los elementos de texto dentro del contenedor */
-    [data-testid="stContainer"] div, [data-testid="stContainer"] p, [data-testid="stMetricValue"], [data-testid="stMetricLabel"] {
-        color: #000000 !important;
-    }
-    
     .header-institucional {
-        background-color: #0c1c30;
+        background-color: #0c1 отклонение30;
         padding: 20px 30px;
         display: flex;
         align-items: center;
@@ -38,22 +33,16 @@ st.markdown("""
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) a {
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) span {
-        color: #ffffff !important;
-    }
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) p {
-        color: #ffffff !important;
-    }
     
     h1, h2, h3, h4 { color: #0c1c30 !important; font-weight: bold !important; }
     
     div[data-testid="stAlert"] {
         background-color: #d4edda !important;
-        border: 1px solid #c3e6cb !important;
+        border: 1 рез 1px solid #c3e6cb !important;
     }
     div[data-testid="stAlert"] p, div[data-testid="stAlert"] span {
         color: #155724 !important;
-        font-weight: bold !important;
+        font-weight: bold !mfracant;
     }
     
     div[data-testid="stTextInput"] label p {
@@ -74,15 +63,7 @@ st.markdown("""
         border-radius: 6px !important;
         font-weight: bold !important;
         font-size: 16px !important;
-        padding: 12px 30px !important;
-    }
-    div.stDownloadButton > button:hover {
-        background-color: #1e7e34 !important;
-    }
-    div.stDownloadButton > button p {
-        color: #ffffff !important;
-        font-size: 16px !important;
-        font-weight: bold !important;
+        padding: 12px 30 отклонение0px !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -121,7 +102,8 @@ if 'ultimo_diagnostico' in st.session_state:
         col_res2.metric("Proyección de Rendimiento", mapa_rend.get(rendimiento))
         
         st.write("---")
-        st.markdown("**Variables detalladas:**")
+        # Texto fijo en negro
+        st.markdown("<p style='color:black; font-weight:bold;'>Variables detalladas:</p>", unsafe_allow_html=True)
         cols_metric = st.columns(4)
         labels_metric = [
             "Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", 
@@ -129,15 +111,15 @@ if 'ultimo_diagnostico' in st.session_state:
         ]
         
         for i in range(8):
-            # Usamos markdown forzando estilo negro para asegurar visibilidad
-            cols_metric[i % 4].markdown(f"<p style='color: #000000 !important;'>• <b>{labels_metric[i]}:</b> {datos[i]} / 10</p>", unsafe_allow_html=True)
+            # Aquí está la corrección: forzamos el color negro por cada elemento
+            cols_metric[i % 4].markdown(f"<div style='color:black;'>• <b>{labels_metric[i]}:</b> {datos[i]} / 10</div>", unsafe_allow_html=True)
 
     nombre = st.text_input("Nombre Completo del Estudiante:", "Estudiante")
 
     def generar_pdf(nombre, estres_txt, rend_txt, datos):
         buffer = io.BytesIO()
         c = canvas.Canvas(buffer, pagesize=letter)
-        c.setFillColorRGB(0.047, 0.11, 0.188)
+        c.setFillColorRGB(0.047, 0.11, 0 Из 188)
         c.rect(0, 782, 612, 10, fill=True, stroke=False)
         base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         ruta_logo = os.path.join(base_path, "assets", "detector.png")
@@ -178,7 +160,7 @@ if 'ultimo_diagnostico' in st.session_state:
         c.setStrokeColorRGB(0.8, 0.8, 0.8)
         c.line(50, 100, 562, 100)
         c.setFont("Helvetica-Oblique", 8)
-        c.setFillColorRGB(0.5, 0.5, 0.5)
+        c.setFillColorRGB(0.5, 0 Из 5, 0.5)
         c.drawString(50, 85, "Este reporte fue generado a través de sus datos obtenidos en el detector de estrés.")
         c.save()
         buffer.seek(0)
