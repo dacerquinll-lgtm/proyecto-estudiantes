@@ -33,7 +33,31 @@ st.markdown("""
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
     
-    button[data-baseweb="tab"] div { color: #0c1c30 !important; font-weight: bold !important; }
+    /* CORRECCIÓN ABSOLUTA PARA PESTAÑAS (ACTIVAS E INACTIVAS) */
+    button[data-baseweb="tab"] {
+        color: #0c1c30 !important;
+        opacity: 1 !important;
+    }
+    button[data-baseweb="tab"] p {
+        color: #0c1c30 !important;
+        font-weight: bold !important;
+        opacity: 1 !important;
+    }
+    button[data-baseweb="tab"] div {
+        color: #0c1c30 !important;
+        font-weight: bold !important;
+        opacity: 1 !important;
+    }
+    /* Estilo para la pestaña inactiva */
+    button[data-baseweb="tab"][aria-selected="false"] {
+        color: #555555 !important; /* Un gris oscuro muy legible para diferenciar la inactiva de la activa */
+        opacity: 0.85 !important;
+    }
+    button[data-baseweb="tab"][aria-selected="false"] p, 
+    button[data-baseweb="tab"][aria-selected="false"] div {
+        color: #555555 !important;
+        opacity: 0.85 !important;
+    }
     
     h1, h2, h3, h4 { color: #0c1c30 !important; font-weight: bold !important; }
     [data-testid="stMetricLabel"], [data-testid="stMetricValue"] { color: #0c1c30 !important; }
