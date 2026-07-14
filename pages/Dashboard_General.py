@@ -5,7 +5,6 @@ import os
 
 st.set_page_config(page_title="MindCare Analytics - Dashboard", page_icon="📊", layout="wide", initial_sidebar_state="collapsed")
 
-# Dashboard es la página 2
 pagina_activa = 2
 
 st.markdown("""
@@ -28,7 +27,6 @@ st.markdown("""
     }
     .header-institucional h2 { color: white !important; margin: 0; font-size: 1.2rem !important; font-weight: 600 !important; }
     
-    /* Menú Oficial (Azul diferenciado #1a2a40) */
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) {
         background-color: #1a2a40 !important;
         padding: 10px 20px !important;
@@ -47,7 +45,6 @@ st.markdown("""
         display: inline-flex !important;
     }
     
-    /* Resaltado de página activa (Dashboard = 2da columna) */
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) > div[data-testid="column"]:nth-of-type(2) div[data-testid="stPageLink"] a {
         background-color: #2e7d32 !important;
         color: white !important;
@@ -75,7 +72,6 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Menú Oficial
 cols_nav = st.columns([0.8, 1.2, 1.2, 1.4, 1.4])
 with cols_nav[0]: st.page_link("app.py", label="Inicio")
 with cols_nav[1]: st.page_link("pages/Dashboard_General.py", label="Dashboard General")
@@ -106,12 +102,18 @@ tab1, tab2 = st.tabs(["📉 Tendencia de Rendimiento", "⚠️ Factores de Riesg
 
 with tab1:
     df_line = df.groupby(['stress_level', 'stress_label'])['academic_performance'].mean().reset_index().sort_values('stress_level')
-    fig1 = px.line(df_line, x="stress_label", y="academic_performance", markers=True, template="plotly_white")
-    fig1.update_layout(font=dict(color="#0c1c30", size=14))
+    fig1 = px.line(df_line, x="stress_label", y="academic_performance", markers=True)
+    # FORZANDO TEMA CLARO:
+    fig1.update_layout(plot_bgcolor="white", paper_bgcolor="white", font=dict(color="#0c1c30", size=14))
+    fig1.update_xaxes(showgrid=True, gridcolor="#e0e0e0")
+    fig1.update_yaxes(showgrid=True, gridcolor="#e0e0e0")
     st.plotly_chart(fig1, use_container_width=True)
 
 with tab2:
     df_bar = df.groupby(['stress_label'])['anxiety_level'].mean().reset_index()
-    fig2 = px.bar(df_bar, x='stress_label', y='anxiety_level', color='stress_label', template="plotly_white")
-    fig2.update_layout(showlegend=False, font=dict(color="#0c1c30", size=14))
+    fig2 = px.bar(df_bar, x='stress_label', y='anxiety_level', color='stress_label')
+    # FORZANDO TEMA CLARO:
+    fig2.update_layout(plot_bgcolor="white", paper_bgcolor="white", font=dict(color="#0c1c30", size=14), showlegend=False)
     st.plotly_chart(fig2, use_container_width=True)
+
+st.info("💡 **Interpretación:** La tendencia descendente confirma que, al aumentar el nivel de estrés, el rendimiento académico disminuye de forma consistente.")
