@@ -168,11 +168,14 @@ with tab1:
     df_line = df.groupby(['stress_level', 'stress_label'])['academic_performance'].mean().reset_index().sort_values('stress_level')
     fig1 = px.line(df_line, x="stress_label", y="academic_performance", markers=True, template="plotly_white", line_shape="spline")
     fig1.update_traces(line_color="#0c1c30", line_width=4, marker=dict(size=12, color="#2e7d32"))
-    # AQUI ESTA LA CORRECCION: Fuerza el color de las letras de los ejes a #0c1c30
+    
+    # Aquí forzamos el color de los ejes y etiquetas a negro/azul oscuro
     fig1.update_layout(
         plot_bgcolor="rgba(0,0,0,0)", 
-        paper_bgcolor="rgba(0,0,0,0)", 
-        font=dict(color="#0c1c30", size=14)
+        paper_bgcolor="rgba(0,0,0,0)",
+        font=dict(color="#0c1c30"),
+        xaxis=dict(tickfont=dict(color="#0c1c30", size=14, weight="bold"), titlefont=dict(color="#0c1c30")),
+        yaxis=dict(tickfont=dict(color="#0c1c30", size=14, weight="bold"), titlefont=dict(color="#0c1c30"))
     )
     st.plotly_chart(fig1, use_container_width=True)
 
@@ -180,13 +183,15 @@ with tab2:
     st.subheader("Promedio de Ansiedad por Nivel de Estrés")
     df_bar = df.groupby(['stress_label'])['anxiety_level'].mean().reset_index()
     fig2 = px.bar(df_bar, x='stress_label', y='anxiety_level', color='stress_label', template="plotly_white", color_discrete_map={"BAJO": "#2e7d32", "MODERADO": "#ffa15a", "ALTO": "#ef553b"})
-    # AQUI ESTA LA CORRECCION: Fuerza el color de las letras de los ejes a #0c1c30
+    
+    # Aquí forzamos el color de los ejes y etiquetas a negro/azul oscuro
     fig2.update_layout(
         showlegend=False, 
         plot_bgcolor="rgba(0,0,0,0)", 
         paper_bgcolor="rgba(0,0,0,0)", 
-        font=dict(color="#0c1c30", size=14)
+        font=dict(color="#0c1c30"),
+        xaxis=dict(tickfont=dict(color="#0c1c30", size=14, weight="bold")),
+        yaxis=dict(tickfont=dict(color="#0c1c30", size=14, weight="bold"))
     )
     st.plotly_chart(fig2, use_container_width=True)
-
 st.info("💡 **Interpretación:** La tendencia descendente confirma que, al aumentar el nivel de estrés, el rendimiento académico disminuye de forma consistente.")
