@@ -107,7 +107,8 @@ tab1, tab2 = st.tabs(["📉 Tendencia de Rendimiento", "⚠️ Factores de Riesg
 with tab1:
     st.subheader("Evolución del Rendimiento Académico")
     df_line = df.groupby(['stress_level', 'stress_label'])['academic_performance'].mean().reset_index().sort_values('stress_level')
-    fig1 = px.line(df_line, x="stress_label", y="academic_performance", markers=True, template="plotly_white")
+    fig1 = px.line(df_line, x="stress_label", y="academic_performance", markers=True, template="plotly_white",
+                  labels={"stress_label": "Nivel de Estrés", "academic_performance": "Rendimiento Académico"})
     fig1.update_traces(line_color="#0c1c30", line_width=4, marker=dict(size=12, color="#2e7d32"))
     fig1.update_layout(plot_bgcolor="white", paper_bgcolor="white", font=dict(color="#0c1c30", size=14))
     fig1.update_xaxes(title="Nivel de Estrés", color="#0c1c30", gridcolor="#e0e0e0", tickfont=dict(color="#0c1c30"), title_font=dict(color="#0c1c30"))
@@ -120,7 +121,8 @@ with tab2:
     df_bar = df.groupby(['stress_label'])['anxiety_level'].mean().reset_index()
     fig2 = px.bar(df_bar, x='stress_label', y='anxiety_level', color='stress_label', template="plotly_white",
                   color_discrete_map={"BAJO": "#2e7d32", "MODERADO": "#ffa15a", "ALTO": "#ef553b"},
-                  category_orders={"stress_label": ["BAJO", "MODERADO", "ALTO"]})
+                  category_orders={"stress_label": ["BAJO", "MODERADO", "ALTO"]},
+                  labels={"stress_label": "Nivel de Estrés", "anxiety_level": "Nivel de Ansiedad Promedio"})
     fig2.update_layout(showlegend=False, plot_bgcolor="white", paper_bgcolor="white", font=dict(color="#0c1c30", size=14))
     fig2.update_xaxes(title="Nivel de Estrés", color="#0c1c30", gridcolor="#e0e0e0", tickfont=dict(color="#0c1c30"), title_font=dict(color="#0c1c30"))
     fig2.update_yaxes(title="Nivel de Ansiedad Promedio", color="#0c1c30", gridcolor="#e0e0e0", tickfont=dict(color="#0c1c30"), title_font=dict(color="#0c1c30"))
