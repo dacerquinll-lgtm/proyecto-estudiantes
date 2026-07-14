@@ -13,7 +13,6 @@ st.markdown("""
     .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
     
-    /* Fuerza el color negro en los elementos de texto dentro del contenedor */
     [data-testid="stContainer"] div, [data-testid="stContainer"] p, [data-testid="stMetricValue"], [data-testid="stMetricLabel"] {
         color: #000000 !important;
     }
@@ -115,102 +114,72 @@ if 'ultimo_diagnostico' in st.session_state:
     st.success("✅ Diagnóstico detectado. Generando PDF.")
     
     st.subheader("📋 Resumen del Test")
-    # Agregamos una clase personalizada para controlar el margen inferior del contenedor
-    st.markdown("""
-        <style>
-        .compact-container { margin-bottom: -15px !important; }
-        </style>
-    """, unsafe_allow_html=True)
-    
     with st.container(border=True):
-        # Aplicamos la clase para reducir el espacio debajo de este bloque
-        st.markdown('<div class="compact-container">', unsafe_allow_html=True)
         col_res1, col_res2 = st.columns(2)
         col_res1.metric("Nivel de Estrés", mapa_estres.get(estres))
         col_res2.metric("Proyección de Rendimiento", mapa_rend.get(rendimiento))
-        st.markdown('</div>', unsafe_allow_html=True)
         
-    # Eliminamos el st.write("---") que generaba el espacio basura
-    st.markdown("<h4 style='color: #0c1c30 !important; font-weight: 900 !important; margin-top: 10px !important;'>Variables detalladas:</h4>", unsafe_allow_html=True)
-    
-    # Mantenemos las columnas para las variables
-    cols_metric = st.columns([1, 1, 1, 1], gap="small")
-    labels_metric = [
-        "Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", 
-        "Carga de Estudio", "Actividades Extras", "Apoyo Social", "Interés Académico"
-    ]
-    
-    for i in range(8):
-        cols_metric[i % 4].markdown(f"<div style='color:black; font-size: 0.9rem;'>• <b>{labels_metric[i]}:</b> {datos[i]} / 10</div>", unsafe_allow_html=True)
+        st.markdown("<h4 style='color: #0c1c30 !important; font-weight: 900 !important; margin-top: 20px !important; margin-bottom: 10px !important;'>Variables detalladas:</h4>", unsafe_allow_html=True)
+        
+        cols_metric = st.columns([1, 1, 1, 1], gap="small")
+        labels_metric = [
+            "Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", 
+            "Carga de Estudio", "Actividades Extras", "Apoyo Social", "Interés Académico"
+        ]
+        
+        for i in range(8):
+            cols_metric[i % 4].markdown(f"<div style='color:black; font-size: 0.9rem;'>• <b>{labels_metric[i]}:</b> {datos[i]} / 10</div>", unsafe_allow_html=True)
 
+    # Añadimos un margen superior al input para separar
+    st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
     nombre = st.text_input("Nombre Completo del Estudiante:", "Estudiante")
 
     def generar_pdf(nombre, estres_txt, rend_txt, datos):
         buffer = io.BytesIO()
         c = canvas.Canvas(buffer, pagesize=letter)
-        
         c.setFillColorRGB(0.047, 0.11, 0.188)
         c.rect(0, 782, 612, 10, fill=True, stroke=False)
-        
         base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         ruta_logo = os.path.join(base_path, "assets", "detector.png")
-        
         if os.path.exists(ruta_logo):
             c.drawImage(ruta_logo, 510, 710, width=50, height=50, preserveAspectRatio=True, mask='auto')
-        
         c.setFillColorRGB(0.047, 0.11, 0.188)
         c.setFont("Helvetica-Bold", 18)
         c.drawString(50, 735, "REPORTE GENERAL")
-        
         c.setFont("Helvetica", 9)
         c.setFillColorRGB(0.4, 0.4, 0.4)
         c.drawString(50, 718, "SISTEMA INTELIGENTE PARA LA REDUCCIÓN DE ESTRÉS")
-        
         c.setStrokeColorRGB(0.8, 0.8, 0.8)
         c.setLineWidth(1)
         c.line(50, 680, 562, 680)
-        
         c.setFillColorRGB(0.047, 0.11, 0.188)
         c.setFont("Helvetica-Bold", 12)
         c.drawString(50, 655, "Información del Estudiante")
-        
         c.setFont("Helvetica", 11)
         c.setFillColorRGB(0.1, 0.1, 0.1)
         c.drawString(50, 635, f"Estudiante: {nombre}")
         c.drawString(50, 615, f"Nivel de Estrés: {estres_txt}")
         c.drawString(50, 595, f"Proyección de Rendimiento: {rend_txt}")
-        
         c.line(50, 570, 562, 570)
-        
         c.setFillColorRGB(0.047, 0.11, 0.188)
         c.setFont("Helvetica-Bold", 12)
         c.drawString(50, 545, "Métricas y Variables Analizadas")
-        
-        labels = [
-            "Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", 
-            "Carga de Estudio", "Actividades Extras", "Apoyo Social", "Interés Académico"
-        ]
-        
+        labels = ["Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", "Carga de Estudio", "Actividades Extras", "Apoyo Social", "Interés Académico"]
         y_pos = 515
         for i, label in enumerate(labels):
             c.setFillColorRGB(0.95, 0.95, 0.97)
             c.rect(50, y_pos - 4, 512, 18, fill=True, stroke=False)
-            
             c.setFillColorRGB(0.1, 0.1, 0.1)
             c.setFont("Helvetica-Bold", 10)
             c.drawString(60, y_pos, label)
-            
             c.setFont("Helvetica", 10)
             c.drawRightString(540, y_pos, f"{datos[i]} / 10")
             y_pos -= 24
-            
         c.setStrokeColorRGB(0.8, 0.8, 0.8)
         c.line(50, 100, 562, 100)
-        
         c.setFont("Helvetica-Oblique", 8)
         c.setFillColorRGB(0.5, 0.5, 0.5)
         c.drawString(50, 85, "Este reporte fue generado a través de sus datos obtenidos en el detector de estrés.")
-        
         c.save()
         buffer.seek(0)
         return buffer
