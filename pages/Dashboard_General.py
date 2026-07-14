@@ -3,7 +3,7 @@ import plotly.express as px
 import pandas as pd
 import os
 
-st.set_page_config(page_title="MindCare Analytics", page_icon="📊", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Dashboard", page_icon="📊", layout="wide", initial_sidebar_state="collapsed")
 
 st.markdown("""
     <style>
