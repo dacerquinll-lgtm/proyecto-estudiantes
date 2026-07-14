@@ -27,6 +27,7 @@ st.markdown("""
     }
     .header-institucional h2 { color: white !important; margin: 0; font-size: 1.2rem !important; font-weight: 600 !important; }
     
+    /* FIX NAVEGACIÓN Y TEXTOS VISIBLES EN TEMA LIGHT */
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) {
         background-color: #1a2a40 !important;
         padding: 10px 20px !important;
@@ -34,7 +35,18 @@ st.markdown("""
         border-radius: 0 0 8px 8px !important;
     }
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) a {
-        color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
+        color: #ffffff !important; 
+        font-weight: bold !important; 
+        text-decoration: none !important;
+    }
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) span {
+        color: #ffffff !important;
+    }
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) p {
+        color: #ffffff !important;
+    }
+    div[data-testid="stPageLink"] * {
+        color: #ffffff !important;
     }
     
     h1, h2, h3, h4 { color: #0c1c30 !important; font-weight: bold !important; }
