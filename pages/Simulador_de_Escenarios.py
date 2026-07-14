@@ -12,7 +12,7 @@ st.markdown("""
     .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
     
-    /* ESTILOS DE CABECERA (NO TOCAR PARA MANTENER COLORES) */
+    /* CABECERA (Se mantiene intacta y profesional) */
     .header-institucional {
         background-color: #0c1c30;
         padding: 20px 30px;
@@ -33,20 +33,19 @@ st.markdown("""
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) a {
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
-
-    /* ESTILOS DEL CONTENIDO PRINCIPAL (FUERZA COLOR NEGRO) */
-    .main div, .main p, .main h1, .main h2, .main h3, .main h4, .main .stMetricValue, .main .stMetricLabel {
+    
+    /* FUERZA NEGRO SOLO EN ELEMENTOS ESPECÍFICOS DE LAS MÉTRICAS */
+    .stMetricValue, .stMetricLabel, div[data-testid="stMarkdownContainer"] p {
         color: #000000 !important;
     }
     
-    /* CORRECCIÓN DE BOTÓN */
+    /* BOTÓN */
     div.stButton > button {
         background-color: #0c1c30 !important;
         color: #ffffff !important;
         border: none !important;
         border-radius: 6px !important;
         font-weight: bold !important;
-        padding: 10px 24px !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -65,7 +64,6 @@ with cols_nav[2]: st.page_link("pages/Detector_de_Estres.py", label="Detector de
 with cols_nav[3]: st.page_link("pages/Reportes_y_Exportacion.py", label="Reportes y Exportación")
 with cols_nav[4]: st.page_link("pages/Simulador_de_Escenarios.py", label="Simulador de Escenarios")
 
-# Todo lo que sigue queda dentro de .main
 st.title("📈 Simulador de Proyecciones de Bienestar")
 
 if 'ultimo_diagnostico' not in st.session_state:
