@@ -9,48 +9,30 @@ st.markdown("""
     <style>
     .stApp { background-color: #f8f9fa !important; }
     [data-testid="stHeader"] { display: none !important; }
-    .block-container { padding-top: 2rem !important; padding-bottom: 4rem !important; }
+    .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
     
-    /* Cabecera unificada con fondo oscuro */
-    .header-institucional-unica {
+    .header-institucional {
         background-color: #0c1c30;
         padding: 20px 30px;
-        border-radius: 8px 8px 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         color: white;
+        border-radius: 8px 8px 0 0;
     }
-    .header-institucional-unica h2 { 
-        color: white !important; 
-        margin: 0; 
-        font-size: 1.2rem !important; 
-        font-weight: 600 !important; 
-    }
+    .header-institucional h2 { color: white !important; margin: 0; font-size: 1.2rem !important; font-weight: 600 !important; }
     
-    /* Contenedor del menú de navegación integrado */
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) {
-        background-color: #0c1c30 !important;
-        padding: 10px 30px !important;
-        margin-top: -2px !important;
+        background-color: #1a2a40 !important;
+        padding: 10px 20px !important;
         margin-bottom: 30px !important;
         border-radius: 0 0 8px 8px !important;
-        border-top: 1px solid #1a2a40 !important;
     }
-    
-    /* Forzar que los enlaces de st.page_link se vean blancos y legibles */
-    div[data-testid="stPageLink"] a {
-        background-color: transparent !important;
-        border: none !important;
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) a {
+        color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
-    div[data-testid="stPageLink"] p {
-        color: #ffffff !important;
-        font-weight: bold !important;
-        font-size: 0.95rem !important;
-    }
-    div[data-testid="stPageLink"]:hover p {
-        color: #e53935 !important;
-    }
-    
-    /* Estilo de tarjeta blanca únicamente a los sliders del formulario */
+
     div[data-testid="stForm"] div[data-testid="stVerticalBlockBorderWrapper"] {
         background-color: #ffffff !important;
         border: 1px solid #e0e0e0 !important;
@@ -67,6 +49,9 @@ st.markdown("""
         border: 1px solid #e0e0e0;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         margin-bottom: 25px;
+        color: #0c1c30 !important;
+    }
+    .tarjeta-evaluacion-info h3, .tarjeta-evaluacion-info h4, .tarjeta-evaluacion-info p {
         color: #0c1c30 !important;
     }
     
@@ -100,17 +85,13 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Cabecera Superior Única
 st.markdown("""
-    <div class="header-institucional-unica">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div><span style="font-weight: 900; font-size: 1.6rem; color: #e53935;">UCV</span></div>
-            <div><h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2></div>
-        </div>
+    <div class="header-institucional">
+        <div><span style="font-weight: 900; font-size: 1.6rem; color: #e53935;">UCV</span></div>
+        <div><h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2></div>
     </div>
 """, unsafe_allow_html=True)
 
-# Menú de Navegación integrado justo debajo sin cortes extraños
 cols_nav = st.columns([0.8, 1.2, 1.2, 1.4, 1.4])
 with cols_nav[0]: st.page_link("app.py", label="Inicio")
 with cols_nav[1]: st.page_link("pages/Dashboard_General.py", label="Dashboard General")
@@ -123,7 +104,6 @@ st.title("🧠 Detector Integral Académico")
 if 'iniciado' not in st.session_state:
     st.session_state.update({'respuestas': [], 'iniciado': False})
 
-# --- PANTALLA DE BIENVENIDA ---
 if not st.session_state.iniciado:
     st.markdown("""
         <div class="tarjeta-evaluacion-info">
@@ -139,14 +119,11 @@ if not st.session_state.iniciado:
         st.session_state.iniciado = True
         st.rerun()
 
-# --- FORMULARIO COMPLETO DE PREGUNTAS ---
 elif len(st.session_state.respuestas) == 0:
     st.markdown("### Evaluación de Hábitos Académicos")
     st.markdown('<p style="color: #666;">Responde las siguientes preguntas para que el sistema pueda analizar tu nivel de estrés.</p>', unsafe_allow_html=True)
     
     with st.form("formulario_evaluacion"):
-        
-        # Fila 1
         col_a, col_b = st.columns(2)
         with col_a:
             with st.container(border=True):
@@ -155,7 +132,6 @@ elif len(st.session_state.respuestas) == 0:
             with st.container(border=True):
                 confianza = st.slider("2. ¿Qué nivel de confianza tienes en ti mismo/a? (1=Muy baja, 10=Muy alta)", 1, 10, 5)
             
-        # Fila 2
         col_c, col_d = st.columns(2)
         with col_c:
             with st.container(border=True):
@@ -164,7 +140,6 @@ elif len(st.session_state.respuestas) == 0:
             with st.container(border=True):
                 sueno = st.slider("4. ¿Cómo es la calidad de tu sueño? (1=Muy mala, 10=Excelente)", 1, 10, 5)
             
-        # Fila 3
         col_e, col_f = st.columns(2)
         with col_e:
             with st.container(border=True):
@@ -173,7 +148,6 @@ elif len(st.session_state.respuestas) == 0:
             with st.container(border=True):
                 recreativo = st.slider("6. ¿Qué tanto tiempo dedicas a actividades recreativas? (1=Nada, 10=Lo suficiente)", 1, 10, 5)
             
-        # Fila 4
         col_g, col_h = st.columns(2)
         with col_g:
             with st.container(border=True):
@@ -188,7 +162,6 @@ elif len(st.session_state.respuestas) == 0:
             st.session_state.respuestas = [ansiedad, confianza, animo, sueno, carga, recreativo, apoyo, interes]
             st.rerun()
 
-# --- PANTALLA DE RESULTADOS ---
 else:
     ruta_modelo = "modelos/modelo_stress_rf.pkl"
     if not os.path.exists(ruta_modelo):
@@ -243,7 +216,6 @@ else:
     else:
         st.success("¡Excelente! Continúa monitoreando tu bienestar para mantener este equilibrio.")
     
-    # Margen inferior antes del botón de reiniciar
     st.markdown('<div style="margin-top: 50px;"></div>', unsafe_allow_html=True)
 
     if st.button("🔄 **Reiniciar Evaluación**"):
