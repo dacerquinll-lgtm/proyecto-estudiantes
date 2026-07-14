@@ -32,7 +32,7 @@ st.markdown("""
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) a {
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
-
+    
     div[data-testid="stForm"] div[data-testid="stVerticalBlockBorderWrapper"] {
         background-color: #ffffff !important;
         border: 1px solid #e0e0e0 !important;
