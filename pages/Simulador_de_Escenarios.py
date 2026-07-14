@@ -83,8 +83,10 @@ estres_base = diag['estres']
 
 # Texto explicativo forzado a ser negro mediante el contenedor que ya definimos arriba
 st.markdown("""
-    <div style="color: #000000 !important; font-size: 16px; margin-bottom: 20px;">
-        Esta herramienta compara cómo evolucionaría tu situación académica según las acciones que decidas tomar.
+    <div style="background-color: transparent !important;">
+        <span style="color: #000000 !important; font-size: 16px; font-weight: normal !important; display: block;">
+            Esta herramienta compara cómo evolucionaría tu situación académica según las acciones que decidas tomar.
+        </span>
     </div>
 """, unsafe_allow_html=True)
 
