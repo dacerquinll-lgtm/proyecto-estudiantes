@@ -12,7 +12,8 @@ st.markdown("""
     .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
     
-    [data-testid="stContainer"] div, [data-testid="stContainer"] p, [data-testid="stMetricValue"], [data-testid="stMetricLabel"] {
+    /* Regla específica para asegurar que el texto sea negro */
+    .stApp p, .stApp div {
         color: #000000 !important;
     }
     
@@ -77,10 +78,10 @@ diag = st.session_state['ultimo_diagnostico']
 datos_base = np.array(diag['datos']) 
 estres_base = diag['estres']
 
+# Aquí está el texto que faltaba visualizar
 st.write("Esta herramienta compara cómo evolucionaría tu situación académica según las acciones que decidas tomar.")
 
 if st.button("🚀 Calcular Proyecciones"):
-    # Ruta corregida según tu estructura
     ruta_modelo = os.path.join("modelos", "modelo_stress_rf.pkl")
     modelo = joblib.load(ruta_modelo)
     
