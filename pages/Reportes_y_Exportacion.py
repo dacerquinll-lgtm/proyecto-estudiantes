@@ -117,7 +117,10 @@ if 'ultimo_diagnostico' in st.session_state:
         c.setFillColorRGB(0.047, 0.11, 0.188)
         c.rect(0, 782, 612, 10, fill=True, stroke=False)
         
-        ruta_logo = "assets/detector.png"
+        # Ruta absoluta para asegurar que encuentre el archivo en la carpeta assets
+        base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        ruta_logo = os.path.join(base_path, "assets", "detector.png")
+        
         if os.path.exists(ruta_logo):
             c.drawImage(ruta_logo, 480, 690, width=80, height=80, preserveAspectRatio=True, mask='auto')
         
@@ -172,8 +175,7 @@ if 'ultimo_diagnostico' in st.session_state:
         
         c.setFont("Helvetica-Oblique", 8)
         c.setFillColorRGB(0.5, 0.5, 0.5)
-        c.drawString(50, 85, "Este documento es un reporte automatizado generado a través de algoritmos de inteligencia artificial.")
-        c.drawRightString(562, 85, "Universidad César Vallejo")
+        c.drawString(50, 85, "Este reporte fue generado a través de sus datos obtenidos en el detector de estrés.")
         
         c.save()
         buffer.seek(0)
