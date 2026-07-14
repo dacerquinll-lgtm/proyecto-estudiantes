@@ -83,7 +83,27 @@ st.markdown("""
     .bienvenida-titulo { color: #2e7d32 !important; font-size: 2.2rem !important; font-weight: bold !important; margin-bottom: 5px; }
     .bienvenida-sub { color: #0c1c30 !important; font-size: 1.8rem !important; font-weight: 800 !important; line-height: 1.2; margin-bottom: 20px; }
     .bienvenida-texto { color: #4a5568; font-size: 1rem; line-height: 1.6; margin-bottom: 30px; }
-    div.stButton > button { background-color: #0c1c30 !important; color: white !important; border: none !important; width: 100% !important; border-radius: 6px !important; font-weight: bold !important; padding: 12px 20px !important; }
+    
+    /* ESTILIZACIÓN DE BOTONES AL COLOR VERDE ESTÁNDAR */
+    div.stButton > button { 
+        background-color: #218838 !important; 
+        color: white !important; 
+        border: none !important; 
+        width: 100% !important; 
+        border-radius: 6px !important; 
+        font-weight: bold !important; 
+        font-size: 16px !important;
+        padding: 12px 20px !important; 
+    }
+    div.stButton > button:hover {
+        background-color: #1e7e34 !important;
+    }
+    div.stButton > button p {
+        color: #ffffff !important;
+        font-size: 16px !important;
+        font-weight: bold !important;
+    }
+    
     .titulo-estado { color: #0c1c30 !important; font-size: 1.3rem !important; font-weight: bold !important; margin-top: 10px; margin-bottom: 15px; display: block; }
     </style>
 """, unsafe_allow_html=True)
@@ -106,6 +126,27 @@ with cols_nav[2]: st.page_link("pages/Detector_de_Estres.py", label="Detector de
 with cols_nav[3]: st.page_link("pages/Reportes_y_Exportacion.py", label="Reportes y Exportación")
 with cols_nav[4]: st.page_link("pages/Simulador_de_Escenarios.py", label="Simulador de Escenarios")
 
+# Ventana emergente de información sobre el sistema
+@st.dialog("ℹ️ Información del Sistema")
+def mostrar_info():
+    st.markdown("""
+    ### Sistema Inteligente para la Reducción de Estrés Académico
+    
+    Esta plataforma utiliza **algoritmos de aprendizaje automático (Random Forest)** diseñados para identificar de manera anticipada niveles críticos de estrés en estudiantes universitarios.
+
+    #### 🎯 Funcionalidades Clave:
+    * **Detector de Estrés:** Diagnóstico mediante evaluación de 8 factores psico-académicos clave.
+    * **Dashboard Analytics:** Visualización interactiva de métricas grupales e individuales.
+    * **Simulador de Escenarios:** Proyección del comportamiento del estrés ante cambios de hábitos.
+    * **Reportes:** Exportación de resultados diagnósticos.
+
+    #### 🛡️ Compromiso y Privacidad:
+    Los datos recolectados se analizan con fines analíticos y preventivos para sugerir recomendaciones académicas y soporte emocional a tiempo.
+    """)
+    st.write("")
+    if st.button("Entendido y cerrar"):
+        st.rerun()
+
 col1, col2 = st.columns([1.1, 0.9], gap="large")
 
 with col1:
@@ -117,8 +158,14 @@ with col1:
             y personales para identificar tu nivel de estrés y brindarte recomendaciones personalizadas.
         </p>
     """, unsafe_allow_html=True)
-    st.button("Iniciar evaluación ➔")
-    st.button("Ver información ⓘ")
+    
+    if st.button("Ir al test ➔"):
+        st.switch_page("pages/Detector_de_Estres.py")
+        
+    st.markdown('<div style="height: 10px;"></div>', unsafe_allow_html=True)
+    
+    if st.button("Ver información ⓘ"):
+        mostrar_info()
 
 with col2:
     st.markdown('<span class="titulo-estado">Estado del Sistema</span>', unsafe_allow_html=True)
@@ -127,4 +174,5 @@ with col2:
         st.info("✅ **Estado de Datos:** Dataset cargado correctamente.")
     else:
         st.error("⚠️ Error crítico: No se encontró 'datasets/StressLevelDataset_limpio.csv'")
+    
     st.image("assets/imagen.png", use_container_width=True)
