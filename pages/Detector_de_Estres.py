@@ -30,18 +30,12 @@ st.markdown("""
         border-radius: 0 0 8px 8px !important;
     }
     
-    /* Reglas específicas para forzar el color blanco en los textos de los enlaces */
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) a {
-        color: #ffffff !important; 
-        font-weight: bold !important; 
+    div[data-testid="stPageLink"] a,
+    div[data-testid="stPageLink"] a *,
+    div[data-testid="stPageLink"] button,
+    div[data-testid="stPageLink"] button * {
+        color: #ffffff !important;
         text-decoration: none !important;
-    }
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) p {
-        color: #ffffff !important;
-        font-weight: bold !important;
-    }
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) span {
-        color: #ffffff !important;
     }
     
     div[data-testid="stForm"] div[data-testid="stVerticalBlockBorderWrapper"] {
