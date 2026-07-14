@@ -121,7 +121,8 @@ if 'ultimo_diagnostico' in st.session_state:
         col_res2.metric("Proyección de Rendimiento", mapa_rend.get(rendimiento))
         
         st.write("---")
-        st.markdown("**Variables detalladas:**")
+        # Corrección aplicada: título con estilo forzado
+        st.markdown("<p style='color: #000000 !important; font-weight: bold;'>Variables detalladas:</p>", unsafe_allow_html=True)
         cols_metric = st.columns(4)
         labels_metric = [
             "Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", 
@@ -129,7 +130,6 @@ if 'ultimo_diagnostico' in st.session_state:
         ]
         
         for i in range(8):
-            # Corrección aplicada aquí manteniendo tu estructura
             cols_metric[i % 4].markdown(f"<div style='color:black;'>• <b>{labels_metric[i]}:</b> {datos[i]} / 10</div>", unsafe_allow_html=True)
 
     nombre = st.text_input("Nombre Completo del Estudiante:", "Estudiante")
