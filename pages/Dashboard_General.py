@@ -33,17 +33,19 @@ st.markdown("""
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
     
-    button[data-baseweb="tab"] {
-        opacity: 1 !important;
-    }
-    button[data-baseweb="tab"] * {
+    /* CONTROL ABSOLUTO DE TEXTO EN PESTAÑAS ACTIVAS E INACTIVAS */
+    button[data-baseweb="tab"] [data-testid="stMarkdownContainer"] p {
         color: #0c1c30 !important;
         opacity: 1 !important;
         font-weight: bold !important;
     }
-    button[data-baseweb="tab"][aria-selected="true"] * {
+    
+    button[data-baseweb="tab"][aria-selected="true"] [data-testid="stMarkdownContainer"] p {
         color: #e53935 !important;
+        opacity: 1 !important;
+        font-weight: bold !important;
     }
+    
     .stTabs [data-baseweb="tab-highlight"] {
         background-color: #e53935 !important;
     }
