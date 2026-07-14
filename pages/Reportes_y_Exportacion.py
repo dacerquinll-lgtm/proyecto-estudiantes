@@ -115,23 +115,33 @@ if 'ultimo_diagnostico' in st.session_state:
     st.success("✅ Diagnóstico detectado. Generando PDF.")
     
     st.subheader("📋 Resumen del Test")
+    # Agregamos una clase personalizada para controlar el margen inferior del contenedor
+    st.markdown("""
+        <style>
+        .compact-container { margin-bottom: -15px !important; }
+        </style>
+    """, unsafe_allow_html=True)
+    
     with st.container(border=True):
+        # Aplicamos la clase para reducir el espacio debajo de este bloque
+        st.markdown('<div class="compact-container">', unsafe_allow_html=True)
         col_res1, col_res2 = st.columns(2)
         col_res1.metric("Nivel de Estrés", mapa_estres.get(estres))
         col_res2.metric("Proyección de Rendimiento", mapa_rend.get(rendimiento))
+        st.markdown('</div>', unsafe_allow_html=True)
         
-        st.write("---")
-        st.markdown("<h4 style='color: #0c1c30 !important; font-weight: 900 !important;'>Variables detalladas:</h4>", unsafe_allow_html=True)
-        
-        # Usamos un ancho de columna mucho menor (proporción 1,1,1,1 con espacios mínimos)
-        cols_metric = st.columns([1, 1, 1, 1], gap="small")
-        labels_metric = [
-            "Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", 
-            "Carga de Estudio", "Actividades Extras", "Apoyo Social", "Interés Académico"
-        ]
-        
-        for i in range(8):
-            cols_metric[i % 4].markdown(f"<div style='color:black; font-size: 0.9rem;'>• <b>{labels_metric[i]}:</b> {datos[i]} / 10</div>", unsafe_allow_html=True)
+    # Eliminamos el st.write("---") que generaba el espacio basura
+    st.markdown("<h4 style='color: #0c1c30 !important; font-weight: 900 !important; margin-top: 10px !important;'>Variables detalladas:</h4>", unsafe_allow_html=True)
+    
+    # Mantenemos las columnas para las variables
+    cols_metric = st.columns([1, 1, 1, 1], gap="small")
+    labels_metric = [
+        "Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", 
+        "Carga de Estudio", "Actividades Extras", "Apoyo Social", "Interés Académico"
+    ]
+    
+    for i in range(8):
+        cols_metric[i % 4].markdown(f"<div style='color:black; font-size: 0.9rem;'>• <b>{labels_metric[i]}:</b> {datos[i]} / 10</div>", unsafe_allow_html=True)
 
     nombre = st.text_input("Nombre Completo del Estudiante:", "Estudiante")
 
