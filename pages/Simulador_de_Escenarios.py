@@ -12,7 +12,10 @@ st.markdown("""
     .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
     
-    /* CABECERA (Se mantiene oscura) */
+    [data-testid="stContainer"] div, [data-testid="stContainer"] p, [data-testid="stMetricValue"], [data-testid="stMetricLabel"] {
+        color: #000000 !important;
+    }
+    
     .header-institucional {
         background-color: #0c1c30;
         padding: 20px 30px;
@@ -34,12 +37,8 @@ st.markdown("""
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
     
-    /* FORZAR NEGRO EN EL CUERPO (Solución para que no sea invisible) */
-    h1, h2, h3, p, div:not(.header-institucional):not(.header-institucional *) {
-        color: #000000 !important;
-    }
+    h1, h2, h3, h4 { color: #0c1c30 !important; font-weight: bold !important; }
     
-    /* BOTÓN */
     div.stButton > button {
         background-color: #0c1c30 !important;
         color: #ffffff !important;
@@ -47,6 +46,9 @@ st.markdown("""
         border-radius: 6px !important;
         font-weight: bold !important;
         padding: 10px 24px !important;
+    }
+    div.stButton > button:hover {
+        background-color: #1a2a40 !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -78,7 +80,8 @@ estres_base = diag['estres']
 st.write("Esta herramienta compara cómo evolucionaría tu situación académica según las acciones que decidas tomar.")
 
 if st.button("🚀 Calcular Proyecciones"):
-    ruta_modelo = "modelos/modelo_stress_rf.pkl"
+    # Ruta corregida según tu estructura
+    ruta_modelo = os.path.join("modelos", "modelo_stress_rf.pkl")
     modelo = joblib.load(ruta_modelo)
     
     res_actual = estres_base
@@ -108,7 +111,7 @@ if st.button("🚀 Calcular Proyecciones"):
                     "Es el resultado de continuar con tus hábitos de siempre.")
     
     render_escenario(col2, "Si realizas mejoras", res_mejora, "✅", 
-                    "El modelo proyecta una baja en el estrés y un mejor rendimiento.")
+                    "El modelo proyecta una mejora en el estrés y rendimiento.")
     
     render_escenario(col3, "Si aumentan las dificultades", res_dificultad, "⚠️", 
                     "El nivel de estrés puede elevarse, afectando tu rendimiento.")
