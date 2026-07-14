@@ -3,7 +3,6 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 import io
 import os
-import base64
 
 st.set_page_config(page_title="Reportes y Exportación", layout="wide", initial_sidebar_state="collapsed")
 
@@ -34,6 +33,12 @@ st.markdown("""
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) a {
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) span {
+        color: #ffffff !important;
+    }
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) p {
+        color: #ffffff !important;
+    }
     
     h1, h2, h3, h4 { color: #0c1c30 !important; font-weight: bold !important; }
     
@@ -57,7 +62,7 @@ st.markdown("""
         border: 1px solid #ced4da !important;
     }
     
-    div.stDownloadButton > button, div.stButton > button {
+    div.stDownloadButton > button {
         background-color: #218838 !important;
         color: #ffffff !important;
         border: none !important;
@@ -66,8 +71,13 @@ st.markdown("""
         font-size: 16px !important;
         padding: 12px 30px !important;
     }
-    div.stDownloadButton > button:hover, div.stButton > button:hover {
+    div.stDownloadButton > button:hover {
         background-color: #1e7e34 !important;
+    }
+    div.stDownloadButton > button p {
+        color: #ffffff !important;
+        font-size: 16px !important;
+        font-weight: bold !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -97,77 +107,87 @@ if 'ultimo_diagnostico' in st.session_state:
     mapa_estres = {0: "BAJO", 1: "MODERADO", 2: "ALTO"}
     mapa_rend = {0: "MALO", 1: "IRREGULAR", 2: "ALTO"}
     
-    st.success("✅ Diagnóstico detectado.")
+    st.success("✅ Diagnóstico detectado. Generando PDF.")
     nombre = st.text_input("Nombre Completo del Estudiante:", "Estudiante")
 
     def generar_pdf(nombre, estres_txt, rend_txt, datos):
         buffer = io.BytesIO()
         c = canvas.Canvas(buffer, pagesize=letter)
+        
         c.setFillColorRGB(0.047, 0.11, 0.188)
         c.rect(0, 782, 612, 10, fill=True, stroke=False)
+        
         base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         ruta_logo = os.path.join(base_path, "assets", "detector.png")
+        
         if os.path.exists(ruta_logo):
             c.drawImage(ruta_logo, 510, 710, width=50, height=50, preserveAspectRatio=True, mask='auto')
+        
         c.setFillColorRGB(0.047, 0.11, 0.188)
         c.setFont("Helvetica-Bold", 18)
         c.drawString(50, 735, "REPORTE GENERAL")
+        
         c.setFont("Helvetica", 9)
         c.setFillColorRGB(0.4, 0.4, 0.4)
         c.drawString(50, 718, "SISTEMA INTELIGENTE PARA LA REDUCCIÓN DE ESTRÉS")
+        
         c.setStrokeColorRGB(0.8, 0.8, 0.8)
-        c.line(50, 700, 562, 700)
+        c.setLineWidth(1)
+        c.line(50, 680, 562, 680)
+        
         c.setFillColorRGB(0.047, 0.11, 0.188)
         c.setFont("Helvetica-Bold", 12)
-        c.drawString(50, 670, "Información del Estudiante")
+        c.drawString(50, 655, "Información del Estudiante")
+        
         c.setFont("Helvetica", 11)
         c.setFillColorRGB(0.1, 0.1, 0.1)
-        c.drawString(50, 650, f"Estudiante: {nombre}")
-        c.drawString(50, 630, f"Nivel de Estrés: {estres_txt}")
-        c.drawString(50, 610, f"Proyección de Rendimiento: {rend_txt}")
-        c.line(50, 590, 562, 590)
+        c.drawString(50, 635, f"Estudiante: {nombre}")
+        c.drawString(50, 615, f"Nivel de Estrés: {estres_txt}")
+        c.drawString(50, 595, f"Proyección de Rendimiento: {rend_txt}")
+        
+        c.line(50, 570, 562, 570)
+        
         c.setFillColorRGB(0.047, 0.11, 0.188)
         c.setFont("Helvetica-Bold", 12)
-        c.drawString(50, 565, "Métricas y Variables Analizadas")
-        labels = ["Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", "Carga de Estudio", "Actividades Extras", "Apoyo Social", "Interés Académico"]
-        y_pos = 535
+        c.drawString(50, 545, "Métricas y Variables Analizadas")
+        
+        labels = [
+            "Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", 
+            "Carga de Estudio", "Actividades Extras", "Apoyo Social", "Interés Académico"
+        ]
+        
+        y_pos = 515
         for i, label in enumerate(labels):
             c.setFillColorRGB(0.95, 0.95, 0.97)
             c.rect(50, y_pos - 4, 512, 18, fill=True, stroke=False)
+            
             c.setFillColorRGB(0.1, 0.1, 0.1)
             c.setFont("Helvetica-Bold", 10)
             c.drawString(60, y_pos, label)
+            
             c.setFont("Helvetica", 10)
             c.drawRightString(540, y_pos, f"{datos[i]} / 10")
             y_pos -= 24
+            
+        c.setStrokeColorRGB(0.8, 0.8, 0.8)
+        c.line(50, 100, 562, 100)
+        
         c.setFont("Helvetica-Oblique", 8)
         c.setFillColorRGB(0.5, 0.5, 0.5)
-        c.drawString(50, 100, "Este reporte fue generado a través de sus datos obtenidos en el detector de estrés.")
+        c.drawString(50, 85, "Este reporte fue generado a través de sus datos obtenidos en el detector de estrés.")
+        
         c.save()
         buffer.seek(0)
         return buffer
 
-    pdf_data = generar_pdf(nombre, mapa_estres.get(estres), mapa_rend.get(rendimiento), datos)
-    b64 = base64.b64encode(pdf_data.getvalue()).decode()
+    pdf_buffer = generar_pdf(nombre, mapa_estres.get(estres), mapa_rend.get(rendimiento), datos)
     
-    col1, col2 = st.columns([1, 1])
-    with col1:
-        st.download_button(
-            label="📥 Descargar Reporte (PDF)",
-            data=pdf_data,
-            file_name=f"Reporte_{nombre.replace(' ', '_')}.pdf",
-            mime="application/pdf"
-        )
-    
-    with col2:
-        # Botón para abrir vista previa en nueva pestaña
-        st.markdown(
-            f'<a href="data:application/pdf;base64,{b64}" target="_blank" style="text-decoration:none;">'
-            f'<button style="background-color: #218838; color: white; border: none; border-radius: 6px; padding: 12px 30px; font-weight: bold; cursor: pointer;">'
-            f'👁️ Vista Previa en Nueva Pestaña'
-            f'</button></a>',
-            unsafe_allow_html=True
-        )
+    st.download_button(
+        label="📥 Descargar Reporte (PDF)",
+        data=pdf_buffer,
+        file_name=f"Reporte_{nombre.replace(' ', '_')}.pdf",
+        mime="application/pdf"
+    )
 
 else:
     st.warning("⚠️ No se ha detectado un diagnóstico activo.")
