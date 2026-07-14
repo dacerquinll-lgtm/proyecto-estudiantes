@@ -25,11 +25,13 @@ st.markdown("""
     }
     .header-institucional h2 { color: white !important; margin: 0; font-size: 1.2rem !important; font-weight: 600 !important; }
     
+    /* CORRECCIÓN: Forzar color en pestañas (seleccionadas e inactivas) */
+    button[data-baseweb="tab"] { color: #0c1c30 !important; }
+    button[data-baseweb="tab"] div { color: #0c1c30 !important; font-weight: bold !important; }
+    
     h1, h2, h3, h4 { color: #0c1c30 !important; font-weight: bold !important; }
     [data-testid="stMetricLabel"], [data-testid="stMetricValue"] { color: #0c1c30 !important; }
     div[data-testid="stMetric"] { padding: 15px !important; border-radius: 8px !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08) !important; }
-    
-    button[data-baseweb="tab"] div { color: #0c1c30 !important; font-weight: bold !important; }
     
     div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(1) div[data-testid="stMetric"] { background-color: #e3f2fd !important; border: 1px solid #90caf9 !important; }
     div[data-testid="column"]:has(div[data-testid="stMetric"]):nth-of-type(2) div[data-testid="stMetric"] { background-color: #fff3e0 !important; border: 1px solid #ffcc80 !important; }
