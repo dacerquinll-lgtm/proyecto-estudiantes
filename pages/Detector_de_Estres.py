@@ -29,8 +29,19 @@ st.markdown("""
         margin-bottom: 30px !important;
         border-radius: 0 0 8px 8px !important;
     }
+    
+    /* Reglas específicas para forzar el color blanco en los textos de los enlaces */
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) a {
-        color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
+        color: #ffffff !important; 
+        font-weight: bold !important; 
+        text-decoration: none !important;
+    }
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) p {
+        color: #ffffff !important;
+        font-weight: bold !important;
+    }
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) span {
+        color: #ffffff !important;
     }
     
     div[data-testid="stForm"] div[data-testid="stVerticalBlockBorderWrapper"] {
