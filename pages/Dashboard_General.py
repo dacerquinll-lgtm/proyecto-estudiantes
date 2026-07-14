@@ -33,32 +33,28 @@ st.markdown("""
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
     
-    /* SOLUCIÓN RADICAL PARA PESTAÑAS */
-    /* 1. Forzamos opacidad máxima a cualquier elemento interno de las pestañas */
-    div[data-baseweb="tab-list"] button,
-    div[data-baseweb="tab-list"] button *,
-    div[data-baseweb="tab-list"] button div,
-    div[data-baseweb="tab-list"] button p,
-    div[data-baseweb="tab-list"] button span {
-        opacity: 1 !important;
-        -webkit-text-fill-color: initial !important;
-    }
-    
-    /* 2. Pestaña Activa (Seleccionada) */
-    div[data-baseweb="tab-list"] button[aria-selected="true"],
-    div[data-baseweb="tab-list"] button[aria-selected="true"] * {
-        color: #e53935 !important;
-        font-weight: bold !important;
-    }
-    
-    /* 3. Pestaña Inactiva (No Seleccionada) */
-    div[data-baseweb="tab-list"] button[aria-selected="false"],
-    div[data-baseweb="tab-list"] button[aria-selected="false"] * {
+    .stTabs button,
+    .stTabs button *,
+    .stTabs [data-baseweb="tab"],
+    .stTabs [data-baseweb="tab"] *,
+    .stTabs [data-testid="stTab"],
+    .stTabs [data-testid="stTab"] * {
         color: #0c1c30 !important;
-        font-weight: bold !important;
+        opacity: 1 !important;
+        -webkit-text-fill-color: #0c1c30 !important;
     }
     
-    /* 4. Color de la barra indicadora inferior */
+    .stTabs button[aria-selected="true"],
+    .stTabs button[aria-selected="true"] *,
+    .stTabs [data-baseweb="tab"][aria-selected="true"],
+    .stTabs [data-baseweb="tab"][aria-selected="true"] *,
+    .stTabs [data-testid="stTab"][aria-selected="true"],
+    .stTabs [data-testid="stTab"][aria-selected="true"] * {
+        color: #e53935 !important;
+        -webkit-text-fill-color: #e53935 !important;
+        opacity: 1 !important;
+    }
+    
     .stTabs [data-baseweb="tab-highlight"] {
         background-color: #e53935 !important;
     }
