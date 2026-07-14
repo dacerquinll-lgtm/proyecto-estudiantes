@@ -12,11 +12,7 @@ st.markdown("""
     .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
     
-    /* Fuerza el color negro en todos los textos */
-    div, p, h1, h2, h3, h4, .stMetricValue, .stMetricLabel {
-        color: #000000 !important;
-    }
-    
+    /* ESTILOS DE CABECERA (NO TOCAR PARA MANTENER COLORES) */
     .header-institucional {
         background-color: #0c1c30;
         padding: 20px 30px;
@@ -37,8 +33,13 @@ st.markdown("""
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) a {
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
+
+    /* ESTILOS DEL CONTENIDO PRINCIPAL (FUERZA COLOR NEGRO) */
+    .main div, .main p, .main h1, .main h2, .main h3, .main h4, .main .stMetricValue, .main .stMetricLabel {
+        color: #000000 !important;
+    }
     
-    /* Diseño del botón personalizado */
+    /* CORRECCIÓN DE BOTÓN */
     div.stButton > button {
         background-color: #0c1c30 !important;
         color: #ffffff !important;
@@ -46,9 +47,6 @@ st.markdown("""
         border-radius: 6px !important;
         font-weight: bold !important;
         padding: 10px 24px !important;
-    }
-    div.stButton > button:hover {
-        background-color: #1a2a40 !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -67,6 +65,7 @@ with cols_nav[2]: st.page_link("pages/Detector_de_Estres.py", label="Detector de
 with cols_nav[3]: st.page_link("pages/Reportes_y_Exportacion.py", label="Reportes y Exportación")
 with cols_nav[4]: st.page_link("pages/Simulador_de_Escenarios.py", label="Simulador de Escenarios")
 
+# Todo lo que sigue queda dentro de .main
 st.title("📈 Simulador de Proyecciones de Bienestar")
 
 if 'ultimo_diagnostico' not in st.session_state:
@@ -80,7 +79,6 @@ estres_base = diag['estres']
 st.write("Esta herramienta compara cómo evolucionaría tu situación académica según las acciones que decidas tomar.")
 
 if st.button("🚀 Calcular Proyecciones"):
-    # Asegúrate de que la ruta sea correcta según tu estructura de carpetas
     ruta_modelo = "modelos/modelo_stress_rf.pkl"
     modelo = joblib.load(ruta_modelo)
     
@@ -108,13 +106,13 @@ if st.button("🚀 Calcular Proyecciones"):
             st.write(f"**Análisis:** {explicacion}")
 
     render_escenario(col1, "Situación Actual", res_actual, "⚖️", 
-                    "Es el resultado de continuar con tus hábitos de siempre. El nivel de estrés se mantendrá estable si no intervienes.")
+                    "Es el resultado de continuar con tus hábitos de siempre.")
     
     render_escenario(col2, "Si realizas mejoras", res_mejora, "✅", 
-                    "Al ajustar tu descanso y reducir la sobrecarga, el modelo proyecta una baja en el estrés y un mejor rendimiento académico.")
+                    "El modelo proyecta una baja en el estrés y un mejor rendimiento.")
     
     render_escenario(col3, "Si aumentan las dificultades", res_dificultad, "⚠️", 
-                    "Si descuidas tus horas de sueño o aumenta tu carga académica sin apoyo, el nivel de estrés puede elevarse, afectando tu rendimiento.")
+                    "El nivel de estrés puede elevarse, afectando tu rendimiento.")
 
     st.markdown("---")
-    st.info("💡 **Recuerda:** Estas proyecciones sirven como guía para tu toma de decisiones. Pequeños cambios en tus hábitos cotidianos tienen un impacto acumulativo real en tu salud y notas.")
+    st.info("💡 **Recuerda:** Estas proyecciones sirven como guía para tu toma de decisiones.")
