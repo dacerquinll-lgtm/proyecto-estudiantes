@@ -7,6 +7,14 @@ st.set_page_config(page_title="Simulador de Proyecciones", layout="wide", initia
 
 st.markdown("""
     <style>
+
+
+    /* Fuerza el negro en todos los párrafos del cuerpo principal */
+.main p {
+    color: #000000 !important;
+    opacity: 1 !important;
+}
+
     .stApp { background-color: #f8f9fa !important; }
     [data-testid="stHeader"] { display: none !important; }
     .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
