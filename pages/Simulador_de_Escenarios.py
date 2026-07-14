@@ -118,7 +118,11 @@ else:
             st.subheader(f"{icono} {titulo}")
             st.metric("Nivel de Estrés", ["Bajo", "Moderado", "Alto"][res])
             st.metric("Rendimiento", ["Malo", "Irregular", "Alto"][rend])
-            st.write(f"**Análisis:** {explicacion}")
+            st.markdown(f"""
+                <div class="texto-negro">
+                    <p style="margin-top: 10px;"><strong>Análisis:</strong> {explicacion}</p>
+                </div>
+            """, unsafe_allow_html=True)
 
     render_escenario(col1, "Situación Actual", res_actual, "⚖️", "Es el resultado de continuar con tus hábitos de siempre.")
     render_escenario(col2, "Si realizas mejoras", res_mejora, "✅", "El modelo proyecta una baja en el estrés y un mejor rendimiento.")
