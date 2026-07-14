@@ -14,16 +14,19 @@ st.markdown(f"""
     .block-container {{ padding-top: 0rem !important; padding-bottom: 0rem !important; }}
     [data-testid="stSidebar"] {{ display: none !important; }}
     
-    .header-institucional {{ background-color: #0c1c30; padding: 20px 30px; display: flex; align-items: center; justify-content: space-between; color: white; border-radius: 8px 8px 0 0; }}
+    .header-institucional {{ background-color: #0c1c30; padding: 20px 30px; display: flex; align-items: center; justify-content: space-between; color: white; margin-top: 0px !important; margin-bottom: 0px; border-radius: 8px 8px 0 0; }}
     .header-institucional h2 {{ color: white !important; margin: 0; font-size: 1.2rem !important; font-weight: 600 !important; }}
     
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) {{ background-color: #142840 !important; padding: 10px 20px !important; margin-bottom: 30px !important; border-radius: 0 0 8px 8px !important; }}
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) div[data-testid="stPageLink"] a {{ color: #ffffff !important; font-weight: bold !important; text-decoration: underline !important; }}
-    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) > div[data-testid="column"]:nth-of-type({pagina_activa}) div[data-testid="stPageLink"] a {{ background-color: #2e7d32 !important; text-decoration: none !important; }}
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) {{ background-color: #142840 !important; padding: 10px 20px !important; margin-top: 0px !important; margin-bottom: 30px !important; border-radius: 0 0 8px 8px !important; }}
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) div[data-testid="stPageLink"] a {{ background-color: transparent !important; color: #ffffff !important; border: none !important; font-weight: bold !important; font-size: 0.9rem !important; padding: 6px 12px !important; text-decoration: underline !important; }}
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) > div[data-testid="column"]:nth-of-type({pagina_activa}) div[data-testid="stPageLink"] a {{ background-color: #2e7d32 !important; color: white !important; text-decoration: none !important; padding: 8px 16px !important; border-radius: 4px !important; }}
     
+    h1, h2, h3, h4 {{ color: #0c1c30 !important; font-weight: bold !important; }}
     [data-testid="stMetricLabel"], [data-testid="stMetricValue"] {{ color: #0c1c30 !important; }}
-    button[data-baseweb="tab"] div {{ color: #0c1c30 !important; font-weight: bold !important; }}
-    button[data-baseweb="tab"][aria-selected="true"] div {{ color: #2e7d32 !important; }}
+    
+    /* CORRECCIÓN: Fuerza color oscuro en el texto dentro de los gráficos Plotly */
+    .js-plotly-plot .plotly .main-svg {{ color: #0c1c30 !important; }}
+    .plotly .xtick text, .plotly .ytick text, .plotly .g-gtitle {{ fill: #0c1c30 !important; }}
     </style>
 """, unsafe_allow_html=True)
 
@@ -58,26 +61,12 @@ c3.metric("Ansiedad Promedio", round(df['anxiety_level'].mean(), 2))
 tab1, tab2 = st.tabs(["📉 Tendencia de Rendimiento", "⚠️ Factores de Riesgo"])
 
 with tab1:
-    st.subheader("Evolución del Rendimiento Académico")
-    df_line = df.groupby(['stress_level', 'stress_label'])['academic_performance'].mean().reset_index().sort_values('stress_level')
-    fig1 = px.line(df_line, x="stress_label", y="academic_performance", markers=True, template="plotly_white")
+    fig1 = px.line(df.groupby(['stress_level', 'stress_label'])['academic_performance'].mean().reset_index().sort_values('stress_level'), x="stress_label", y="academic_performance", markers=True, template="plotly_white", line_shape="spline")
     fig1.update_traces(line_color="#0c1c30", line_width=4, marker=dict(size=12, color="#2e7d32"))
-    fig1.update_layout(
-        plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
-        font=dict(color="#0c1c30", size=14),
-        xaxis=dict(showgrid=False, tickfont=dict(color="#0c1c30")),
-        yaxis=dict(showgrid=True, gridcolor="#d1d5db", tickfont=dict(color="#0c1c30"))
-    )
+    fig1.update_layout(plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
     st.plotly_chart(fig1, use_container_width=True)
 
 with tab2:
-    st.subheader("Promedio de Ansiedad por Nivel de Estrés")
-    df_bar = df.groupby(['stress_label'])['anxiety_level'].mean().reset_index()
-    fig2 = px.bar(df_bar, x='stress_label', y='anxiety_level', color='stress_label', template="plotly_white", color_discrete_map={"BAJO": "#2e7d32", "MODERADO": "#ffa15a", "ALTO": "#ef553b"})
-    fig2.update_layout(
-        showlegend=False, plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
-        font=dict(color="#0c1c30", size=14),
-        xaxis=dict(tickfont=dict(color="#0c1c30")),
-        yaxis=dict(tickfont=dict(color="#0c1c30"))
-    )
+    fig2 = px.bar(df.groupby(['stress_label'])['anxiety_level'].mean().reset_index(), x='stress_label', y='anxiety_level', color='stress_label', template="plotly_white", color_discrete_map={"BAJO": "#2e7d32", "MODERADO": "#ffa15a", "ALTO": "#ef553b"})
+    fig2.update_layout(showlegend=False, plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
     st.plotly_chart(fig2, use_container_width=True)
