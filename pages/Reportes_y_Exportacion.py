@@ -2,6 +2,7 @@ import streamlit as st
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 import io
+import os
 
 st.set_page_config(page_title="Reportes y Exportación", layout="wide", initial_sidebar_state="collapsed")
 
@@ -112,20 +113,68 @@ if 'ultimo_diagnostico' in st.session_state:
     def generar_pdf(nombre, estres_txt, rend_txt, datos):
         buffer = io.BytesIO()
         c = canvas.Canvas(buffer, pagesize=letter)
-        c.setFont("Helvetica-Bold", 16)
-        c.drawString(50, 750, "REPORTE INTEGRAL ACADÉMICO")
-        c.setFont("Helvetica", 12)
-        c.drawString(50, 720, f"Estudiante: {nombre}")
-        c.drawString(50, 700, f"Nivel de Estrés: {estres_txt}")
-        c.drawString(50, 680, f"Proyección de Rendimiento: {rend_txt}")
         
-        c.drawString(50, 650, "Métricas registradas:")
-        y = 630
-        labels = ["Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", 
-                  "Carga de Estudio", "Actividades Extras", "Apoyo Social", "Interés Académico"]
+        c.setFillColorRGB(0.047, 0.11, 0.188)
+        c.rect(0, 782, 612, 10, fill=True, stroke=False)
+        
+        ruta_logo = "assets/detector.png"
+        if os.path.exists(ruta_logo):
+            c.drawImage(ruta_logo, 480, 690, width=80, height=80, preserveAspectRatio=True, mask='auto')
+        
+        c.setFillColorRGB(0.047, 0.11, 0.188)
+        c.setFont("Helvetica-Bold", 18)
+        c.drawString(50, 735, "REPORTE INTEGRAL ACADÉMICO")
+        
+        c.setFont("Helvetica", 9)
+        c.setFillColorRGB(0.4, 0.4, 0.4)
+        c.drawString(50, 718, "SISTEMA INTELIGENTE PARA LA REDUCCIÓN DE ESTRÉS - UCV")
+        
+        c.setStrokeColorRGB(0.8, 0.8, 0.8)
+        c.setLineWidth(1)
+        c.line(50, 680, 562, 680)
+        
+        c.setFillColorRGB(0.047, 0.11, 0.188)
+        c.setFont("Helvetica-Bold", 12)
+        c.drawString(50, 655, "Información del Estudiante")
+        
+        c.setFont("Helvetica", 11)
+        c.setFillColorRGB(0.1, 0.1, 0.1)
+        c.drawString(50, 635, f"Estudiante: {nombre}")
+        c.drawString(50, 615, f"Nivel de Estrés: {estres_txt}")
+        c.drawString(50, 595, f"Proyección de Rendimiento: {rend_txt}")
+        
+        c.line(50, 570, 562, 570)
+        
+        c.setFillColorRGB(0.047, 0.11, 0.188)
+        c.setFont("Helvetica-Bold", 12)
+        c.drawString(50, 545, "Métricas y Variables Analizadas")
+        
+        labels = [
+            "Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", 
+            "Carga de Estudio", "Actividades Extras", "Apoyo Social", "Interés Académico"
+        ]
+        
+        y_pos = 515
         for i, label in enumerate(labels):
-            c.drawString(70, y, f"- {label}: {datos[i]}")
-            y -= 20
+            c.setFillColorRGB(0.95, 0.95, 0.97)
+            c.rect(50, y_pos - 4, 512, 18, fill=True, stroke=False)
+            
+            c.setFillColorRGB(0.1, 0.1, 0.1)
+            c.setFont("Helvetica-Bold", 10)
+            c.drawString(60, y_pos, label)
+            
+            c.setFont("Helvetica", 10)
+            c.drawRightString(540, y_pos, f"{datos[i]} / 10")
+            y_pos -= 24
+            
+        c.setStrokeColorRGB(0.8, 0.8, 0.8)
+        c.line(50, 100, 562, 100)
+        
+        c.setFont("Helvetica-Oblique", 8)
+        c.setFillColorRGB(0.5, 0.5, 0.5)
+        c.drawString(50, 85, "Este documento es un reporte automatizado generado a través de algoritmos de inteligencia artificial.")
+        c.drawRightString(562, 85, "Universidad César Vallejo")
+        
         c.save()
         buffer.seek(0)
         return buffer
