@@ -33,19 +33,32 @@ st.markdown("""
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
     
-    /* CONTROL ABSOLUTO DE TEXTO EN PESTAÑAS ACTIVAS E INACTIVAS */
-    button[data-baseweb="tab"] [data-testid="stMarkdownContainer"] p {
-        color: #0c1c30 !important;
+    /* SOLUCIÓN RADICAL PARA PESTAÑAS */
+    /* 1. Forzamos opacidad máxima a cualquier elemento interno de las pestañas */
+    div[data-baseweb="tab-list"] button,
+    div[data-baseweb="tab-list"] button *,
+    div[data-baseweb="tab-list"] button div,
+    div[data-baseweb="tab-list"] button p,
+    div[data-baseweb="tab-list"] button span {
         opacity: 1 !important;
-        font-weight: bold !important;
+        -webkit-text-fill-color: initial !important;
     }
     
-    button[data-baseweb="tab"][aria-selected="true"] [data-testid="stMarkdownContainer"] p {
+    /* 2. Pestaña Activa (Seleccionada) */
+    div[data-baseweb="tab-list"] button[aria-selected="true"],
+    div[data-baseweb="tab-list"] button[aria-selected="true"] * {
         color: #e53935 !important;
-        opacity: 1 !important;
         font-weight: bold !important;
     }
     
+    /* 3. Pestaña Inactiva (No Seleccionada) */
+    div[data-baseweb="tab-list"] button[aria-selected="false"],
+    div[data-baseweb="tab-list"] button[aria-selected="false"] * {
+        color: #0c1c30 !important;
+        font-weight: bold !important;
+    }
+    
+    /* 4. Color de la barra indicadora inferior */
     .stTabs [data-baseweb="tab-highlight"] {
         background-color: #e53935 !important;
     }
