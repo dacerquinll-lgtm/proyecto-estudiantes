@@ -45,6 +45,7 @@ st.markdown("""
         font-weight: 600 !important;
     }
     
+    /* FIX NAVEGACIÓN Y TEXTOS VISIBLES EN TEMA LIGHT */
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) {
         background-color: #1a2a40 !important;
         padding: 10px 20px !important;
@@ -62,9 +63,17 @@ st.markdown("""
         text-decoration: none !important;
         display: inline-flex !important;
     }
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) span {
+        color: #ffffff !important;
+    }
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) p {
+        color: #ffffff !important;
+    }
+    div[data-testid="stPageLink"] * {
+        color: #ffffff !important;
+    }
     
     /* SOLUCIÓN AL ESTADO ACTIVO DE INICIO */
-    /* Forzamos que el primer enlace (Inicio) tenga el fondo de selección activa cuando estemos en app.py */
     div[data-testid="stHorizontalBlock"]:has(div[data-testid="stPageLink"]) > div[data-testid="column"]:nth-of-type(1) div[data-testid="stPageLink"] a {
         background-color: rgba(255, 255, 255, 0.2) !important;
         color: white !important;
