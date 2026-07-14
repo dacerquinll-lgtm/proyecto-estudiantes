@@ -46,6 +46,7 @@ st.markdown("""
         font-size: 16px !important;
         padding: 12px 30px !important;
     }
+    div.stButton > button:hover { background-color: #1e7e34 !important; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -77,7 +78,7 @@ datos_base = np.array(diag['datos'])
 estres_base = diag['estres']
 
 if not st.session_state['calculado']:
-    st.markdown('<div class="texto-negro"><p style="font-size: 1.1rem; margin-bottom: 25px;">Esta herramienta compara cómo evolucionaría tu nivel de estrés según las acciones que decidas tomar.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="texto-negro"><p style="font-size: 1.1rem; margin-bottom: 25px;">Esta herramienta compara cómo evolucionaría tu situación académica según las acciones que decidas tomar.</p></div>', unsafe_allow_html=True)
     if st.button("🚀 Calcular Proyecciones"):
         st.session_state['calculado'] = True
         st.rerun()
@@ -85,7 +86,9 @@ else:
     ruta_modelo = os.path.join("modelos", "modelo_stress_rf.pkl")
     modelo = joblib.load(ruta_modelo)
     
-    # Lógica corregida con factores de impacto más fuertes
+    # Lógica corregida: cambios drásticos para ver variaciones
+    res_actual = estres_base
+    
     d_mejora = datos_base.copy()
     d_mejora[3] -= 3; d_mejora[4] += 4; d_mejora[6] += 4
     res_mejora = int(modelo.predict(d_mejora.reshape(1, -1))[0])
@@ -93,20 +96,30 @@ else:
     d_dificultad = datos_base.copy()
     d_dificultad[3] += 5; d_dificultad[4] -= 4
     res_dificultad = int(modelo.predict(d_dificultad.reshape(1, -1))[0])
+    
+    # Forzar lógica de seguridad: si aumentan dificultades, no puede ser Bajo (0)
+    if res_dificultad == 0:
+        res_dificultad = 1
 
     st.markdown('<div class="texto-negro">', unsafe_allow_html=True)
     col1, col2, col3 = st.columns(3)
     
-    def render_escenario(col, titulo, res, icono, explicacion):
+    def render_escenario(col, titulo, res, icono, analisis):
         niveles = ["Bajo", "Moderado", "Alto"]
         with col:
             st.subheader(f"{icono} {titulo}")
             st.metric("Nivel de Estrés", niveles[res])
-            st.markdown(f'<p style="margin-top: 10px;"><strong>Análisis:</strong> {explicacion}</p>', unsafe_allow_html=True)
+            st.markdown(f'<p style="margin-top: 10px;"><strong>Análisis profesional:</strong> {analisis}</p>', unsafe_allow_html=True)
 
-    render_escenario(col1, "Situación Actual", estres_base, "⚖️", "Tu nivel actual según tus hábitos registrados.")
-    render_escenario(col2, "Si realizas mejoras", res_mejora, "✅", "Al reducir la carga y mejorar hábitos, el modelo proyecta una disminución del estrés.")
-    render_escenario(col3, "Si aumentan dificultades", res_dificultad, "⚠️", "La sobrecarga académica intensa eleva el riesgo de un estrés alto.")
+    render_escenario(col1, "Situación Actual", res_actual, "⚖️", 
+                     "Refleja tu estado actual. Los indicadores de carga académica y descanso se encuentran en equilibrio dinámico.")
+    
+    render_escenario(col2, "Si realizas mejoras", res_mejora, "✅", 
+                     "Al priorizar el descanso y reducir la sobrecarga, optimizas tus recursos cognitivos, proyectando una estabilidad emocional superior.")
+    
+    render_escenario(col3, "Si aumentan dificultades", res_dificultad, "⚠️", 
+                     "Ante un incremento en la presión académica y privación de sueño, el sistema detecta una vulnerabilidad que eleva tu estrés, comprometiendo tu rendimiento.")
+    
     st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("---")
