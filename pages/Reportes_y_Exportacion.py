@@ -35,18 +35,6 @@ st.markdown("""
         color: #ffffff !important; font-weight: bold !important; text-decoration: none !important;
     }
     
-    /* SOLUCION DEFINITIVA PARA EL TEXTO DEL EXPANDER */
-    [data-testid="stExpander"] div[role="button"] p, 
-    [data-testid="stExpander"] div[role="button"] span,
-    [data-testid="stExpander"] div[role="button"] div {
-        color: #0c1c30 !important;
-        font-weight: 900 !important;
-    }
-    [data-testid="stExpander"] {
-        background-color: #ffffff !important;
-        border: 2px solid #0c1c30 !important;
-    }
-    
     h1, h2, h3, h4 { color: #0c1c30 !important; font-weight: bold !important; }
     
     div[data-testid="stAlert"] {
@@ -69,7 +57,7 @@ st.markdown("""
         border: 1px solid #ced4da !important;
     }
     
-    div.stDownloadButton > button {
+    div.stDownloadButton > button, div.stButton > button {
         background-color: #218838 !important;
         color: #ffffff !important;
         border: none !important;
@@ -78,7 +66,7 @@ st.markdown("""
         font-size: 16px !important;
         padding: 12px 30px !important;
     }
-    div.stDownloadButton > button:hover {
+    div.stDownloadButton > button:hover, div.stButton > button:hover {
         background-color: #1e7e34 !important;
     }
     </style>
@@ -171,9 +159,13 @@ if 'ultimo_diagnostico' in st.session_state:
             mime="application/pdf"
         )
     
-    with st.expander("👀 Ver Vista Previa del Reporte"):
+    with col2:
+        # Botón para abrir vista previa en nueva pestaña
         st.markdown(
-            f'<embed src="data:application/pdf;base64,{b64}" width="100%" height="500px" type="application/pdf">', 
+            f'<a href="data:application/pdf;base64,{b64}" target="_blank" style="text-decoration:none;">'
+            f'<button style="background-color: #218838; color: white; border: none; border-radius: 6px; padding: 12px 30px; font-weight: bold; cursor: pointer;">'
+            f'👁️ Vista Previa en Nueva Pestaña'
+            f'</button></a>',
             unsafe_allow_html=True
         )
 
