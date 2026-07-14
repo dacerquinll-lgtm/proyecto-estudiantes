@@ -41,11 +41,11 @@ st.markdown("""
     
     h1, h2, h3, h4 { color: #0c1c30 !important; font-weight: bold !important; }
     
-    div[data-testid="stNotification"] {
+    div[data-testid="stAlert"] {
         background-color: #d4edda !important;
         border: 1px solid #c3e6cb !important;
     }
-    div[data-testid="stNotification"] p {
+    div[data-testid="stAlert"] p, div[data-testid="stAlert"] span {
         color: #155724 !important;
         font-weight: bold !important;
     }
