@@ -123,15 +123,16 @@ if 'ultimo_diagnostico' in st.session_state:
         st.write("---")
         st.markdown("<h4 style='color: #0c1c30 !important; font-weight: 900 !important;'>Variables detalladas:</h4>", unsafe_allow_html=True)
         
-        # Usamos un ancho de columna mucho menor (proporción 1,1,1,1 con espacios mínimos)
-        cols_metric = st.columns([1, 1, 1, 1], gap="small")
+        # Corrección de espacio aplicado aquí
+        st.markdown("<style>[data-testid='column'] { max-width: 220px !important; }</style>", unsafe_allow_html=True)
+        cols_metric = st.columns(4)
         labels_metric = [
             "Ansiedad", "Autoestima", "Depresión", "Calidad de Sueño", 
             "Carga de Estudio", "Actividades Extras", "Apoyo Social", "Interés Académico"
         ]
         
         for i in range(8):
-            cols_metric[i % 4].markdown(f"<div style='color:black; font-size: 0.9rem;'>• <b>{labels_metric[i]}:</b> {datos[i]} / 10</div>", unsafe_allow_html=True)
+            cols_metric[i % 4].markdown(f"<div style='color:black;'>• <b>{labels_metric[i]}:</b> {datos[i]} / 10</div>", unsafe_allow_html=True)
 
     nombre = st.text_input("Nombre Completo del Estudiante:", "Estudiante")
 
