@@ -7,7 +7,18 @@ st.set_page_config(page_title="Simulador de Proyecciones", layout="wide", initia
 
 st.markdown("""
     <style>
-    .stApp { background-color: #f8f9fa !important; }
+    /* 1. Forzamos el fondo claro y el color de texto negro globalmente */
+    .stApp { 
+        background-color: #f8f9fa !important; 
+        color: #000000 !important; 
+    }
+    
+    /* 2. Aseguramos que cualquier párrafo sea negro */
+    p, div, span { 
+        color: #000000 !important; 
+    }
+    
+    /* 3. Mantenemos tus configuraciones de diseño */
     [data-testid="stHeader"] { display: none !important; }
     .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
     [data-testid="stSidebar"] { display: none !important; }
@@ -47,13 +58,6 @@ st.markdown("""
         background-color: #1a2a40 !important;
     }
     </style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-    <div class="header-institucional">
-        <div><span style="font-weight: 900; font-size: 1.6rem; color: #e53935;">UCV</span></div>
-        <div><h2>Sistema Inteligente para la Reducción de Estrés en Universitarios</h2></div>
-    </div>
 """, unsafe_allow_html=True)
 
 cols_nav = st.columns([0.8, 1.2, 1.2, 1.4, 1.4])
