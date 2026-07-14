@@ -123,11 +123,11 @@ if 'ultimo_diagnostico' in st.session_state:
         
         c.setFillColorRGB(0.047, 0.11, 0.188)
         c.setFont("Helvetica-Bold", 18)
-        c.drawString(50, 735, "REPORTE INTEGRAL ACADÉMICO")
+        c.drawString(50, 735, "REPORTE GENERAL")
         
         c.setFont("Helvetica", 9)
         c.setFillColorRGB(0.4, 0.4, 0.4)
-        c.drawString(50, 718, "SISTEMA INTELIGENTE PARA LA REDUCCIÓN DE ESTRÉS - UCV")
+        c.drawString(50, 718, "SISTEMA INTELIGENTE PARA LA REDUCCIÓN DE ESTRÉS")
         
         c.setStrokeColorRGB(0.8, 0.8, 0.8)
         c.setLineWidth(1)
